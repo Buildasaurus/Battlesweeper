@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,34 +9,47 @@ namespace Games
 {
     public class Grid<T> where T : class
     {
-        public Grid(int width, int height, T? val = null)
+        public Grid(Size size, T? val = null)
         {
-            m_data = new List<T>(width * height);
-            m_width = width;
+            m_data = new List<T>(size.Width * size.Height);
+            Size = size;
 
-            for(int i = 0; i < width * height; i++)
+            for(int i = 0; i < size.Width * size.Height; i++)
             {
-                m_data.Add(val);
+                m_data.Add(val ?? default);
             }
+        }
 
+        public Size Size { get; }
+
+        public T this[int indx]
+        {
+            get => m_data[indx];
+            set => m_data[indx] = value;
         }
 
         public T this[int x, int y]
         {
             get
             {
-                if (x > m_width || y > m_data.Count / m_width)
+                if (x > Size.Width || y > Size.Height)
                     throw new IndexOutOfRangeException();
 
-                return m_data[x + y * m_width];
+                return this[x + y * Size.Width];
             }
             set
             {
-                if (x > m_width || y > m_data.Count / m_width)
+                if (x > Size.Width || y > Size.Height)
                     throw new IndexOutOfRangeException();
 
-                m_data[x + y * m_width] = value;
+                this[x + y * Size.Width] = value;
             }
+        }
+
+        public T this[Point coord]
+        {
+            get => this[coord.X, coord.Y];
+            set => this[coord.X, coord.Y] = value;
         }
 
         public List<T>.Enumerator GetEnumerator()
@@ -44,6 +58,5 @@ namespace Games
         }
 
         protected List<T> m_data;
-        protected int m_width;
     }
 }
