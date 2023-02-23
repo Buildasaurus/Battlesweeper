@@ -71,6 +71,14 @@ namespace Games
             set => this[coord.X, coord.Y] = value;
         }
 
+        /// <summary>
+        /// check whether the passed coordinate is a valid point, inside the grid.
+        /// </summary>
+        public bool inBounds(Point coord)
+        {
+            return coord.X >= 0 && coord.X < Size.Width && coord.Y >= 0 && coord.Y < Size.Height;
+        }
+
         public List<T>.Enumerator GetEnumerator()
         {
             return m_data.GetEnumerator();
