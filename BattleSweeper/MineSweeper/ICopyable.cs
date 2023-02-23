@@ -1,6 +1,6 @@
 ﻿namespace Games
 {
-    public interface ICopyable<T>
+    public interface ICopyable<T> where T : class?
     {
         T Copy();
     }

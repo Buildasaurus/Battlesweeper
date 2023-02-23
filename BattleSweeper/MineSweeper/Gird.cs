@@ -17,7 +17,7 @@ namespace Games
     /// Must implement ICopyable,
     /// in order to prevent the constructor from filling the grid with references to the same object.
     /// </typeparam>
-    public class Grid<T> where T : class, ICopyable<T>
+    public class Grid<T> where T : class?, ICopyable<T>
     {
         /// <summary>
         /// 

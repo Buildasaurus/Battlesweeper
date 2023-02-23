@@ -71,7 +71,8 @@ namespace Games.MineSweeper
         /// </summary>
         /// <param name="size"> must be greater than 0 X 0</param>
         /// <param name="bombs"> muse be greater than -1 </param>
-        public void generate(Size size, int bombs);
+        /// <param name="seed"> if null, a random number generator must be supplied with a random seed. </param>
+        public void generate(Size size, int bombs, int? seed = null);
         /// <summary>
         /// attempts to reveal the tile at the specified coord.
         /// </summary>

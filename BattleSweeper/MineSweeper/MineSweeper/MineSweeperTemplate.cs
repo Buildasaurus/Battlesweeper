@@ -53,8 +53,9 @@ namespace Games.MineSweeper
 
         /// <summary>
         /// bombs are ignored here, use place() in order to place bombs.
+        /// seed is also ignored, as there is no random generator used, in this implementation.
         /// </summary>
-        public void generate(Size size, int bombs)
+        public void generate(Size size, int bombs, int? seed)
         {
             m_grid = new(size, new(0));
         }
