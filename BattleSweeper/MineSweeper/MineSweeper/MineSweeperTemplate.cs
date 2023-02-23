@@ -11,9 +11,9 @@ namespace Games.MineSweeper
     {
         public Grid<MineSweeperTile>? Tiles => m_grid;
 
-        public List<Point> InitialBombs => throw new NotImplementedException();
+        public HashSet<Point> InitialBombs => throw new NotImplementedException();
 
-        public List<Point> CurrentBombs => throw new NotImplementedException();
+        public HashSet<Point> CurrentBombs => throw new NotImplementedException();
 
         public MoveResult diffuseTile(Point coord)
         {
@@ -36,19 +36,21 @@ namespace Games.MineSweeper
         public void generate(Size size, int bombs)
         {
             m_grid = new(size, new(0));
+        }
 
-            for(int i = 0; i < bombs; i++)
-            {
-                m_grid[i * 2] = new(-1);
-                m_initial_bombs.Add(new Point(i % m_grid.Size.Width, i / m_grid.Size.Width));
-                m_current_bombs.Add(new Point(i % m_grid.Size.Width, i / m_grid.Size.Width));
-            }
+        public void place(Point coord, MineSweeperTile tile)
+        {
+            m_grid[coord] = tile.Copy();
+        }
 
-            for(int i = 0; i < m_grid.Size.Width * m_grid.Size.Height; i++)
-            {
-                if (m_grid[i].bomb_count != -1)
-                    m_grid[i] = new(i % 10);
-            }
+        public void setInitialBombs(HashSet<Point> bombs)
+        {
+            m_initial_bombs = bombs;
+        }
+
+        public void setCurrentBombs(HashSet<Point> bombs)
+        {
+            m_current_bombs = bombs;
         }
 
         public MoveResult testTile(Point coord)

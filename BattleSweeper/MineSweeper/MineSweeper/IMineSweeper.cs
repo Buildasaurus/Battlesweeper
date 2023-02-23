@@ -11,7 +11,7 @@ namespace Games.MineSweeper
 
 
         // -1 = bomb
-        public int bomb_count { get; init; }
+        public int bomb_count { get; set; }
         public bool is_revealed;
         public bool is_flagged;
 
@@ -27,8 +27,8 @@ namespace Games.MineSweeper
     public interface IMineSweeper
     {
         public Grid<MineSweeperTile>? Tiles { get; }
-        public List<Point> InitialBombs { get; }
-        public List<Point> CurrentBombs { get; }
+        public HashSet<Point> InitialBombs { get; }
+        public HashSet<Point> CurrentBombs { get; }
 
 
         public void generate(Size size, int bombs);
