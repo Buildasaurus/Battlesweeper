@@ -8,4 +8,6 @@ namespace BattleSweeper.ViewModels
     {
         public string Greeting => "Welcome to Avalonia!";
     }
+
+
 }
