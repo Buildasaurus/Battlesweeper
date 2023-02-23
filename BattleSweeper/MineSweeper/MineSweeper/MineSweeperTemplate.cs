@@ -9,28 +9,28 @@ namespace Games.MineSweeper
 {
     public class MineSweeperTemplate : IMineSweeper
     {
-        public Grid<MineSweeperTile> Tiles => m_grid;
+        public Grid<MineSweeperTile>? Tiles => m_grid;
 
         public List<Point> InitialBombs => throw new NotImplementedException();
 
         public List<Point> CurrentBombs => throw new NotImplementedException();
 
-        public MineSweeperResult diffuseTile(Point coord)
+        public MoveResult diffuseTile(Point coord)
         {
-            Tiles[coord].is_revealed = true;
+            Tiles![coord].is_revealed = true;
 
             if (Tiles[coord].bomb_count == -1)
             {
                 m_current_bombs.Remove(coord);
             }
 
-            return MineSweeperResult.Success;
+            return MoveResult.Success;
         }
 
-        public MineSweeperResult flagTile(Point coord)
+        public MoveResult flagTile(Point coord)
         {
-            Tiles[coord].is_flagged = true;
-            return MineSweeperResult.Success;
+            Tiles![coord].is_flagged = true;
+            return MoveResult.Success;
         }
 
         public void generate(Size size, int bombs)
@@ -51,10 +51,10 @@ namespace Games.MineSweeper
             }
         }
 
-        public MineSweeperResult testTile(Point coord)
+        public MoveResult testTile(Point coord)
         {
-            Tiles[coord].is_revealed = true;
-            return MineSweeperResult.Success;
+            Tiles![coord].is_revealed = true;
+            return MoveResult.Success;
         }
 
         protected Grid<MineSweeperTile>? m_grid;

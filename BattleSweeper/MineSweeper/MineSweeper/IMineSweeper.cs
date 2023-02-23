@@ -2,7 +2,7 @@
 
 namespace Games.MineSweeper
 {
-    public class MineSweeperTile
+    public class MineSweeperTile : ICopyable<MineSweeperTile>
     {
         public MineSweeperTile(int bomb_count)
         {
@@ -14,25 +14,26 @@ namespace Games.MineSweeper
         public int bomb_count { get; init; }
         public bool is_revealed;
         public bool is_flagged;
-    };
 
-    public enum MineSweeperResult
-    {
-        Success,
-        Failure,
-        Illegal,
+        public MineSweeperTile Copy()
+        {
+            MineSweeperTile tile = new(bomb_count);
+            tile.is_revealed = is_revealed;
+            tile.is_flagged = is_flagged;
+            
+            return tile;
+        }
     }
-
     public interface IMineSweeper
     {
-        public Grid<MineSweeperTile> Tiles { get; }
+        public Grid<MineSweeperTile>? Tiles { get; }
         public List<Point> InitialBombs { get; }
         public List<Point> CurrentBombs { get; }
 
 
         public void generate(Size size, int bombs);
-        public MineSweeperResult testTile(Point coord);
-        public MineSweeperResult flagTile(Point coord);
-        public MineSweeperResult diffuseTile(Point coord);
+        public MoveResult testTile(Point coord);
+        public MoveResult flagTile(Point coord);
+        public MoveResult diffuseTile(Point coord);
     }
 }

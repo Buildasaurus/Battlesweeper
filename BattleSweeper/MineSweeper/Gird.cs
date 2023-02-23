@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Games
 {
-    public class Grid<T> where T : class
+    public class Grid<T> where T : class, ICopyable<T>
     {
         public Grid(Size size, T? val = null)
         {
@@ -16,7 +16,7 @@ namespace Games
 
             for(int i = 0; i < size.Width * size.Height; i++)
             {
-                m_data.Add(val ?? default);
+                m_data.Add(val?.Copy() ?? default!);
             }
         }
 
