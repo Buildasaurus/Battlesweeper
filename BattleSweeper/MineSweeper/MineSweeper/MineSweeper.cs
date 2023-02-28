@@ -19,12 +19,57 @@ namespace Games.MineSweeper
 
         public MoveResult diffuseTile(Point coord)
         {
-            throw new NotImplementedException();
+            if (Tiles[coord].is_revealed)
+                return MoveResult.Illegal;
+
+            if (Tiles[coord].bomb_count == IMineSweeper.BOMB)
+            {
+                Tiles[coord].is_revealed = true;
+                Tiles[coord].bomb_count = 0;
+                m_current_bombs.Remove(coord);
+                return MoveResult.Success;
+            }
+            else
+            {
+                Tiles[coord].is_revealed = true;
+                return MoveResult.Failure;
+            }
         }
 
         public MoveResult flagTile(Point coord)
         {
-            throw new NotImplementedException();
+            if (Tiles[coord].is_revealed)
+                return MoveResult.Failure;
+
+            Tiles[coord].is_flagged = true;
+
+            return MoveResult.Success;
+        }
+        
+        public MoveResult testTile(Point coord)
+        {
+            if (Tiles![coord].is_revealed)
+                return MoveResult.Illegal;
+
+            Tiles[coord].is_revealed = true;
+
+            if (Tiles[coord].bomb_count != 0)
+                return MoveResult.Success;
+
+            // recursive call
+
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                for (int dy = -1; dy <= 1; dy++)
+                {
+                    Point delta_coord = new(coord.X + dx, coord.Y + dy);
+
+                    if (!(dx == 0 && dy == 0) && Tiles.inBounds(delta_coord))
+                        testTile(delta_coord);
+                }
+            }
+
+            return Tiles[coord].bomb_count == IMineSweeper.BOMB ? MoveResult.Success : MoveResult.Failure;
         }
 
         public void generate(Size size, int bombs, int? seed = null)
@@ -85,12 +130,6 @@ namespace Games.MineSweeper
 
                 }
             }
-
-        }
-
-        public MoveResult testTile(Point coord)
-        {
-            throw new NotImplementedException();
         }
 
         protected Grid<MineSweeperTile> m_grid;

@@ -53,6 +53,7 @@ namespace Games.MineSweeper
     /// </summary>
     public interface IMineSweeper
     {
+        public const int BOMB = -1;
         /// <summary>
         /// grid of tiles in the current minesweeper game.
         /// </summary>
