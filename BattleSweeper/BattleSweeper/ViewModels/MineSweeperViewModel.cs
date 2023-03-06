@@ -36,6 +36,18 @@ namespace BattleSweeper.ViewModels
                 }
         }
 
+        public void rightMouseClickedEvent()
+        {
+
+        }
+        public void leftMouseClickedEvent()
+        {
+
+        }
+        public void leftMouseShiftClickedEvent()
+        {
+
+        }
         public Grid? grid;
     }
 }
