@@ -32,22 +32,11 @@ namespace BattleSweeper.ViewModels
 
                     img.Source = tile.Sprite;
 
-                    grid.Children.Add(img);
+                    grid.Children.Add(img); // adds a lot of the tile sprites to the grid
                 }
         }
 
-        public void rightMouseClickedEvent()
-        {
-
-        }
-        public void leftMouseClickedEvent()
-        {
-
-        }
-        public void leftMouseShiftClickedEvent()
-        {
-
-        }
+        
         public Grid? grid;
     }
 }
