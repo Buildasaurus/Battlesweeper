@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Games.Battleships
 {
-    public class BattleshipTile
+    public class BattleshipTile:ICopyable<BattleshipTile>
     {
         /// <summary>
         /// Determines the number of a ship, to distinguish the ships and know when a ship is sunken
@@ -22,6 +22,17 @@ namespace Games.Battleships
         /// Indicates wether the tile has a bomb
         /// </summary>
         public bool hasBomb;
+        public BattleshipTile(int Ship, bool hasBeenShot, bool hasBomb)
+        {
+            this.Ship = Ship;
+            this.hasBeenShot = hasBeenShot;
+            this.hasBomb = hasBomb;
+        }
+        public BattleshipTile Copy()
+        {
+            return new BattleshipTile(Ship,hasBeenShot,hasBomb);
+        }
+
     }
     public interface IBattleships
     {
