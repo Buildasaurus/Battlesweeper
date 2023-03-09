@@ -45,6 +45,16 @@ namespace Games.MineSweeper
         }
     }
 
+    public static class MineSweeperFactory
+    {
+        public static T construct<T>(Size size, int bombs, int? seed = null) where T : IMineSweeper, new()
+        {
+            T game = new();
+            game.generate(size, bombs, seed);
+            return game;
+        }
+    }
+
     /// <summary>
     /// interface of a MineSweeper implementation.
     /// 
