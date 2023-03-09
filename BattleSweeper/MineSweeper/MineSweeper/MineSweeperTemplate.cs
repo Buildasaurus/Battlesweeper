@@ -19,7 +19,7 @@ namespace Games.MineSweeper
 
         public HashSet<Point> CurrentBombs => m_current_bombs;
 
-        public Action<Point>? TileChanged { get => m_TileChaged; set => m_TileChaged; }
+        public Action<Point>? TileChanged { get => m_TileChanged; set => m_TileChanged = value; }
 
         /// <summary>
         /// sets the MineSweeperTile.is_revealed to true, at coord.
@@ -96,6 +96,6 @@ namespace Games.MineSweeper
         protected Grid<MineSweeperTile>? m_grid;
         protected HashSet<Point> m_initial_bombs = new();
         protected HashSet<Point> m_current_bombs = new();
-        private Action<Point>? m_TileChaged;
+        private Action<Point>? m_TileChanged;
     }
 }
