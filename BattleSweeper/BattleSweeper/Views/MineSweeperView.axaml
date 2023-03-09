@@ -8,12 +8,12 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-
-    <Grid
-        x:Name="MineSweeperGrid"
-        Margin="0"
-        ColumnDefinitions="1*,1*,1*,1*,1*,1*,1*,1*,1*,1*"
-        RowDefinitions="1*,1*,1*,1*,1*,1*,1*,1*,1*,1*" />
+    <Viewbox Stretch="Uniform">
+        <Grid
+            x:Name="MineSweeperGrid"
+            Margin="0"
+            />
+    </Viewbox>
 
 
 </UserControl>
