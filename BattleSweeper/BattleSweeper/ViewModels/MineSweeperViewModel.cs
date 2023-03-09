@@ -85,5 +85,8 @@ namespace BattleSweeper.ViewModels
             }
 
         }
+
+        public Grid<MSTileVM> grid;
+        public IMineSweeper mine_sweeper;
     }
 }
