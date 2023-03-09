@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Drawing;
+using ReactiveUI;
 
 namespace BattleSweeper.ViewModels
 {
@@ -16,8 +17,8 @@ namespace BattleSweeper.ViewModels
         [DllImport("user32.dll")]
         static extern bool GetCursorPos(ref Point lpPoint);
 
-        private Thread mouseThread;
-        private bool isRunning = true;
+        public ViewModelBase GameView { get => m_game_view; set => this.RaiseAndSetIfChanged(ref m_game_view, value); }
+
 
         public GameViewModel()
         {
@@ -52,5 +53,9 @@ namespace BattleSweeper.ViewModels
             isRunning = false;
             mouseThread.Join();
         }
+        
+        protected ViewModelBase m_game_view;
+        private Thread mouseThread;
+        private bool isRunning = true;
     }   
 }
