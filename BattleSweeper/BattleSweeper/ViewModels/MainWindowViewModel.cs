@@ -10,8 +10,7 @@ namespace BattleSweeper.ViewModels
     {
         public MainWindowViewModel()
         {
-            IMineSweeper mine_sweeper_model = new MineSweeper();
-            mine_sweeper_model.generate(new(10, 10), 10);
+            IMineSweeper mine_sweeper_model = MineSweeperFactory.construct<MineSweeper>(new(10, 10), 10);
 
             m_mine_sweeper = new(mine_sweeper_model);
 
