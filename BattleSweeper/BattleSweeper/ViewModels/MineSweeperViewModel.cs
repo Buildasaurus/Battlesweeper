@@ -83,8 +83,19 @@ namespace BattleSweeper.ViewModels
                     grid[x, y] = new(mine_sweeper.Tiles[x, y], new Point(x, y));
                 }
             }
-
         }
+
+        public MoveResult leftClickTile(Point tile) =>
+            mine_sweeper.testTile(tile);
+        
+
+        public MoveResult leftShiftClickTile(Point tile)
+        => mine_sweeper.diffuseTile(tile);
+        
+
+        public MoveResult rightClickTile(Point tile) =>
+            mine_sweeper.flagTile(tile);
+        
 
         public Grid<MSTileVM> grid;
         public IMineSweeper mine_sweeper;
