@@ -15,6 +15,9 @@ namespace BattleSweeper.Models
     public class GameModel
     {
 
-        
+        public GameModel() 
+        {
+            EventHandler.start();
+        }
     }
 }
