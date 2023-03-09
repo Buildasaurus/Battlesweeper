@@ -8,6 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Drawing;
 using Avalonia.Input;
+using System.Windows.Input;
+using System.Reactive.Disposables;
 
 namespace BattleSweeper.Models
 {
@@ -24,7 +26,16 @@ namespace BattleSweeper.Models
             // Create a new thread to continuously monitor the mouse for input.
             mouseThread = new Thread(MouseThread);
             mouseThread.Start();
+            InputManager.Instance.PostProcess.Subscribe(x => {
 
+                if(x.Device is KeyboardDevice keybd_device)
+                {
+                    
+                    //finish this code - should print which key was pressed.
+                    Trace.WriteLine("You pressed keyboard");
+                }
+
+            });
 
         }
         public static Action<EventArgs>? MouseChanged;

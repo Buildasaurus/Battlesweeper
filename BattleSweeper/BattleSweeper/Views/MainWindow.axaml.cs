@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using BattleSweeper.Models;
 using BattleSweeper.ViewModels;
 
 namespace BattleSweeper.Views
@@ -11,7 +12,7 @@ namespace BattleSweeper.Views
 
             Closing += (s, e) =>
             {
-                //GameViewModel.stop();
+                EventHandler.Stop();
             };
         }
 
