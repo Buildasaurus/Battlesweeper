@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+#if false
 namespace Games.Battleships
 {
     public class BattleshipTile:ICopyable<BattleshipTile>
@@ -78,3 +79,4 @@ namespace Games.Battleships
     
     }
 }
+#endif
