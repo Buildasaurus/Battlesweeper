@@ -19,6 +19,8 @@ namespace Games.MineSweeper
 
         public HashSet<Point> CurrentBombs => m_current_bombs;
 
+        public Action<Point>? TileChanged { get => m_TileChaged; set => m_TileChaged; }
+
         /// <summary>
         /// sets the MineSweeperTile.is_revealed to true, at coord.
         /// </summary>
@@ -26,6 +28,7 @@ namespace Games.MineSweeper
         public MoveResult diffuseTile(Point coord)
         {
             Tiles![coord].is_revealed = true;
+            TileChanged?.Invoke(coord);
 
             return MoveResult.Success;
         }
@@ -38,6 +41,8 @@ namespace Games.MineSweeper
         public MoveResult flagTile(Point coord)
         {
             Tiles![coord].is_flagged = true;
+            TileChanged?.Invoke(coord);
+
             return MoveResult.Success;
         }
 
@@ -48,6 +53,8 @@ namespace Games.MineSweeper
         public MoveResult testTile(Point coord)
         {
             Tiles![coord].is_revealed = true;
+            TileChanged?.Invoke(coord);
+
             return MoveResult.Success;
         }
 
@@ -66,6 +73,8 @@ namespace Games.MineSweeper
         public void place(Point coord, MineSweeperTile tile)
         {
             m_grid[coord] = tile.Copy();
+            TileChanged?.Invoke(coord);
+
         }
 
         /// <summary>
@@ -87,5 +96,6 @@ namespace Games.MineSweeper
         protected Grid<MineSweeperTile>? m_grid;
         protected HashSet<Point> m_initial_bombs = new();
         protected HashSet<Point> m_current_bombs = new();
+        private Action<Point>? m_TileChaged;
     }
 }
