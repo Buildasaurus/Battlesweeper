@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -85,25 +85,5 @@ namespace BattleSweeper.ViewModels
             }
 
         }
-
-        //public void constructGame(IMineSweeper mineGame)
-        //{
-        //    for(int x = 0; x < 10; x++)
-        //        for(int y = 0; y < 10; y++)
-        //        {
-        //            MSTileViewModel tile = new(mineGame.Tiles[x, y], new Point(x, y));
-
-        //            Avalonia.Controls.Image img = new();
-        //            img[Grid.RowProperty] = y;
-        //            img[Grid.ColumnProperty] = x;
-
-        //            img.Source = tile.Sprite;
-
-        //            grid.Children.Add(img);
-        //        }
-        //}
-
-        public Grid<MSTileVM> grid;
-        public IMineSweeper mine_sweeper;
     }
 }
