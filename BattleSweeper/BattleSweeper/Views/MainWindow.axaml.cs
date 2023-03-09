@@ -11,7 +11,7 @@ namespace BattleSweeper.Views
 
             Closing += (s, e) =>
             {
-                GameViewModel.stop();
+                //GameViewModel.stop();
             };
         }
 
