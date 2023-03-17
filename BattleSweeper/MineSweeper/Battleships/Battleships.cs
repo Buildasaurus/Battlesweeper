@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Games.Battleships
 {
-#if false
+
     public class Battleships
     {
         
@@ -17,11 +17,18 @@ namespace Games.Battleships
         int n = 0;
         public MoveResult placeShip(Point point, bool Vertical)
         {
-            for (int i = 1; i < shipLengths[n]; i++)
-            {
-                if (Board[point].ship > 1)
-                {
+            for (int i = 1; i < shipLengths[n]; i++) {
+
+                if (Vertical == true) { 
+
+                    if (Board[point.Y+i,point.X].ship > 1) {
                     return MoveResult.Illegal;
+                    }
+                }
+                else {
+                    if (Board[point.Y, point.X+i].ship > 0) {
+                        return MoveResult.Illegal;
+                    }
                 }
             }
            
@@ -44,7 +51,7 @@ namespace Games.Battleships
 
         }   
     }
-#endif
+
     
 
 }
