@@ -58,13 +58,13 @@ namespace Games.MineSweeper
         
         public MoveResult testTile(Point coord)
         {
-            if (Tiles![coord].is_revealed)
+            if (Tiles![coord].is_revealed || Tiles![coord].is_flagged)
                 return MoveResult.Illegal;
 
             Tiles[coord].is_revealed = true;
             TileChanged?.Invoke(coord);
 
-            if (Tiles[coord].bomb_count != 0)
+            if (Tiles[coord].bomb_count > 0)
                 return MoveResult.Success;
 
             // recursive call
@@ -80,7 +80,7 @@ namespace Games.MineSweeper
                 }
             }
 
-            return Tiles[coord].bomb_count == IMineSweeper.BOMB ? MoveResult.Success : MoveResult.Failure;
+            return Tiles[coord].bomb_count == IMineSweeper.BOMB ? MoveResult.Failure : MoveResult.Success;
         }
 
         public void generate(Size size, int bombs, int? seed = null)

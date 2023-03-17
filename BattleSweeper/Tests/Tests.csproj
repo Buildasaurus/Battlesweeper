@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BattleSweeper\BattleSweeper.csproj" />
     <ProjectReference Include="..\MineSweeper\Games.csproj" />
   </ItemGroup>
 

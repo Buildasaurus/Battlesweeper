@@ -24,11 +24,14 @@ namespace BattleSweeper.ViewModels
         {
             var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
 
-            string[] sprites = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "Bomb", "Empty", "Tile", "Flag" };
-
-            foreach (string sprite in sprites)
+            if (assets != null)
             {
-                Sprites[sprite] = new Bitmap(assets.Open(new($"avares://BattleSweeper/Assets/MineSweeper{sprite}.png")));
+                string[] sprites = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "Bomb", "Empty", "Tile", "Flag" };
+
+                foreach (string sprite in sprites)
+                {
+                    Sprites[sprite] = new Bitmap(assets.Open(new($"avares://BattleSweeper/Assets/MineSweeper{sprite}.png")));
+                }
             }
         }
 
@@ -77,8 +80,11 @@ namespace BattleSweeper.ViewModels
     {
         /// <summary>
         /// called when the user has run out of time.
+        /// 
+        /// gives true if all bombs were diffused, otherwise false.
+        /// 
         /// </summary>
-        public Action<MineSweeperViewModel>? TimeOut;
+        public EventHandler<bool>? GameOver;
 
         /// <summary>
         /// grid of MineSweeper Tile ViewModels, that represent the current mine_sweeper game.
@@ -110,8 +116,6 @@ namespace BattleSweeper.ViewModels
                 }
             }
 
-            TimeOut += (s) => timer_thread.Join();
-
             mine_sweeper.TileChanged += (coord) => grid[coord].RaisePropertyChanged(nameof(MSTileVM.Sprite));
         }
 
@@ -124,13 +128,27 @@ namespace BattleSweeper.ViewModels
 
         public void leftClickTile(Point tile)
         {
-            mine_sweeper.testTile(tile);
+            if (mine_sweeper.testTile(tile) == MoveResult.Failure)
+            {
+                GameOver?.Invoke(this, false);
+            }
         }
 
 
         public void leftShiftClickTile(Point tile)
         {
-            mine_sweeper.diffuseTile(tile); 
+            var result = mine_sweeper.diffuseTile(tile);
+
+            switch(result)
+            {
+                case MoveResult.Failure:
+                    TimeLeft -= 10;
+                    break;
+                case MoveResult.Success:
+                    if (mine_sweeper.CurrentBombs.Count <= 0)
+                        GameOver?.Invoke(this, true);
+                    break;
+            }
         }
 
 
@@ -150,7 +168,7 @@ namespace BattleSweeper.ViewModels
                 TimeLeft--;
             }
 
-            TimeOut?.Invoke(this);
+            GameOver?.Invoke(this, false);
         }
 
     }

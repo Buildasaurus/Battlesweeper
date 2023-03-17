@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleSweeper", "BattleSweeper\BattleSweeper.csproj", "{01732028-8FB9-4AD1-A3B2-5E5ABE4FF59B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BattleSweeper", "BattleSweeper\BattleSweeper.csproj", "{01732028-8FB9-4AD1-A3B2-5E5ABE4FF59B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Games", "MineSweeper\Games.csproj", "{B75EA529-9109-4897-9478-E10794171AFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Games", "MineSweeper\Games.csproj", "{B75EA529-9109-4897-9478-E10794171AFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{223D8BB1-FD84-4BBC-A1CA-30C70E0E31C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{223D8BB1-FD84-4BBC-A1CA-30C70E0E31C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,5 +33,16 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {58C7CB76-2433-4062-BDD1-CD56566D0356}
+	EndGlobalSection
+	GlobalSection(AutomaticVersions) = postSolution
+		UpdateAssemblyVersion = True
+		UpdateAssemblyFileVersion = True
+		UpdateAssemblyInfoVersion = True
+		AssemblyVersionSettings = None.None.None.None
+		AssemblyFileVersionSettings = None.None.None.None
+		AssemblyInfoVersionSettings = None.None.None.None
+		UpdatePackageVersion = False
+		AssemblyInfoVersionType = SettingsVersion
+		InheritWinAppVersionFrom = None
 	EndGlobalSection
 EndGlobal
