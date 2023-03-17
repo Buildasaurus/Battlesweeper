@@ -11,6 +11,7 @@ using Avalonia.Input;
 using System.Windows.Input;
 using System.Reactive.Disposables;
 using Avalonia.Input.Raw;
+using System.Security.Cryptography;
 
 namespace BattleSweeper.Models
 {
@@ -21,57 +22,53 @@ namespace BattleSweeper.Models
 
         private static Thread mouseThread;
         private static bool isRunning = true;
+        private static bool shiftPressed = false;
+        public static Point mousePosition = new Point();
+        public static Action<MouseArgs>? MouseChanged;
+        public static Action<KeyArgs>? KeyChanged;
+
 
         public static void start()
         {
             // Create a new thread to continuously monitor the mouse for input.
-            mouseThread = new Thread(MouseThread);
-            mouseThread.Start();
             InputManager.Instance.PostProcess.Subscribe(x => {
 
-
                 if (x is RawKeyEventArgs b)
-                    Trace.WriteLine(b.Key);
+                {
+                    KeyChanged?.Invoke(new KeyArgs(b.Key));
+                }
                 if (x is RawPointerEventArgs c)
+                {
                     Trace.WriteLine(c.InputModifiers);
-
+                    if (c.InputModifiers != RawInputModifiers.None)
+                    {
+                        // Get the current mouse position.
+                        Point cursorPos = new Point();
+                        GetCursorPos(ref cursorPos);
+                        mousePosition = new Point(cursorPos.X, cursorPos.Y);
+                        MouseChanged?.Invoke(new MouseArgs((MouseButton)c.Type, mousePosition));
+                    }
+                }
             });
         }
-        public static Action<EventArgs>? MouseChanged;
-
-        private static void MouseThread()
-        {
-            while (isRunning)
-            {
-                // Get the current mouse position.
-                Point cursorPos = new Point();
-                GetCursorPos(ref cursorPos);
-
-                // Do something with the mouse position.
-                Trace.WriteLine($"Mouse position: {cursorPos.X}, {cursorPos.Y}");
-                MouseChanged?.Invoke(new EventArgs(Key.A, MouseButton.Left, new Point(cursorPos.X, cursorPos.Y)));
-                // Sleep for a short amount of time to prevent the loop from running too frequently.
-                Thread.Sleep(10);
-            }
-        }
-        // Call this method to stop the thread and terminate the loop.
-        public static void Stop()
-        {
-            isRunning = false;
-            mouseThread.Join();
-        }
     }
-    public class EventArgs
+    public class MouseArgs
     {
-        Key key;
-        MouseButton button;
-        Point MousePosition;
-        public EventArgs(Key key, MouseButton button, Point MousePosition)
+        public MouseButton button;
+        public Point MousePosition;
+        public MouseArgs(MouseButton button, Point MousePosition)
         {
-            this.key = key;
             this.button = button;
             this.MousePosition = MousePosition;
         }
 
+    }
+    public class KeyArgs
+    {
+        public Key key;
+        public KeyArgs(Key key)
+        {
+            this.key = key;
+        }
     }
 }

@@ -9,6 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Threading;
+using BattleSweeper.ViewModels;
+using Games.MineSweeper;
+using Avalonia.Controls;
+using SkiaSharp;
 
 namespace BattleSweeper.Models
 {
@@ -16,8 +20,8 @@ namespace BattleSweeper.Models
     {
 
         public GameModel() 
-        {
-            EventHandler.start();
+        {          
+            
         }
     }
 }
