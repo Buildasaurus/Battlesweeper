@@ -9,11 +9,6 @@ namespace BattleSweeper.Views
         public MainWindow()
         {
             InitializeComponent();
-
-            Closing += (s, e) =>
-            {
-                EventHandler.Stop();
-            };
         }
 
         
