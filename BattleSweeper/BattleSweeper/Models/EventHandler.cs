@@ -10,6 +10,7 @@ using System.Drawing;
 using Avalonia.Input;
 using System.Windows.Input;
 using System.Reactive.Disposables;
+using Avalonia.Input.Raw;
 
 namespace BattleSweeper.Models
 {
@@ -28,15 +29,13 @@ namespace BattleSweeper.Models
             mouseThread.Start();
             InputManager.Instance.PostProcess.Subscribe(x => {
 
-                if(x.Device is KeyboardDevice keybd_device)
-                {
-                    
-                    //finish this code - should print which key was pressed.
-                    Trace.WriteLine("You pressed keyboard");
-                }
+
+                if (x is RawKeyEventArgs b)
+                    Trace.WriteLine(b.Key);
+                if (x is RawPointerEventArgs c)
+                    Trace.WriteLine(c.InputModifiers);
 
             });
-
         }
         public static Action<EventArgs>? MouseChanged;
 
