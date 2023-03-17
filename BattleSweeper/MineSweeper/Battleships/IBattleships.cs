@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-#if false
+
 namespace Games.Battleships
 {
     public class BattleshipTile:ICopyable<BattleshipTile>
@@ -12,7 +13,7 @@ namespace Games.Battleships
         /// <summary>
         /// Determines the number of a ship, to distinguish the ships and know when a ship is sunken
         /// </summary>
-        public int Ship;
+        public int ship;
         
         /// <summary>
         /// Indicates wether a tile has been shot before to determine illegal shots
@@ -58,7 +59,7 @@ namespace Games.Battleships
         /// Places the bombs from minesweeper on the grid 
         /// </summary>
         /// <param name="bombCoords">list fo coordinates with all bombs</param>
-        public void placeBomb(List<Points> bombCoords);
+        public void placeBomb(List<Point> bombCoords);
         /// <summary>
         /// Constructs the board based on a size. The board is always quadratic
         /// </summary>
@@ -79,4 +80,3 @@ namespace Games.Battleships
     
     }
 }
-#endif
