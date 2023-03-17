@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Games.Battleships
 {
+#if false
     public class Battleships
     {
         
@@ -43,7 +44,7 @@ namespace Games.Battleships
 
         }   
     }
-
+#endif
     
 
 }

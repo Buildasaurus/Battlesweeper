@@ -26,10 +26,13 @@ namespace BattleSweeper.Views
             if (DataContext is MineSweeperViewModel vm)
             {
                 Grid grid = this.FindControl<Grid>("MineSweeperGrid");
+
                 for (int x = 0; x < vm.grid.Size.Width; x++)
                 {
+                    grid.ColumnDefinitions.Add(new ColumnDefinition(1, GridUnitType.Star));
                     for (int y = 0; y < vm.grid.Size.Height; y++)
                     {
+                        grid.RowDefinitions.Add(new RowDefinition(1, GridUnitType.Star));
                         MSTileVM tile = vm.grid[x, y];
 
                         Avalonia.Controls.Image img = new();

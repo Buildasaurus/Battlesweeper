@@ -96,5 +96,7 @@ namespace Games.MineSweeper
         /// attempts to diffuse a bomt at the specified coord.
         /// </summary>
         public MoveResult diffuseTile(Point coord);
+
+        public Action<Point>? TileChanged { get; set; }
     }
 }

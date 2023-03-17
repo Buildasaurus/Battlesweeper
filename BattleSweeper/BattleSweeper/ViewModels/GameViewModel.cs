@@ -8,49 +8,62 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Drawing;
+using ReactiveUI;
+using System.Diagnostics;
 
 namespace BattleSweeper.ViewModels
 {
     public class GameViewModel : ViewModelBase
     {
-        [DllImport("user32.dll")]
-        static extern bool GetCursorPos(ref Point lpPoint);
+        public ViewModelBase GameView { get => m_game_view; set => this.RaiseAndSetIfChanged(ref m_game_view, value); }
 
-        private Thread mouseThread;
-        private bool isRunning = true;
 
         public GameViewModel()
         {
-            GameModel _game = new GameModel();
-            IMineSweeper mine_sweeper_model = MineSweeperFactory.construct<MineSweeper>(new(10, 10), 10);
+            IMineSweeper mine_sweeper_model = MineSweeperFactory.construct<MineSweeper>(new(10, 10), 10, 13);
 
+            MineSweeperViewModel mine_sweeper_vm = new(mine_sweeper_model, 60);
+            mine_sweeper_vm.start();
 
-            // Create a new thread to continuously monitor the mouse for input.
-            mouseThread = new Thread(new ThreadStart(MouseThread));
-            mouseThread.Start();
-            MouseThread();
+            GameView = mine_sweeper_vm;
+
+            mine_sweeper_vm.leftClickTile(new Point(3, 3));
+            mine_sweeper_vm.leftClickTile(new Point(6, 6));
+            mine_sweeper_vm.leftClickTile(new Point(0, 2));
+            mine_sweeper_vm.leftClickTile(new Point(0, 0));
+            mine_sweeper_vm.leftClickTile(new Point(1, 0));
+            mine_sweeper_vm.leftClickTile(new Point(2, 0));
+            mine_sweeper_vm.leftClickTile(new Point(4, 0));
+            mine_sweeper_vm.leftClickTile(new Point(5, 1));
+            mine_sweeper_vm.leftClickTile(new Point(6, 0));
+            mine_sweeper_vm.leftClickTile(new Point(6, 1));
+            mine_sweeper_vm.leftClickTile(new Point(6, 2));
+            mine_sweeper_vm.leftClickTile(new Point(7, 1));
+            mine_sweeper_vm.leftClickTile(new Point(7, 2));
+            mine_sweeper_vm.leftClickTile(new Point(9, 3));
+            mine_sweeper_vm.leftClickTile(new Point(9, 4));
+            mine_sweeper_vm.leftClickTile(new Point(8, 4));
+            mine_sweeper_vm.leftClickTile(new Point(9, 5));
+            mine_sweeper_vm.leftClickTile(new Point(8, 5));
+            mine_sweeper_vm.leftClickTile(new Point(7, 6));
+            mine_sweeper_vm.leftClickTile(new Point(9, 6));
+            mine_sweeper_vm.leftClickTile(new Point(7, 7));
+            mine_sweeper_vm.leftClickTile(new Point(8, 7));
+            mine_sweeper_vm.leftClickTile(new Point(9, 7));
+            mine_sweeper_vm.leftClickTile(new Point(7, 8));
+            mine_sweeper_vm.leftClickTile(new Point(9, 8));
+            mine_sweeper_vm.rightClickTile(new Point(0, 9));
+            mine_sweeper_vm.rightClickTile(new Point(0, 1));
+            mine_sweeper_vm.rightClickTile(new Point(0, 3));
+            mine_sweeper_vm.rightClickTile(new Point(3, 0));
+            mine_sweeper_vm.rightClickTile(new Point(5, 0));
+            mine_sweeper_vm.rightClickTile(new Point(5, 2));
+            mine_sweeper_vm.rightClickTile(new Point(5, 6));
+            mine_sweeper_vm.rightClickTile(new Point(7, 9));
+            mine_sweeper_vm.rightClickTile(new Point(8, 3));
+            mine_sweeper_vm.rightClickTile(new Point(8, 6));
         }
-
-        private void MouseThread()
-        {
-            while (isRunning)
-            {
-                // Get the current mouse position.
-                Point cursorPos = new Point();
-                GetCursorPos(ref cursorPos);
-
-                // Do something with the mouse position.
-                Console.WriteLine($"Mouse position: {cursorPos.X}, {cursorPos.Y}");
-
-                // Sleep for a short amount of time to prevent the loop from running too frequently.
-                Thread.Sleep(10);
-            }
-        }
-        // Call this method to stop the thread and terminate the loop.
-        public void Stop()
-        {
-            isRunning = false;
-            mouseThread.Join();
-        }
+        
+        protected ViewModelBase m_game_view;
     }   
 }

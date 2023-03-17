@@ -1,4 +1,6 @@
 using Avalonia.Controls;
+using BattleSweeper.Models;
+using BattleSweeper.ViewModels;
 
 namespace BattleSweeper.Views
 {
@@ -7,6 +9,13 @@ namespace BattleSweeper.Views
         public MainWindow()
         {
             InitializeComponent();
+
+            Closing += (s, e) =>
+            {
+                EventHandler.Stop();
+            };
         }
+
+        
     }
 }

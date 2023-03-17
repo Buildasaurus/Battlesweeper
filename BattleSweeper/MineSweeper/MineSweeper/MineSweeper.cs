@@ -13,27 +13,35 @@ namespace Games.MineSweeper
     {
         public Grid<MineSweeperTile>? Tiles => m_grid;
 
-        public HashSet<Point> InitialBombs => throw new NotImplementedException();
+        public HashSet<Point> InitialBombs => m_initial_bombs;
 
-        public HashSet<Point> CurrentBombs => throw new NotImplementedException();
+        public HashSet<Point> CurrentBombs => m_current_bombs;
+
+        public Action<Point>? TileChanged { get => m_TileChanged; set => m_TileChanged = value; }
 
         public MoveResult diffuseTile(Point coord)
         {
             if (Tiles[coord].is_revealed)
                 return MoveResult.Illegal;
 
+            MoveResult result;
+
             if (Tiles[coord].bomb_count == IMineSweeper.BOMB)
             {
                 Tiles[coord].is_revealed = true;
                 Tiles[coord].bomb_count = 0;
                 m_current_bombs.Remove(coord);
-                return MoveResult.Success;
+                result = MoveResult.Success;
             }
             else
             {
                 Tiles[coord].is_revealed = true;
-                return MoveResult.Failure;
+                result = MoveResult.Failure;
             }
+
+            TileChanged?.Invoke(coord);
+
+            return result;
         }
 
         public MoveResult flagTile(Point coord)
@@ -41,7 +49,9 @@ namespace Games.MineSweeper
             if (Tiles[coord].is_revealed)
                 return MoveResult.Failure;
 
-            Tiles[coord].is_flagged = true;
+            Tiles[coord].is_flagged = !Tiles[coord].is_flagged;
+            TileChanged?.Invoke(coord);
+
 
             return MoveResult.Success;
         }
@@ -52,6 +62,7 @@ namespace Games.MineSweeper
                 return MoveResult.Illegal;
 
             Tiles[coord].is_revealed = true;
+            TileChanged?.Invoke(coord);
 
             if (Tiles[coord].bomb_count != 0)
                 return MoveResult.Success;
@@ -135,5 +146,6 @@ namespace Games.MineSweeper
         protected Grid<MineSweeperTile> m_grid;
         protected HashSet<Point> m_initial_bombs = new();
         protected HashSet<Point> m_current_bombs = new();
+        private Action<Point>? m_TileChanged;
     }
 }

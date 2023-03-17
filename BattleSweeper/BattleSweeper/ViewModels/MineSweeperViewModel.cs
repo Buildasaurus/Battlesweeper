@@ -12,6 +12,7 @@ using ReactiveUI;
 using Games;
 using Point = System.Drawing.Point;
 using Bitmap = Avalonia.Media.Imaging.Bitmap;
+using System.Threading;
 
 namespace BattleSweeper.ViewModels
 {
@@ -68,11 +69,36 @@ namespace BattleSweeper.ViewModels
         public MineSweeperTile Tile { get; set; }
     }
 
+    /// <summary>
+    /// class responsible for handling user interaction with a IMineSweeper instance,
+    /// as well as managing a grid of MSTileVM, and making sure their properties are synchronized with the given model.
+    /// </summary>
     public class MineSweeperViewModel : ViewModelBase
     {
-        public MineSweeperViewModel(IMineSweeper _mine_sweeper) 
+        /// <summary>
+        /// called when the user has run out of time.
+        /// </summary>
+        public Action<MineSweeperViewModel>? TimeOut;
+
+        /// <summary>
+        /// grid of MineSweeper Tile ViewModels, that represent the current mine_sweeper game.
+        /// </summary>
+        public Grid<MSTileVM> grid;
+        /// <summary>
+        /// the minesweeper instance, the current viewmodel will display.
+        /// </summary>
+        public IMineSweeper mine_sweeper;
+
+        public int TimeLeft { get => m_time_left; protected set => this.RaiseAndSetIfChanged(ref m_time_left, value); }
+
+        /// <summary>
+        /// construct a MineSweeperViewModel, that will display the passed IMineSweeper model.
+        /// </summary>
+        public MineSweeperViewModel(IMineSweeper _mine_sweeper, int time_span)
         {
+            TimeLeft = time_span;
             mine_sweeper = _mine_sweeper;
+            timer_thread = new(timerThread);
 
             grid = new(mine_sweeper.Tiles.Size);
 
@@ -83,21 +109,49 @@ namespace BattleSweeper.ViewModels
                     grid[x, y] = new(mine_sweeper.Tiles[x, y], new Point(x, y));
                 }
             }
+
+            TimeOut += (s) => timer_thread.Join();
+
+            mine_sweeper.TileChanged += (coord) => grid[coord].RaisePropertyChanged(nameof(MSTileVM.Sprite));
         }
 
-        public MoveResult leftClickTile(Point tile) =>
+        /// <summary>
+        /// should be called when the game is started.
+        /// initializes a timer thread, that keeps track of how much time the user has left.
+        /// </summary>
+        public void start() => timer_thread.Start();
+
+
+        public void leftClickTile(Point tile)
+        {
             mine_sweeper.testTile(tile);
-        
+        }
 
-        public MoveResult leftShiftClickTile(Point tile)
-        => mine_sweeper.diffuseTile(tile);
-        
 
-        public MoveResult rightClickTile(Point tile) =>
+        public void leftShiftClickTile(Point tile)
+        {
+            mine_sweeper.diffuseTile(tile); 
+        }
+
+
+        public void rightClickTile(Point tile)
+        {
             mine_sweeper.flagTile(tile);
-        
+        }
 
-        public Grid<MSTileVM> grid;
-        public IMineSweeper mine_sweeper;
+        protected int m_time_left;
+        protected Thread timer_thread;
+
+        protected void timerThread()
+        {
+            while(TimeLeft > 0)
+            {
+                Thread.Sleep(1000);
+                TimeLeft--;
+            }
+
+            TimeOut?.Invoke(this);
+        }
+
     }
 }
