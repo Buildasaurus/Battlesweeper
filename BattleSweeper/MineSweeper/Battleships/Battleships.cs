@@ -12,7 +12,7 @@ namespace Games.Battleships
     {
         
         List<int> remainingPieces = new List<int>(new int[] { 4, 3, 2, 2, 2 });
-
+        Grid<BattleshipTile> Board; 
         List<int> shipLengths = new List<int>();
         int n = 0;
         public MoveResult placeShip(Point point, bool Vertical)
@@ -39,7 +39,7 @@ namespace Games.Battleships
         public void constructBoard(List<Point> bombPositions) {
            
 
-            Grid<BattleshipTile> Board = new Grid<BattleshipTile>(new System.Drawing.Size(10,10));
+            Board = new Grid<BattleshipTile>(new System.Drawing.Size(10,10));
             shipLengths = remainingPieces.GetRange(0,remainingPieces.Count);
 
             foreach (Point bomb in bombPositions)

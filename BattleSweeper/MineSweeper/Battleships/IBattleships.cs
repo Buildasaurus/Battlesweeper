@@ -26,13 +26,13 @@ namespace Games.Battleships
         public bool hasBomb;
         public BattleshipTile(int Ship, bool hasBeenShot, bool hasBomb)
         {
-            this.Ship = Ship;
+            this.ship = ship;
             this.hasBeenShot = hasBeenShot;
             this.hasBomb = hasBomb;
         }
         public BattleshipTile Copy()
         {
-            return new BattleshipTile(Ship,hasBeenShot,hasBomb);
+            return new BattleshipTile(ship,hasBeenShot,hasBomb);
         }
 
     }
