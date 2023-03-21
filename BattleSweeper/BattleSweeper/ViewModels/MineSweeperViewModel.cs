@@ -262,7 +262,6 @@ namespace BattleSweeper.ViewModels
             // rather than waiting for the full duration of TimeLeft.
             while(TimeLeft > 0)
             {
-                Trace.WriteLine(Bounds.ToString());
                 Thread.Sleep(1000);
                 TimeLeft--;
             }
