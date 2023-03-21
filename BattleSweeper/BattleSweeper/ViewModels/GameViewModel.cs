@@ -34,7 +34,6 @@ namespace BattleSweeper.ViewModels
             MineSweeperViewModel mine_sweeper_vm = new(mine_sweeper_model, 60);
             EventHandler.KeyChanged += (x =>
             {
-                Trace.WriteLine(x.key);                
             });
             EventHandler.MouseChanged += (x =>
             {
@@ -68,12 +67,13 @@ namespace BattleSweeper.ViewModels
         public Point coordToField(Size Size, Point mousePos)
         {
             double width = window.Width;
-            double height = window.Height;
+            double height = window.Height + 70;
             double windowX = window.Position.X;
-            double windowY = window.Position.Y + 30;
+            double windowY = window.Position.Y + 30 + 70;
             double gridSize = Math.Min(width, height);
             double x;
             double y;
+            Trace.WriteLine(width + " " + height + " " + windowX + " " + windowY + " " + gridSize);
             if (gridSize == width) //if grid touches left wall
             {
                 x = mousePos.X - windowX;
@@ -84,6 +84,7 @@ namespace BattleSweeper.ViewModels
                 x = mousePos.X-windowX - (width - gridSize)/2;
                 y = mousePos.Y - windowY - (height - gridSize) / 2;
             }
+            Trace.WriteLine(mousePos.X + " " + mousePos.Y + " " +x + " " + y);
 
             if (x < 0 || y < 0)
             {
@@ -91,8 +92,10 @@ namespace BattleSweeper.ViewModels
             }
             double tilewidth = 60;
             double tileHeight = 60;
-            int xtile = (int)Math.Floor((double)mousePos.X / tilewidth);
-            int ytile = (int)Math.Floor((double)mousePos.Y / tileHeight);
+
+            int xtile = (int)Math.Floor(x / tilewidth);
+            int ytile = (int)Math.Floor(y / tileHeight);
+            Trace.WriteLine(xtile + " " + ytile);
             return new Point(xtile, ytile);
         }
 

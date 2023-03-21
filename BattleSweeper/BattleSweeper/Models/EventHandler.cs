@@ -39,7 +39,6 @@ namespace BattleSweeper.Models
                 }
                 if (x is RawPointerEventArgs c)
                 {
-                    Trace.WriteLine(c.InputModifiers);
                     if (c.InputModifiers != RawInputModifiers.None)
                     {
                         // Get the current mouse position.
