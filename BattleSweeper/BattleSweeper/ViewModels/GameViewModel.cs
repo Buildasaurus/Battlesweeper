@@ -15,6 +15,8 @@ using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia;
+using Size = System.Drawing.Size;
 
 namespace BattleSweeper.ViewModels
 {
@@ -37,16 +39,16 @@ namespace BattleSweeper.ViewModels
             });
             EventHandler.MouseChanged += (x =>
             {
+                System.Drawing.Point field = coordToField(mine_sweeper_vm.Position, x.MousePosition);
                 if (x.button == MouseButton.Right)
                 {
-                    mine_sweeper_vm.rightClickTile(coordToField(gridSize, x.MousePosition));
+                    mine_sweeper_vm.rightClickTile(field);
                 }
                 if (x.button == MouseButton.Left)
                 {
-                    Point point = coordToField(gridSize, x.MousePosition);
-                    if (mine_sweeper_vm.grid.inBounds(point))
+                    if (mine_sweeper_vm.grid.inBounds(field))
                     {
-                        mine_sweeper_vm.leftClickTile(point);
+                        mine_sweeper_vm.leftClickTile(field);
                     }
                 }
 
@@ -64,12 +66,13 @@ namespace BattleSweeper.ViewModels
             GameView = mine_sweeper_vm;
         }
 
-        public Point coordToField(Size Size, Point mousePos)
+        public System.Drawing.Point coordToField(Rect gridCoord, System.Drawing.Point mousePos)
         {
+            Trace.WriteLine(coord.TopLeft.ToString());
             double width = window.Width;
-            double height = window.Height + 70;
+            double height = window.Height;
             double windowX = window.Position.X;
-            double windowY = window.Position.Y + 30 + 70;
+            double windowY = window.Position.Y + 30;
             double gridSize = Math.Min(width, height);
             double x;
             double y;
@@ -88,7 +91,7 @@ namespace BattleSweeper.ViewModels
 
             if (x < 0 || y < 0)
             {
-                return new Point(-1, -1);
+                return new System.Drawing.Point(-1, -1);
             }
             double tilewidth = 60;
             double tileHeight = 60;
@@ -96,7 +99,7 @@ namespace BattleSweeper.ViewModels
             int xtile = (int)Math.Floor(x / tilewidth);
             int ytile = (int)Math.Floor(y / tileHeight);
             Trace.WriteLine(xtile + " " + ytile);
-            return new Point(xtile, ytile);
+            return new System.Drawing.Point(xtile, ytile);
         }
 
         protected ViewModelBase m_game_view;
