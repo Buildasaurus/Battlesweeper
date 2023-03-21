@@ -68,37 +68,22 @@ namespace BattleSweeper.ViewModels
 
         public System.Drawing.Point coordToField(Rect gridCoord, System.Drawing.Point mousePos)
         {
-            Trace.WriteLine(coord.TopLeft.ToString());
-            double width = window.Width;
-            double height = window.Height;
             double windowX = window.Position.X;
             double windowY = window.Position.Y + 30;
-            double gridSize = Math.Min(width, height);
             double x;
             double y;
-            Trace.WriteLine(width + " " + height + " " + windowX + " " + windowY + " " + gridSize);
-            if (gridSize == width) //if grid touches left wall
-            {
-                x = mousePos.X - windowX;
-                y = mousePos.Y - windowY;
-            }
-            else
-            {
-                x = mousePos.X-windowX - (width - gridSize)/2;
-                y = mousePos.Y - windowY - (height - gridSize) / 2;
-            }
-            Trace.WriteLine(mousePos.X + " " + mousePos.Y + " " +x + " " + y);
 
-            if (x < 0 || y < 0)
-            {
-                return new System.Drawing.Point(-1, -1);
-            }
-            double tilewidth = 60;
-            double tileHeight = 60;
+            //calc x and y coordinat relative to topleft
+            x = mousePos.X - gridCoord.TopLeft.X - windowX;
+			y = mousePos.Y - gridCoord.TopLeft.Y - windowY;
+
+
+            //calculate corresponding tile
+            double tilewidth = gridCoord.Width/10;
+            double tileHeight = gridCoord.Height / 10;
 
             int xtile = (int)Math.Floor(x / tilewidth);
             int ytile = (int)Math.Floor(y / tileHeight);
-            Trace.WriteLine(xtile + " " + ytile);
             return new System.Drawing.Point(xtile, ytile);
         }
 
