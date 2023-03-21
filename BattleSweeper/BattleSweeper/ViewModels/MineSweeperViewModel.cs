@@ -16,16 +16,30 @@ using System.Threading;
 
 namespace BattleSweeper.ViewModels
 {
+    /// <summary>
+    /// Mine Sweeper Tile view model
+    /// handles loading of tile sprites, as well as selecting the correct sprite, depending on the tile state.
+    /// </summary>
     public class MSTileVM : ReactiveObject, ICopyable<MSTileVM>
     {
+        /// <summary>
+        /// dictionary mapping the tile state name, to a specific sprite.
+        /// possible state names can be seen in the loadSprites function.
+        /// </summary>
         public static Dictionary<string, Bitmap> Sprites { get; set; } = new();
 
+        /// <summary>
+        /// loads all the tiles sprites into memory.
+        /// should only be called once per program run, as this loads the sprites into a static property, which all instances of this class can access.
+        /// </summary>
         public static void loadSprites()
         {
+            // retrieve the service, which will allow us to load avalonia resource files, which the sprite files are stored as.
             var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
 
             if (assets != null)
             {
+                // The states are mapped to the suffix of the file name (MineSweeper[STATE].png)
                 string[] sprites = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "Bomb", "Empty", "Tile", "Flag" };
 
                 foreach (string sprite in sprites)
@@ -35,22 +49,29 @@ namespace BattleSweeper.ViewModels
             }
         }
 
-        public MSTileVM Copy() => new(Tile, Coord);
+        public MSTileVM Copy() => new(Tile);
 
-        public MSTileVM(MineSweeperTile tile, System.Drawing.Point coord)
+        /// <summary>
+        /// constructs a tile viewmodel from the given tile model.
+        /// </summary>
+        public MSTileVM(MineSweeperTile tile)
         {
             if (Sprites.Count == 0)
                 loadSprites();
 
             Tile = tile;
-
-            Coord = coord;
         }
 
+        /// <summary>
+        /// Property representing the sprite that should be displayed, at the position of the tile.
+        /// 
+        /// </summary>
         public Bitmap Sprite
         {
             get
             {
+                // retrieve sprite based on current state.
+                
                 if (Tile.is_flagged)
                     return Sprites["Flag"];
 
@@ -67,8 +88,9 @@ namespace BattleSweeper.ViewModels
             }
         }
 
-        public System.Drawing.Point Coord { get; set; }
-
+        /// <summary>
+        /// accessor property for the underlying tile model.
+        /// </summary>
         public MineSweeperTile Tile { get; set; }
     }
 
@@ -79,7 +101,7 @@ namespace BattleSweeper.ViewModels
     public class MineSweeperViewModel : ViewModelBase
     {
         /// <summary>
-        /// called when the user has run out of time.
+        /// called when the user has finished the game.
         /// 
         /// gives true if all bombs were diffused, otherwise false.
         /// 
@@ -95,15 +117,39 @@ namespace BattleSweeper.ViewModels
         /// </summary>
         public IMineSweeper mine_sweeper;
 
-        public int TimeLeft { get => m_time_left; protected set => this.RaiseAndSetIfChanged(ref m_time_left, value); }
+        public Bitmap MSTimeDigit
+        {
+            get => m_digit_sprites[TimeLeft / 10];
+        }
+
+        public Bitmap LSTimeDigit
+        {
+            get => m_digit_sprites[TimeLeft % 10];
+        }
+
+        /// <summary>
+        /// how much time the user has left, before GameOver is invoked.
+        /// </summary>
+        public int TimeLeft { get => m_time_left; protected set
+            {
+                this.RaiseAndSetIfChanged(ref m_time_left, value);
+                this.RaisePropertyChanged(nameof(MSTimeDigit));
+                this.RaisePropertyChanged(nameof(LSTimeDigit));
+            }
+        }
 
         /// <summary>
         /// construct a MineSweeperViewModel, that will display the passed IMineSweeper model.
         /// </summary>
+        /// <param name="time_span"> how many seconds the user has to solve the minefield </param>
         public MineSweeperViewModel(IMineSweeper _mine_sweeper, int time_span)
         {
+            if (m_digit_sprites.Count == 0)
+                loadDigitSprites();
+
             TimeLeft = time_span;
             mine_sweeper = _mine_sweeper;
+            // the timer method is started on a separate thread, in order to avoid blocking the main thread, whilst waiting for the time running out.
             timer_thread = new(timerThread);
 
             grid = new(mine_sweeper.Tiles.Size);
@@ -112,10 +158,11 @@ namespace BattleSweeper.ViewModels
             {
                 for (int y = 0; y < mine_sweeper.Tiles.Size.Height; y++)
                 {
-                    grid[x, y] = new(mine_sweeper.Tiles[x, y], new Point(x, y));
+                    grid[x, y] = new(mine_sweeper.Tiles[x, y]);
                 }
             }
 
+            // subscribe to the models TileChanged event, and make sure avalonia knows the tile has been updated, when the model notifies us about a tile change.
             mine_sweeper.TileChanged += (coord) => grid[coord].RaisePropertyChanged(nameof(MSTileVM.Sprite));
         }
 
@@ -125,7 +172,13 @@ namespace BattleSweeper.ViewModels
         /// </summary>
         public void start() => timer_thread.Start();
 
-
+        /// <summary>
+        /// should be called, when the user attempts to left click a tile at a given position.
+        /// 
+        /// attempts to test the tile, and invokes GameOver if the move failed.
+        /// 
+        /// </summary>
+        /// <param name="tile"></param>
         public void leftClickTile(Point tile)
         {
             if (mine_sweeper.testTile(tile) == MoveResult.Failure)
@@ -134,7 +187,14 @@ namespace BattleSweeper.ViewModels
             }
         }
 
-
+        /// <summary>
+        /// attempts to diffuse a tile at the given position.
+        /// 
+        /// if the diffuse failed, the timer is decremented by a set size.
+        /// GameOver is optionally called, if all the bombs have been diffused
+        /// 
+        /// </summary>
+        /// <param name="tile"></param>
         public void leftShiftClickTile(Point tile)
         {
             var result = mine_sweeper.diffuseTile(tile);
@@ -151,17 +211,42 @@ namespace BattleSweeper.ViewModels
             }
         }
 
-
+        /// <summary>
+        /// flags the tile at the given position.
+        /// </summary>
         public void rightClickTile(Point tile)
         {
             mine_sweeper.flagTile(tile);
         }
 
+        protected static Dictionary<int, Bitmap> m_digit_sprites = new();
+
+        protected static void loadDigitSprites()
+        {
+            var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+
+            if (assets != null)
+            {
+                // The states are mapped to the suffix of the file name (MineSweeper[STATE].png)
+                string[] sprites = new string[] { "Off", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+
+                for (int i = 0; i < sprites.Length; i++)
+                {
+                    m_digit_sprites[i - 1] = new Bitmap(assets.Open(new($"avares://BattleSweeper/Assets/Number{sprites[i]}.png")));
+                }
+            }
+        }
+
+        // how many seconds left, before the timer has run out.
         protected int m_time_left;
+        
         protected Thread timer_thread;
 
+        // thread responsible for keeping track of how much time the user has spent on playing the game, and invoking GameOver, if the user has run out of time.
         protected void timerThread()
         {
+            // as the TimeLeft property might change, whilst we are sleeping, we need to periodically check whether TimeLeft is still greater than zero.
+            // rather than waiting for the full duration of TimeLeft.
             while(TimeLeft > 0)
             {
                 Thread.Sleep(1000);

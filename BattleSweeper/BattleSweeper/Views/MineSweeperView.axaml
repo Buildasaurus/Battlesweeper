@@ -8,12 +8,23 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Viewbox Stretch="Uniform">
-        <Grid
-            x:Name="MineSweeperGrid"
-            Margin="0"
-            />
-    </Viewbox>
-
-
+    <Grid Background="LightBlue" RowDefinitions="1*,8*">
+        <Border
+            Padding="10,2"
+            Background="Blue"
+            BorderBrush="LightBlue"
+            BorderThickness="2"
+            BoxShadow="0 1 20 5 LightBlue">
+            <StackPanel
+                HorizontalAlignment="Right"
+                Background="Black"
+                Orientation="Horizontal">
+                <Image Source="{Binding MSTimeDigit}" />
+                <Image Source="{Binding LSTimeDigit}" />
+            </StackPanel>
+        </Border>
+        <Viewbox Grid.Row="1" Stretch="Uniform">
+            <Grid x:Name="MineSweeperGrid" Margin="0" />
+        </Viewbox>
+    </Grid>
 </UserControl>
