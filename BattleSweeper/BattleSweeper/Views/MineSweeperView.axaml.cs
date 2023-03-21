@@ -30,7 +30,7 @@ namespace BattleSweeper.Views
                 var bounds_binding = new Binding
                 {
                     Source = vm,
-                    Path = nameof(vm.Bounds.Clip),
+                    Path = nameof(vm.Bounds),
                     Mode = BindingMode.OneWayToSource
                 };
 
