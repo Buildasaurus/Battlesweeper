@@ -13,6 +13,8 @@ using Games;
 using Point = System.Drawing.Point;
 using Bitmap = Avalonia.Media.Imaging.Bitmap;
 using System.Threading;
+using System.Diagnostics;
+using Avalonia.VisualTree;
 
 namespace BattleSweeper.ViewModels
 {
@@ -119,13 +121,25 @@ namespace BattleSweeper.ViewModels
 
         public Bitmap MSTimeDigit
         {
-            get => m_digit_sprites[TimeLeft / 10];
+            get
+            {
+                int indx = TimeLeft / 10;
+
+                if (indx == 0)
+                    indx = -1;
+
+                return m_digit_sprites[indx];
+            }
         }
 
         public Bitmap LSTimeDigit
         {
             get => m_digit_sprites[TimeLeft % 10];
         }
+
+        public Rect Position { get => Bounds.Clip; }
+
+        public TransformedBounds Bounds { get; set; } = new();
 
         /// <summary>
         /// how much time the user has left, before GameOver is invoked.
@@ -227,7 +241,6 @@ namespace BattleSweeper.ViewModels
 
             if (assets != null)
             {
-                // The states are mapped to the suffix of the file name (MineSweeper[STATE].png)
                 string[] sprites = new string[] { "Off", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
                 for (int i = 0; i < sprites.Length; i++)
@@ -249,6 +262,7 @@ namespace BattleSweeper.ViewModels
             // rather than waiting for the full duration of TimeLeft.
             while(TimeLeft > 0)
             {
+                Trace.WriteLine(Bounds.ToString());
                 Thread.Sleep(1000);
                 TimeLeft--;
             }

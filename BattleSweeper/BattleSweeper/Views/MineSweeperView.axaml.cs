@@ -27,6 +27,15 @@ namespace BattleSweeper.Views
             {
                 Grid grid = this.FindControl<Grid>("MineSweeperGrid");
 
+                var bounds_binding = new Binding
+                {
+                    Source = vm,
+                    Path = nameof(vm.Bounds.Clip),
+                    Mode = BindingMode.OneWayToSource
+                };
+
+                grid.Bind(TransformedBoundsProperty, bounds_binding);
+
                 for (int x = 0; x < vm.grid.Size.Width; x++)
                 {
                     grid.ColumnDefinitions.Add(new ColumnDefinition(1, GridUnitType.Star));
@@ -35,7 +44,7 @@ namespace BattleSweeper.Views
                         grid.RowDefinitions.Add(new RowDefinition(1, GridUnitType.Star));
                         MSTileVM tile = vm.grid[x, y];
 
-                        Avalonia.Controls.Image img = new();
+                        Image img = new();
                         img[Grid.RowProperty] = y;
                         img[Grid.ColumnProperty] = x;
 
