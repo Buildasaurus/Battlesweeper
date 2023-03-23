@@ -84,7 +84,7 @@ namespace Games.Battleships
 
                 for (int i = 0; i < shipLengths[n]; i++)
                 {
-                    if (Board[coord.Y + i, coord.X].ship > 0)
+                    if (Board[coord.X, coord.Y + i].ship > 0)
                         return MoveResult.Illegal;
                 }
             }
@@ -95,7 +95,7 @@ namespace Games.Battleships
 
                     for (int i = 0; i < shipLengths[n]; i++)
                 {
-                    if (Board[coord.Y, coord.X + i].ship > 0)
+                    if (Board[coord.X + i, coord.Y].ship > 0)
                         return MoveResult.Illegal;
                 }
             }
@@ -103,13 +103,25 @@ namespace Games.Battleships
             if (Vertical == true)
             {
                 for (int i = 0; i < shipLengths[n]; i++)
-                    Board[coord.Y, coord.X + i].ship = n;
+                {
+                    Board[coord.X, coord.Y + i].ship = n;
+                    if (i == 0)
+                        Board[coord.X, coord.Y + i].atStart = true;
+                    if (i == shipLengths[n] - 1)
+                        Board[coord.X, coord.Y + i].atEnd = true;
+                }
             }
 
             else
             {
                 for (int i = 0; i < shipLengths[n]; i++)
-                    Board[coord.Y + 1, coord.X].ship = n;
+                {
+                    Board[coord.X, coord.Y + i].ship = n;
+                    if (i == 0)
+                        Board[coord.X, coord.Y + i].atStart = true;
+                    if (i == shipLengths[n] - 1)
+                        Board[coord.X, coord.Y + i].atEnd = true;
+                }
             }
             ///Increments index for what ship is next to be placed, and returns success.
             n++;

@@ -26,13 +26,14 @@ namespace Games.Battleships
         public bool hasBomb;
 
         public bool atEnd;
+        public bool atStart;
         /// <summary>
         /// Constructor for battleship tile
         /// </summary>
         /// <param name="Ship"></param>
         /// <param name="hasBeenShot"></param>
         /// <param name="hasBomb"></param>
-        public BattleshipTile(int ship, bool hasBeenShot, bool hasBomb, bool atEnd)
+        public BattleshipTile(int ship, bool hasBeenShot, bool hasBomb, bool atEnd, bool atStart)
         {
             this.ship = ship;
             this.hasBeenShot = hasBeenShot;
@@ -41,7 +42,7 @@ namespace Games.Battleships
         }
         public BattleshipTile Copy()
         {
-            return new BattleshipTile(ship,hasBeenShot,hasBomb,atEnd);
+            return new BattleshipTile(ship,hasBeenShot,hasBomb,atEnd,atStart);
         }
 
     }
