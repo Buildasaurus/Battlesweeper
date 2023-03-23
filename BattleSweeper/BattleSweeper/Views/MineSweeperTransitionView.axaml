@@ -1,10 +1,30 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="BattleSweeper.Views.MineSweeperTransitionView">
-  <Grid>
-	  <Button Command="{Binding TransitionFinished}">Hello</Button>
-  </Grid>
+<UserControl
+    x:Class="BattleSweeper.Views.MineSweeperTransitionView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid Background="Blue" RowDefinitions="1*,1*">
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="60"
+            Foreground="White">
+            Mine Sweeper Completed!
+        </TextBlock>
+        <Button
+            Grid.Row="1"
+            Padding="50"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Background="Gray"
+            Command="{Binding TransitionFinished}"
+            FontSize="50"
+            Foreground="White">
+            Continue to next game
+        </Button>
+    </Grid>
 </UserControl>
