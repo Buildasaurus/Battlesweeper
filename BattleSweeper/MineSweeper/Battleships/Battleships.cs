@@ -13,6 +13,7 @@ namespace Games.Battleships
     public class Battleships
     {
         public EventHandler<int>? ShipSunk;
+        public EventHandler<bool>? GameOver;
         List<int> remainingPieces = new List<int>(new int[] { 4, 3, 2, 2, 2 });
         Grid<BattleshipTile> Board; 
         List<int> shipLengths = new List<int>();
@@ -29,7 +30,10 @@ namespace Games.Battleships
             hit = false;
             bool wasIllegal = shootExecution(coord);
             if (hit == true)
+            {
+                checkWin();
                 return MoveResult.Success;
+            }
             else if (wasIllegal == false)
                 return MoveResult.Illegal;
             else
@@ -110,6 +114,18 @@ namespace Games.Battleships
             ///Increments index for what ship is next to be placed, and returns success.
             n++;
             return MoveResult.Success;
+        }
+
+        public void checkWin()
+        {
+            int winCheck = 0;
+            for (int i = 0; i < shipLengths.Count; i++)
+                {
+                winCheck = winCheck + shipLengths[i];
+                }
+            if (winCheck == 0)
+                GameOver.Invoke(this, true);
+
         }
         public void constructBoard(List<Point> bombPositions) {
            
