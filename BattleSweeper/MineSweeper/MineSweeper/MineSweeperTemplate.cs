@@ -13,7 +13,7 @@ namespace Games.MineSweeper
     /// </summary>
     public class MineSweeperTemplate : IMineSweeper
     {
-        public Grid<MineSweeperTile>? Tiles => m_grid;
+        public Grid<MSTile>? Tiles => m_grid;
 
         public HashSet<Point> InitialBombs => m_initial_bombs;
 
@@ -70,7 +70,7 @@ namespace Games.MineSweeper
         /// <summary>
         /// sets the MineSweeperTile at coord, to tile
         /// </summary>
-        public void place(Point coord, MineSweeperTile tile)
+        public void place(Point coord, MSTile tile)
         {
             m_grid[coord] = tile.Copy();
             TileChanged?.Invoke(coord);
@@ -93,7 +93,7 @@ namespace Games.MineSweeper
             m_current_bombs = bombs;
         }
 
-        protected Grid<MineSweeperTile>? m_grid;
+        protected Grid<MSTile>? m_grid;
         protected HashSet<Point> m_initial_bombs = new();
         protected HashSet<Point> m_current_bombs = new();
         private Action<Point>? m_TileChanged;

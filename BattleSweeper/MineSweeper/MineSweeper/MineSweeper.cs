@@ -11,7 +11,7 @@ namespace Games.MineSweeper
 
     public class MineSweeper : IMineSweeper
     {
-        public Grid<MineSweeperTile>? Tiles => m_grid;
+        public Grid<MSTile>? Tiles => m_grid;
 
         public HashSet<Point> InitialBombs => m_initial_bombs;
 
@@ -98,7 +98,7 @@ namespace Games.MineSweeper
             else
                 rng = new();
 
-            m_grid = new Grid<MineSweeperTile>(size, new(0));
+            m_grid = new Grid<MSTile>(size, new(0));
 
             // place bombs, by generating a random number between 0 and maximum size of grid, and placing a bomb there.
             // if there already exists a bomb, retry a new random number.
@@ -147,7 +147,7 @@ namespace Games.MineSweeper
             }
         }
 
-        protected Grid<MineSweeperTile> m_grid;
+        protected Grid<MSTile> m_grid;
         protected HashSet<Point> m_initial_bombs = new();
         protected HashSet<Point> m_current_bombs = new();
         private Action<Point>? m_TileChanged;
