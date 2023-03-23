@@ -24,7 +24,15 @@ namespace Games.Battleships
         /// Indicates wether the tile has a bomb
         /// </summary>
         public bool hasBomb;
-        public BattleshipTile(int Ship, bool hasBeenShot, bool hasBomb)
+
+        public bool hasSunk;
+        /// <summary>
+        /// Constructor for battleship tile
+        /// </summary>
+        /// <param name="Ship"></param>
+        /// <param name="hasBeenShot"></param>
+        /// <param name="hasBomb"></param>
+        public BattleshipTile(int ship, bool hasBeenShot, bool hasBomb)
         {
             this.ship = ship;
             this.hasBeenShot = hasBeenShot;
