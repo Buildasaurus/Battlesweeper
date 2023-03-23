@@ -81,11 +81,19 @@ namespace BattleSweeper.ViewModels
         {
             if (minesweepergame == 1) //if first game, start the next one
             {
-                mine_sweeper_vm.GameOver -= gameover;
-                mine_sweeper_vm = constructMineField();
-                mine_sweeper_vm.start();
-                GameView = mine_sweeper_vm;
+                MineSweeperTransitionViewModel transition = new MineSweeperTransitionViewModel();
+                GameView = transition;
 
+                transition.TransitionFinished.Subscribe(x =>
+                {
+                    mine_sweeper_vm.GameOver -= gameover;
+                    mine_sweeper_vm = constructMineField();
+                    mine_sweeper_vm.start();
+                    GameView = mine_sweeper_vm;
+
+                    minesweepergame++;
+                });      
+                
             }
             else
             {
