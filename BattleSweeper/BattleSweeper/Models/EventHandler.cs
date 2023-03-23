@@ -44,11 +44,11 @@ namespace BattleSweeper.Models
                 {
                     if (c.InputModifiers != RawInputModifiers.None)
                     {
-                        // Get the current mouse position.
+                        // Get the current mouse position
                         Point cursorPos = new Point();
                         GetCursorPos(ref cursorPos);
                         mousePosition = new Point(cursorPos.X, cursorPos.Y);
-                        MouseChanged?.Invoke(new MouseArgs((MouseButton)c.Type, mousePosition));
+                        MouseChanged?.Invoke(new MouseArgs((MouseButton)c.Type, mousePosition, c.InputModifiers));
                     }
                 }
             });
@@ -56,10 +56,12 @@ namespace BattleSweeper.Models
     }
     public class MouseArgs
     {
+        public RawInputModifiers modifier;
         public MouseButton button;
         public Point MousePosition;
-        public MouseArgs(MouseButton button, Point MousePosition)
+        public MouseArgs(MouseButton button, Point MousePosition, RawInputModifiers modifier)
         {
+            this.modifier = modifier;
             this.button = button;
             this.MousePosition = MousePosition;
         }
@@ -68,6 +70,7 @@ namespace BattleSweeper.Models
     public class KeyArgs
     {
         public Key key;
+        bool isDown;
         public KeyArgs(Key key)
         {
             this.key = key;

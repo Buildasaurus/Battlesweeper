@@ -31,7 +31,7 @@ namespace BattleSweeper.ViewModels
         public ViewModelBase GameView { get => m_game_view; set => this.RaiseAndSetIfChanged(ref m_game_view, value); }
 
         static Window window = (App.Current.ApplicationLifetime as ClassicDesktopStyleApplicationLifetime).MainWindow;
-
+        public bool shiftPressed = false;
         public GameViewModel()
         {
             EventHandler.start();
@@ -42,11 +42,17 @@ namespace BattleSweeper.ViewModels
             MineSweeperViewModel mine_sweeper_vm = new(mine_sweeper_model, 60);
             EventHandler.KeyChanged += (x =>
             {
+                if(x.key == Key.LeftShift)
+                {
+                    shiftPressed = !shiftPressed;
+                    Trace.WriteLine(shiftPressed);
+                }
             });
             EventHandler.MouseChanged += (x =>
             {
+                
                 System.Drawing.Point field = coordToField(mine_sweeper_vm.Position, x.MousePosition);
-                if (x.button == MouseButton.Right)
+                if (x.button == MouseButton.Middle)
                 {
                     mine_sweeper_vm.rightClickTile(field);
                 }
@@ -54,7 +60,14 @@ namespace BattleSweeper.ViewModels
                 {
                     if (mine_sweeper_vm.grid.inBounds(field))
                     {
-                        mine_sweeper_vm.leftClickTile(field);
+                        if ((x.modifier & RawInputModifiers.Shift) == RawInputModifiers.None)
+                        {
+                            mine_sweeper_vm.leftClickTile(field);
+                        }
+                        else
+                        {
+                            mine_sweeper_vm.leftShiftClickTile(field);
+                        }
                     }
                 }
 
