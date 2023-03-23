@@ -270,7 +270,6 @@ namespace BattleSweeper.ViewModels
             {
                 Thread.Sleep(1000);
                 TimeLeft--;
-                Trace.WriteLine(Position.ToString());
             }
 
             GameOver?.Invoke(this, false);
