@@ -12,6 +12,9 @@ using System.Windows.Input;
 using System.Reactive.Disposables;
 using Avalonia.Input.Raw;
 using System.Security.Cryptography;
+using MouseButton = Avalonia.Input.MouseButton;
+using InputManager = Avalonia.Input.InputManager;
+using Key = Avalonia.Input.Key;
 
 namespace BattleSweeper.Models
 {

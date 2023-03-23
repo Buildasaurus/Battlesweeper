@@ -17,6 +17,12 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia;
 using Size = System.Drawing.Size;
+using Avalonia.Platform;
+using System.Windows.Forms;
+using System.Windows;
+using Screen = System.Windows.Forms.Screen;
+using Rect = Avalonia.Rect;
+using Window = Avalonia.Controls.Window;
 
 namespace BattleSweeper.ViewModels
 {
@@ -68,15 +74,16 @@ namespace BattleSweeper.ViewModels
 
         public System.Drawing.Point coordToField(Rect gridCoord, System.Drawing.Point mousePos)
         {
+            double scale = (Screen.PrimaryScreen.Bounds.Width / SystemParameters.PrimaryScreenWidth); 
             double windowX = window.Position.X;
             double windowY = window.Position.Y + 30;
             double x;
             double y;
 
             //calc x and y coordinat relative to topleft
-            x = mousePos.X - gridCoord.TopLeft.X - windowX;
-			y = mousePos.Y - gridCoord.TopLeft.Y - windowY;
-
+            x = mousePos.X / scale - gridCoord.TopLeft.X - windowX;
+			y = mousePos.Y / scale - gridCoord.TopLeft.Y - windowY;
+            Trace.WriteLine(gridCoord.TopLeft.X);
 
             //calculate corresponding tile
             double tilewidth = gridCoord.Width/10;
@@ -84,6 +91,10 @@ namespace BattleSweeper.ViewModels
 
             int xtile = (int)Math.Floor(x / tilewidth);
             int ytile = (int)Math.Floor(y / tileHeight);
+            Trace.WriteLine(gridCoord.X + " " + gridCoord.Y);
+            Trace.WriteLine(mousePos.X + " " + mousePos.Y);
+            Trace.WriteLine(windowX + " " + windowY);
+            Trace.WriteLine("x and y: " + x + " " + y + " tilewidth and height: " + tilewidth + " " + tileHeight + " x and y tile: " + xtile + " " + ytile);
             return new System.Drawing.Point(xtile, ytile);
         }
 
