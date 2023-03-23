@@ -42,7 +42,7 @@ namespace BattleSweeper.ViewModels
             if (assets != null)
             {
                 // The states are mapped to the suffix of the file name (MineSweeper[STATE].png)
-                string[] sprites = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "Bomb", "Empty", "Tile", "Flag" };
+                string[] sprites = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "Bomb", "Empty", "Tile", "Flag", "Diffused" };
 
                 foreach (string sprite in sprites)
                 {
@@ -85,6 +85,9 @@ namespace BattleSweeper.ViewModels
 
                 if (Tile.bomb_count == IMineSweeper.BOMB)
                     return Sprites["Bomb"];
+
+                if (Tile.is_diffused)
+                    return Sprites["Diffused"];
 
                 return Sprites[Tile.bomb_count.ToString()];
             }
@@ -269,6 +272,5 @@ namespace BattleSweeper.ViewModels
 
             GameOver?.Invoke(this, false);
         }
-
     }
 }
