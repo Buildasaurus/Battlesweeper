@@ -36,6 +36,7 @@ namespace Games.MineSweeper
             else
             {
                 Tiles[coord].is_revealed = true;
+                Tiles[coord].is_flagged = false;
                 result = MoveResult.Failure;
             }
 
