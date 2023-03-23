@@ -66,6 +66,8 @@ namespace Games.MineSweeper
 
             if (Tiles[coord].bomb_count > 0)
                 return MoveResult.Success;
+            else if (Tiles[coord].bomb_count == IMineSweeper.BOMB)
+                return MoveResult.Failure;
 
             // recursive call
 
@@ -80,7 +82,7 @@ namespace Games.MineSweeper
                 }
             }
 
-            return Tiles[coord].bomb_count == IMineSweeper.BOMB ? MoveResult.Failure : MoveResult.Success;
+            return MoveResult.Success;
         }
 
         public void generate(Size size, int bombs, int? seed = null)

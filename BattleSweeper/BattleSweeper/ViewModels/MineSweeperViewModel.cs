@@ -269,6 +269,5 @@ namespace BattleSweeper.ViewModels
 
             GameOver?.Invoke(this, false);
         }
-
     }
 }
