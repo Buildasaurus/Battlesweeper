@@ -56,7 +56,7 @@ namespace BattleSweeper.ViewModels
         /// <summary>
         /// constructs a tile viewmodel from the given tile model.
         /// </summary>
-        public MSTileVM(MineSweeperTile tile)
+        public MSTileVM(MSTile tile)
         {
             if (Sprites.Count == 0)
                 loadSprites();
@@ -83,11 +83,11 @@ namespace BattleSweeper.ViewModels
                 if (Tile.bomb_count == 0)
                     return Sprites["Empty"];
 
-                if (Tile.bomb_count == IMineSweeper.BOMB)
-                    return Sprites["Bomb"];
-
                 if (Tile.is_diffused)
                     return Sprites["Diffused"];
+
+                if (Tile.bomb_count == IMineSweeper.BOMB)
+                    return Sprites["Bomb"];
 
                 return Sprites[Tile.bomb_count.ToString()];
             }
@@ -96,7 +96,7 @@ namespace BattleSweeper.ViewModels
         /// <summary>
         /// accessor property for the underlying tile model.
         /// </summary>
-        public MineSweeperTile Tile { get; set; }
+        public MSTile Tile { get; set; }
     }
 
     /// <summary>

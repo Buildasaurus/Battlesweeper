@@ -9,17 +9,16 @@ namespace Games.MineSweeper
     /// the revealed status and the flag status.
     /// 
     /// </summary>
-    public class MineSweeperTile : ICopyable<MineSweeperTile>
+    public class MSTile : ICopyable<MSTile>
     {
         /// <summary>
         /// construct MineSweeperTile and set the bomb_count to the passed parameter.
         /// </summary>
-        /// <param name="bomb_count"></param>
-        public MineSweeperTile(int bomb_count)
+        /// <param name="bomb_count"></param><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        public MSTile(int bomb_count)
         {
             this.bomb_count = bomb_count;
         }
-
 
        /// <summary>
        /// the number of bombs within a 1 tile radius, of the current tile.
@@ -40,9 +39,9 @@ namespace Games.MineSweeper
         /// </summary>
         public bool is_diffused = false;
 
-        public MineSweeperTile Copy()
+        public MSTile Copy()
         {
-            MineSweeperTile tile = new(bomb_count);
+            MSTile tile = new(bomb_count);
             tile.is_revealed = is_revealed;
             tile.is_flagged = is_flagged;
             tile.is_diffused = is_diffused;
@@ -73,7 +72,7 @@ namespace Games.MineSweeper
         /// <summary>
         /// grid of tiles in the current minesweeper game.
         /// </summary>
-        public Grid<MineSweeperTile>? Tiles { get; }
+        public Grid<MSTile>? Tiles { get; }
         /// <summary>
         /// list of the initial bomb placements.
         /// </summary>
