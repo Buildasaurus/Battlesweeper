@@ -50,16 +50,17 @@ namespace BattleSweeper.ViewModels
             });
             EventHandler.MouseChanged += (x =>
             {
-                
                 System.Drawing.Point field = coordToField(mine_sweeper_vm.Position, x.MousePosition);
-                if (x.button == MouseButton.Middle)
+
+                if (mine_sweeper_vm.grid.inBounds(field))
                 {
-                    mine_sweeper_vm.rightClickTile(field);
-                }
-                if (x.button == MouseButton.Left)
-                {
-                    if (mine_sweeper_vm.grid.inBounds(field))
+                    if (x.button == MouseButton.Middle)
                     {
+                        mine_sweeper_vm.rightClickTile(field);
+                    }
+                    if (x.button == MouseButton.Left)
+                    {
+
                         if ((x.modifier & RawInputModifiers.Shift) == RawInputModifiers.None)
                         {
                             mine_sweeper_vm.leftClickTile(field);
@@ -84,6 +85,8 @@ namespace BattleSweeper.ViewModels
 
             GameView = mine_sweeper_vm;
         }
+
+        
 
         public System.Drawing.Point coordToField(Rect gridCoord, System.Drawing.Point mousePos)
         {
