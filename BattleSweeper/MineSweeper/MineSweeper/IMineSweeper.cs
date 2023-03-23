@@ -29,17 +29,23 @@ namespace Games.MineSweeper
         /// <summary>
         /// if true, the tile should be rendered as a revealed tile, and the bomb_count should be displayed to the user.
         /// </summary>
-        public bool is_revealed;
+        public bool is_revealed = false;
         /// <summary>
         /// if true, the tile should not be able to be clicked.
         /// </summary>
-        public bool is_flagged;
+        public bool is_flagged = false;
+        /// <summary>
+        /// specifies whether the tile is currently diffused.
+        /// can only be true, if bomb_count == IMineSweeper.BOMB
+        /// </summary>
+        public bool is_diffused = false;
 
         public MineSweeperTile Copy()
         {
             MineSweeperTile tile = new(bomb_count);
             tile.is_revealed = is_revealed;
             tile.is_flagged = is_flagged;
+            tile.is_diffused = is_diffused;
             
             return tile;
         }

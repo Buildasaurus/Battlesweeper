@@ -29,7 +29,7 @@ namespace Games.MineSweeper
             if (Tiles[coord].bomb_count == IMineSweeper.BOMB)
             {
                 Tiles[coord].is_revealed = true;
-                Tiles[coord].bomb_count = 0;
+                Tiles[coord].is_diffused = true;
                 m_current_bombs.Remove(coord);
                 result = MoveResult.Success;
             }
@@ -62,6 +62,8 @@ namespace Games.MineSweeper
                 return MoveResult.Illegal;
 
             Tiles[coord].is_revealed = true;
+
+            // make sure to notify a potential viewmodel, about a tile change.
             TileChanged?.Invoke(coord);
 
             if (Tiles[coord].bomb_count > 0)
