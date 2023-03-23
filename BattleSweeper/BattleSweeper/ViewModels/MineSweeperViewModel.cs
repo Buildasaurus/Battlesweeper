@@ -74,6 +74,9 @@ namespace BattleSweeper.ViewModels
             {
                 // retrieve sprite based on current state.
                 
+                if (Tile.is_diffused)
+                    return Sprites["Diffused"];
+
                 if (Tile.is_flagged)
                     return Sprites["Flag"];
 
@@ -82,9 +85,6 @@ namespace BattleSweeper.ViewModels
 
                 if (Tile.bomb_count == 0)
                     return Sprites["Empty"];
-
-                if (Tile.is_diffused)
-                    return Sprites["Diffused"];
 
                 if (Tile.bomb_count == IMineSweeper.BOMB)
                     return Sprites["Bomb"];
@@ -147,9 +147,12 @@ namespace BattleSweeper.ViewModels
         /// <summary>
         /// how much time the user has left, before GameOver is invoked.
         /// </summary>
-        public int TimeLeft { get => m_time_left; protected set
+        public int TimeLeft
+        {
+            get => m_time_left;
+            protected set
             {
-                this.RaiseAndSetIfChanged(ref m_time_left, value);
+                this.RaiseAndSetIfChanged(ref m_time_left, Math.Max(value, 0));
                 this.RaisePropertyChanged(nameof(MSTimeDigit));
                 this.RaisePropertyChanged(nameof(LSTimeDigit));
             }
@@ -267,7 +270,6 @@ namespace BattleSweeper.ViewModels
             {
                 Thread.Sleep(1000);
                 TimeLeft--;
-                Trace.WriteLine(Position.ToString());
             }
 
             GameOver?.Invoke(this, false);
