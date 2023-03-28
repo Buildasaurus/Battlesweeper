@@ -99,8 +99,8 @@ namespace BattleSweeper.ViewModels
             else
             {
                 IBattleships battle = new BattleshipsTemplate();
-                BattleShipsViewModel battleshipgame = new BattleShipsViewModel();
-                Trace.WriteLine("play battleships");
+                BattleShipsViewModel battleshipgame = new BattleShipsViewModel(battle);
+                GameView = battleshipgame;
             }
         }
 

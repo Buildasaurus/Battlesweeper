@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Games.Battleships
 {
-    public class BattleshipsTemplate:IBattleships
+    public class BattleshipsTemplate : IBattleships
     {
         public EventHandler<int>? ShipSunk;
         public EventHandler<bool>? GameOver;
@@ -22,7 +22,7 @@ namespace Games.Battleships
         }
         public MoveResult shoot(Point coord)
         {
-                return MoveResult.Failure;
+            return MoveResult.Failure;
         }
         public bool shootExecution(Point coord)
         {
@@ -30,8 +30,8 @@ namespace Games.Battleships
         }
 
         public MoveResult placeShip(Point coord, bool Vertical)
-        { 
-        return MoveResult.Success;
+        {
+            return MoveResult.Success;
         }
 
         public void checkWin()
@@ -52,14 +52,9 @@ namespace Games.Battleships
 
             }
 
+
         }
-
-
-
-
-
-
-
+    }
 
 }
 
