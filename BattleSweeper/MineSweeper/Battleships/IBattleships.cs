@@ -13,7 +13,7 @@ namespace Games.Battleships
         /// <summary>
         /// Determines the number of a ship, to distinguish the ships and know when a ship is sunken
         /// </summary>
-        public int ship;
+        public int ship = -1;
         
         /// <summary>
         /// Indicates wether a tile has been shot before to determine illegal shots
