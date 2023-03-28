@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="BattleSweeper.Views.BattleShipView"
+             x:Class="BattleSweeper.Views.BattleShipsView"
 			 >
 	<Grid Background="LightBlue" RowDefinitions="1*,8*" ColumnDefinitions="*, *">
 		<Label>hello</Label>
@@ -13,7 +13,7 @@
             BorderBrush="LightBlue"
             BorderThickness="2"
             BoxShadow="0 1 20 5 LightBlue">
-
+			Grid.Columnspan = "2"
 		</Border>
 		<Viewbox Grid.Row="1" Grid.Column="0" Stretch="Uniform">
 			<Grid x:Name="Player1Grid" Margin="0" />

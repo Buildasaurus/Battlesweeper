@@ -32,6 +32,9 @@
     <ProjectReference Include="..\MineSweeper\Games.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Views\BattleShipsView.axaml.cs">
+      <DependentUpon>BattleShipsView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\MineSweeperTransitionView.axaml.cs">
       <DependentUpon>MineSweeperTransitionView.axaml</DependentUpon>
     </Compile>

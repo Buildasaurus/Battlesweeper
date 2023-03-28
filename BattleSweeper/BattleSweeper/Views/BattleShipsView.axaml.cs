@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace BattleSweeper.Views
 {
-    public partial class BattleShipView : UserControl
+    public partial class BattleShipsView : UserControl
     {
-        public BattleShipView()
+        public BattleShipsView()
         {
             InitializeComponent();
         }
