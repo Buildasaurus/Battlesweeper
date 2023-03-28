@@ -23,6 +23,7 @@ using System.Windows;
 using Screen = System.Windows.Forms.Screen;
 using Rect = Avalonia.Rect;
 using Window = Avalonia.Controls.Window;
+using Games.Battleships;
 
 namespace BattleSweeper.ViewModels
 {
