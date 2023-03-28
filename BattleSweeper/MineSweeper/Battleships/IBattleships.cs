@@ -64,29 +64,24 @@ namespace Games.Battleships
         /// Checks the result of a shot and updates tiles accordingly
         /// </summary>
         /// <returns></returns>
-        public MoveResult Shoot(Point coord);
-        /// <summary>
-        /// Places the bombs from minesweeper on the grid 
-        /// </summary>
-        /// <param name="bombCoords">list fo coordinates with all bombs</param>
-        public void placeBomb(List<Point> bombCoords);
+        public MoveResult shoot(Point coord);
         /// <summary>
         /// Constructs the board based on a size. The board is always quadratic
         /// </summary>
         /// <param name="size"></param>
-        public void constructBoard(Size size);
+        public void constructBoard(List<Point> bombPositions);
         /// <summary>
         /// Checks if a player wins, based on the List remainingPieces
         /// </summary>
         /// <returns>If active player wins the game from the shot</returns>
-        public bool checkWin();
+        public void checkWin();
         /// <summary>
         /// Used for placing ships when the game is stated
         /// </summary>
         /// <param name="coord">coord for ship placement</param>
         /// <param name="vertical">If direction of ship is vertical</param>
         /// <returns></returns>
-        public bool placeShip(Point coord,bool vertical);
+        public MoveResult placeShip(Point coord,bool vertical);
     
     }
 }

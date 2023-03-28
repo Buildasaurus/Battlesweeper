@@ -10,13 +10,13 @@ namespace Games.Battleships
 {
 
     
-    public class Battleships
+    public class Battleships:IBattleships
     {
         public EventHandler<int>? ShipSunk;
         public EventHandler<bool>? GameOver;
-        List<int> remainingPieces = new List<int>(new int[] { 4, 3, 2, 2, 2 });
-        Grid<BattleshipTile> Board; 
-        List<int> shipLengths = new List<int>();
+        public List<int> remainingPieces { get; set; } = new List<int>(new int[] { 4, 3, 2, 2, 2 });
+        public Grid<BattleshipTile> Tiles { get; protected set; }
+        public List<int> shipLengths { get; set; } = new List<int>();
         int n = 0;
         bool hit = false;
         /// <summary>
@@ -41,14 +41,14 @@ namespace Games.Battleships
         }
         public bool shootExecution(Point coord)
         {
-            if (Board[coord].hasBeenShot == true)
+            if (Tiles[coord].hasBeenShot == true)
             {
                 return false;
             }
             
-            Board[coord].hasBeenShot = true;
+            Tiles[coord].hasBeenShot = true;
 
-            if (Board[coord].hasBomb == true)
+            if (Tiles[coord].hasBomb == true)
             {
                 for (int dx = -1; dx <= 1; dx++)
                 {
@@ -63,11 +63,11 @@ namespace Games.Battleships
                 return true;
             }
 
-            if (Board[coord].ship > 0)
+            if (Tiles[coord].ship > 0)
             {
-                remainingPieces[Board[coord].ship]--;
-                if (remainingPieces[Board[coord].ship] == 0)
-                    ShipSunk?.Invoke(this, Board[coord].ship);
+                remainingPieces[Tiles[coord].ship]--;
+                if (remainingPieces[Tiles[coord].ship] == 0)
+                    ShipSunk?.Invoke(this, Tiles[coord].ship);
                 hit = true;
                 return true;
             }
@@ -84,7 +84,7 @@ namespace Games.Battleships
 
                 for (int i = 0; i < shipLengths[n]; i++)
                 {
-                    if (Board[coord.X, coord.Y + i].ship > 0)
+                    if (Tiles[coord.X, coord.Y + i].ship > 0)
                         return MoveResult.Illegal;
                 }
             }
@@ -95,7 +95,7 @@ namespace Games.Battleships
 
                     for (int i = 0; i < shipLengths[n]; i++)
                 {
-                    if (Board[coord.X + i, coord.Y].ship > 0)
+                    if (Tiles[coord.X + i, coord.Y].ship > 0)
                         return MoveResult.Illegal;
                 }
             }
@@ -104,11 +104,11 @@ namespace Games.Battleships
             {
                 for (int i = 0; i < shipLengths[n]; i++)
                 {
-                    Board[coord.X, coord.Y + i].ship = n;
+                    Tiles[coord.X, coord.Y + i].ship = n;
                     if (i == 0)
-                        Board[coord.X, coord.Y + i].atStart = true;
+                        Tiles[coord.X, coord.Y + i].atStart = true;
                     if (i == shipLengths[n] - 1)
-                        Board[coord.X, coord.Y + i].atEnd = true;
+                        Tiles[coord.X, coord.Y + i].atEnd = true;
                 }
             }
 
@@ -116,11 +116,11 @@ namespace Games.Battleships
             {
                 for (int i = 0; i < shipLengths[n]; i++)
                 {
-                    Board[coord.X, coord.Y + i].ship = n;
+                    Tiles[coord.X, coord.Y + i].ship = n;
                     if (i == 0)
-                        Board[coord.X, coord.Y + i].atStart = true;
+                        Tiles[coord.X, coord.Y + i].atStart = true;
                     if (i == shipLengths[n] - 1)
-                        Board[coord.X, coord.Y + i].atEnd = true;
+                        Tiles[coord.X, coord.Y + i].atEnd = true;
                 }
             }
             ///Increments index for what ship is next to be placed, and returns success.
@@ -142,13 +142,13 @@ namespace Games.Battleships
         public void constructBoard(List<Point> bombPositions) {
            
 
-            Board = new Grid<BattleshipTile>(new System.Drawing.Size(10,10));
+            Tiles = new Grid<BattleshipTile>(new System.Drawing.Size(10,10));
             shipLengths = remainingPieces.GetRange(0,remainingPieces.Count);
 
             foreach (Point bomb in bombPositions)
             {
 
-                Board[bomb].hasBomb = true;
+                Tiles[bomb].hasBomb = true;
 
             }
 

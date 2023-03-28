@@ -7,17 +7,23 @@ using System.Threading.Tasks;
 
 namespace Games.Battleships
 {
-    internal class BattleshipsTemplate
+    public class BattleshipsTemplate:IBattleships
     {
         public EventHandler<int>? ShipSunk;
         public EventHandler<bool>? GameOver;
         List<int> remainingPieces = new List<int>(new int[] { 4, 3, 2, 2, 2 });
-        Grid<BattleshipTile> Board;
+        Grid<BattleshipTile> Tiles;
         List<int> shipLengths = new List<int>();
-        
+
+        public Grid<BattleshipTile>? Tiles => Tiles;
+
+        List<int> IBattleships.shipLengths => shipLengths;
+
+        List<int> IBattleships.remainingPieces => remainingPieces;
+
         public void setTile(Point coord, BattleshipTile Tile)
         {
-            Board[coord] = Tile.Copy();
+            Tiles[coord] = Tile.Copy();
         }
         public MoveResult shoot(Point coord)
         {
@@ -41,18 +47,22 @@ namespace Games.Battleships
         {
 
 
-            Board = new Grid<BattleshipTile>(new System.Drawing.Size(10, 10));
+            Tiles = new Grid<BattleshipTile>(new System.Drawing.Size(10, 10));
             shipLengths = remainingPieces.GetRange(0, remainingPieces.Count);
 
             foreach (Point bomb in bombPositions)
             {
 
-                Board[bomb].hasBomb = true;
+                Tiles[bomb].hasBomb = true;
 
             }
 
         }
-    }
+
+
+
+
+
 
 
 
