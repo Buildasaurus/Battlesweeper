@@ -12,8 +12,9 @@
             Background="Blue"
             BorderBrush="LightBlue"
             BorderThickness="2"
-            BoxShadow="0 1 20 5 LightBlue">
-			Grid.Columnspan = "2"
+            BoxShadow="0 1 20 5 LightBlue"
+			Grid.Columnspan = "2">
+			
 		</Border>
 		<Viewbox Grid.Row="1" Grid.Column="0" Stretch="Uniform">
 			<Grid x:Name="Player1Grid" Margin="0" />
