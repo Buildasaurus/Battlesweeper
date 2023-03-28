@@ -11,15 +11,10 @@ namespace Games.Battleships
     {
         public EventHandler<int>? ShipSunk;
         public EventHandler<bool>? GameOver;
-        List<int> remainingPieces = new List<int>(new int[] { 4, 3, 2, 2, 2 });
-        Grid<BattleshipTile> Tiles;
-        List<int> shipLengths = new List<int>();
+        public List<int> remainingPieces { get; set; } = new List<int>(new int[] { 4, 3, 2, 2, 2 });
+        public Grid<BattleshipTile> Tiles { get; set; }
+        public List<int> shipLengths { get; set; } = new List<int>();
 
-        public Grid<BattleshipTile>? Tiles => Tiles;
-
-        List<int> IBattleships.shipLengths => shipLengths;
-
-        List<int> IBattleships.remainingPieces => remainingPieces;
 
         public void setTile(Point coord, BattleshipTile Tile)
         {
