@@ -80,6 +80,7 @@ namespace BattleSweeper.ViewModels
 
         public void gameover (object? s, bool foundAllBombs)
         {
+            Trace.WriteLine("game over - found all bombs: " + foundAllBombs);
             if (minesweepergame == 1) //if first game, start the next one
             {
                 MineSweeperTransitionViewModel transition = new MineSweeperTransitionViewModel();
