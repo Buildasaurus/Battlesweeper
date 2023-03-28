@@ -1,34 +1,43 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="BattleSweeper.Views.BattleShipsView"
-			 >
-	<Grid Background="LightBlue" RowDefinitions="1*,8*" ColumnDefinitions="*, *">
-		<Label>hello</Label>
-		<Border
+<UserControl
+    x:Class="BattleSweeper.Views.BattleShipsView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid
+        Background="LightBlue"
+        ColumnDefinitions="*, *"
+        RowDefinitions="1*,8*">
+        <Label>hello</Label>
+        <Border
+            Grid.ColumnSpan="2"
             Padding="10,2"
             Background="Blue"
             BorderBrush="LightBlue"
             BorderThickness="2"
-            BoxShadow="0 1 20 5 LightBlue"
-			Grid.ColumnSpan = "2">
-			
-		</Border>
-		<StackPanel Grid.Row="0" Grid.Column ="0" >
-			<Image Source="/Assets/ShipEnd.png" Width ="15"></Image>
-			<Image Source="/Assets/midShip.png" Width ="15"></Image>
-			<Image Source="/Assets/midShip.png" Width ="15"></Image>
-			<Image Source="/Assets/ShipEnd.png" Width ="15"></Image>
+            BoxShadow="0 1 20 5 LightBlue" />
+        <StackPanel Grid.Row="0" Grid.Column="0">
+            <Image Width="15" Source="/Assets/ShipEnd.png" />
+            <Image Width="15" Source="/Assets/midShip.png" />
+            <Image Width="15" Source="/Assets/midShip.png" />
+            <Image Width="15" Source="/Assets/ShipEnd.png" />
 
-		</StackPanel>
-		<Viewbox Grid.Row="1" Grid.Column="0" Stretch="Uniform">
-			<Grid x:Name="Player1Grid" Margin="0" />
-		</Viewbox>
-		<Viewbox Grid.Row="1" Grid.Column="1" Stretch="Uniform">
-			<Grid x:Name="Player2Grid" Margin="0" />
-		</Viewbox>
-	</Grid>
-	
+        </StackPanel>
+        <Viewbox
+            Grid.Row="1"
+            Grid.Column="0"
+            Stretch="Uniform">
+            <Grid x:Name="Player1Grid" Margin="0" />
+        </Viewbox>
+        <Viewbox
+            Grid.Row="1"
+            Grid.Column="1"
+            Stretch="Uniform">
+            <Grid x:Name="Player2Grid" Margin="0" />
+        </Viewbox>
+    </Grid>
+
 </UserControl>

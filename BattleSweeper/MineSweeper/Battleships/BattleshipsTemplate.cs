@@ -52,9 +52,7 @@ namespace Games.Battleships
 
 
         }
-    }
-
-    }
+    };
 }
 
 
