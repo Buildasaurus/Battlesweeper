@@ -16,6 +16,13 @@
 			Grid.ColumnSpan = "2">
 			
 		</Border>
+		<StackPanel Grid.Row="0" Grid.Column ="0" >
+			<Image Source="/Assets/ShipEnd.png" Width ="15"></Image>
+			<Image Source="/Assets/midShip.png" Width ="15"></Image>
+			<Image Source="/Assets/midShip.png" Width ="15"></Image>
+			<Image Source="/Assets/ShipEnd.png" Width ="15"></Image>
+
+		</StackPanel>
 		<Viewbox Grid.Row="1" Grid.Column="0" Stretch="Uniform">
 			<Grid x:Name="Player1Grid" Margin="0" />
 		</Viewbox>
