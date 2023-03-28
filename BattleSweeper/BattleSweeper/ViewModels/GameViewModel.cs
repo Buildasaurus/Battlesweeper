@@ -100,6 +100,8 @@ namespace BattleSweeper.ViewModels
             {
                 IBattleships pl1 = new BattleshipsTemplate();
                 IBattleships pl2 = new BattleshipsTemplate();
+                pl1.constructBoard(new());
+                pl2.constructBoard(new());
                 BattleShipsViewModel battleshipgame = new BattleShipsViewModel(pl1, pl2);
                 GameView = battleshipgame;
             }
