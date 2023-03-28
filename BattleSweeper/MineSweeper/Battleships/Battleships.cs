@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace Games.Battleships
 {
-
-    
+   
     public class Battleships
     {
         public EventHandler<int>? ShipSunk;
@@ -106,7 +105,7 @@ namespace Games.Battleships
                 {
                     Board[coord.X, coord.Y + i].ship = n;
                     if (i == 0)
-                        Board[coord.X, coord.Y + i].atStart = true;
+                        Board[coord.X, coord.Y + i].atEnd = true;
                     if (i == shipLengths[n] - 1)
                         Board[coord.X, coord.Y + i].atEnd = true;
                 }
@@ -118,7 +117,7 @@ namespace Games.Battleships
                 {
                     Board[coord.X, coord.Y + i].ship = n;
                     if (i == 0)
-                        Board[coord.X, coord.Y + i].atStart = true;
+                        Board[coord.X, coord.Y + i].atEnd = true;
                     if (i == shipLengths[n] - 1)
                         Board[coord.X, coord.Y + i].atEnd = true;
                 }
