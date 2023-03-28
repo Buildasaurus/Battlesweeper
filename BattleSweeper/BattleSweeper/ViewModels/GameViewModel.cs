@@ -98,8 +98,9 @@ namespace BattleSweeper.ViewModels
             }
             else
             {
-                IBattleships battle = new BattleshipsTemplate();
-                BattleShipsViewModel battleshipgame = new BattleShipsViewModel(battle);
+                IBattleships pl1 = new BattleshipsTemplate();
+                IBattleships pl2 = new BattleshipsTemplate();
+                BattleShipsViewModel battleshipgame = new BattleShipsViewModel(pl1, pl2);
                 GameView = battleshipgame;
             }
         }
