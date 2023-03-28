@@ -39,6 +39,7 @@ namespace Games.Battleships
             else
                 return MoveResult.Failure;
         }
+
         public bool shootExecution(Point coord)
         {
             if (Tiles[coord].hasBeenShot == true)
@@ -63,7 +64,7 @@ namespace Games.Battleships
                 return true;
             }
 
-            if (Tiles[coord].ship > 0)
+            if (Tiles[coord].ship >= 0)
             {
                 remainingPieces[Tiles[coord].ship]--;
                 if (remainingPieces[Tiles[coord].ship] == 0)
@@ -84,7 +85,7 @@ namespace Games.Battleships
 
                 for (int i = 0; i < shipLengths[n]; i++)
                 {
-                    if (Tiles[coord.X, coord.Y + i].ship > 0)
+                    if (Tiles[coord.X, coord.Y + i].ship >= 0)
                         return MoveResult.Illegal;
                 }
             }
@@ -95,7 +96,7 @@ namespace Games.Battleships
 
                     for (int i = 0; i < shipLengths[n]; i++)
                 {
-                    if (Tiles[coord.X + i, coord.Y].ship > 0)
+                    if (Tiles[coord.X + i, coord.Y].ship >= 0)
                         return MoveResult.Illegal;
                 }
             }

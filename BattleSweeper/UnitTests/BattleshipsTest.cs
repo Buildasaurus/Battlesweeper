@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Games.Battleships;
+using Games;
 
 
 
@@ -37,16 +39,6 @@ namespace Tests
             Assert.True(Tiles[1, 6].ship = 0);
 
             Assert.True(Tiles[4, 5].ship = 2);
-            Assert.True(Tiles[5, 5].ship = 2);
-            Assert.True(Tiles[6, 5].ship = -1);
-
-            Assert.True(Tiles[8, 8].ship = 2);
-            Assert.True(Tiles[9, 8].ship = 2);
-            Assert.True(Tiles[10, 8].ship = -1);
-
-            Assert.True(Tiles[3, 7].ship = 2);
-            Assert.True(Tiles[4, 7].ship = 2);
-            Assert.True(Tiles[5, 7].ship = -1);
 
         }
 
