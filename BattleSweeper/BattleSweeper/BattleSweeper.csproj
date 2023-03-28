@@ -8,6 +8,7 @@
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <UseWPF>False</UseWPF>
     <UseWindowsForms>True</UseWindowsForms>
+    <FileVersion>1.0.0.19397</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />

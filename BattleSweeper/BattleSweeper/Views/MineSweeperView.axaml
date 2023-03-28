@@ -16,7 +16,6 @@
             BorderThickness="2"
             BoxShadow="0 1 20 5 LightBlue">
             <StackPanel
-				
                 HorizontalAlignment="Right"
                 Background="Black"
                 Orientation="Horizontal">

@@ -40,8 +40,6 @@ namespace Games.Battleships
         }
         public void constructBoard(List<Point> bombPositions)
         {
-
-
             Tiles = new Grid<BattleshipTile>(new System.Drawing.Size(10, 10));
             shipLengths = remainingPieces.GetRange(0, remainingPieces.Count);
 
