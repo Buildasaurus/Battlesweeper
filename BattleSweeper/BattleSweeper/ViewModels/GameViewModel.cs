@@ -80,6 +80,7 @@ namespace BattleSweeper.ViewModels
 
         public void gameover (object? s, bool foundAllBombs)
         {
+            Trace.WriteLine("game over - found all bombs: " + foundAllBombs);
             if (minesweepergame == 1) //if first game, start the next one
             {
                 MineSweeperTransitionViewModel transition = new MineSweeperTransitionViewModel();
@@ -124,7 +125,7 @@ namespace BattleSweeper.ViewModels
             //create 10x10 grid, with 10 bombs.
             IMineSweeper mine_sweeper_model = MineSweeperFactory.construct<MineSweeper>(gridSize, 10);
             //create the view model, with a 60 second timer.
-            MineSweeperViewModel mineSweeperVM = new(mine_sweeper_model, 60);
+            MineSweeperViewModel mineSweeperVM = new(mine_sweeper_model, 30);
             mineSweeperVM.GameOver += gameover;
             return mineSweeperVM;
         }
