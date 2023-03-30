@@ -1,7 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using BattleSweeper.ViewModels;
+using DynamicData;
 using Games.Battleships;
+using ReactiveUI;
 
 namespace BattleSweeper.Views
 {
@@ -24,7 +26,6 @@ namespace BattleSweeper.Views
                 Grid player_2_grid = this.FindControl<Grid>("Player2Grid");
 
                 setupBattleshipsGrid(player_2_grid, vm.bs_player_2, ref vm.bs2_tile_vm);
-               
             }
         }
 
@@ -38,9 +39,12 @@ namespace BattleSweeper.Views
                 grid.ColumnDefinitions.Add(new ColumnDefinition(1, GridUnitType.Star));
                 for (int y = 0; y < battle_ships.Tiles.Size.Height; y++)
                 {
+                    if(y == 0)
+                        grid.RowDefinitions.Add(new RowDefinition(1, GridUnitType.Star));
+
                     tiles_viewmodel[x, y] = new(battle_ships.Tiles[x, y]);
 
-                    ContentPresenter presenter = new()
+                    ContentControl presenter = new()
                     {
                         Content = tiles_viewmodel[x, y],
                     };

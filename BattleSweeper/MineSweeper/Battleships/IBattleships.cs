@@ -24,29 +24,33 @@ namespace Games.Battleships
         /// Indicates wether the tile has a bomb
         /// </summary>
         public bool hasBomb;
-
+        public bool atStart;
         public bool atEnd;
+        public bool horizontal;
         /// <summary>
         /// Constructor for battleship tile
         /// </summary>
         /// <param name="Ship"></param>
         /// <param name="hasBeenShot"></param>
         /// <param name="hasBomb"></param>
-        public BattleshipTile(int ship, bool hasBeenShot, bool hasBomb, bool atEnd)
+        public BattleshipTile(int ship, bool hasBeenShot, bool hasBomb, bool horizontal, bool atEnd, bool atStart)
         {
             this.ship = ship;
             this.hasBeenShot = hasBeenShot;
             this.hasBomb = hasBomb;
             this.atEnd = atEnd;
+            this.atStart = atStart;
+            this.horizontal = horizontal;
         }
         public BattleshipTile Copy()
         {
-            return new BattleshipTile(ship,hasBeenShot,hasBomb,atEnd);
+            return new BattleshipTile(ship,hasBeenShot,hasBomb,horizontal,atEnd, atStart);
         }
 
     }
     public interface IBattleships
     {
+        public Action<Point>? TileChanged { get; }
         /// <summary>
         /// Allows for game to retrive grid
         /// </summary>

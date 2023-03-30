@@ -107,7 +107,7 @@ namespace Games.Battleships
                 {
                     Tiles[coord.X, coord.Y + i].ship = n;
                     if (i == 0)
-                        Tiles[coord.X, coord.Y + i].atEnd = true;
+                        Tiles[coord.X, coord.Y + i].atStart = true;
                     if (i == shipLengths[n] - 1)
                         Tiles[coord.X, coord.Y + i].atEnd = true;
                 }
@@ -119,7 +119,7 @@ namespace Games.Battleships
                 {
                     Tiles[coord.X, coord.Y + i].ship = n;
                     if (i == 0)
-                        Tiles[coord.X, coord.Y + i].atEnd = true;
+                        Tiles[coord.X, coord.Y + i].atStart = true;
                     if (i == shipLengths[n] - 1)
                         Tiles[coord.X, coord.Y + i].atEnd = true;
                 }

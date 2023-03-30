@@ -41,7 +41,9 @@ namespace BattleSweeper.Views
                     grid.ColumnDefinitions.Add(new ColumnDefinition(1, GridUnitType.Star));
                     for (int y = 0; y < vm.grid.Size.Height; y++)
                     {
-                        grid.RowDefinitions.Add(new RowDefinition(1, GridUnitType.Star));
+                        if(y == 0)
+                            grid.RowDefinitions.Add(new RowDefinition(1, GridUnitType.Star));
+                        
                         MSTileVM tile = vm.grid[x, y];
 
                         Image img = new();
