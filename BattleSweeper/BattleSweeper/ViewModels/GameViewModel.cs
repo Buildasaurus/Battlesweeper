@@ -80,6 +80,7 @@ namespace BattleSweeper.ViewModels
 
         public void gameover (object? s, bool foundAllBombs)
         {
+            Trace.WriteLine("game over - found all bombs: " + foundAllBombs);
             if (minesweepergame == 1) //if first game, start the next one
             {
                 MineSweeperTransitionViewModel transition = new MineSweeperTransitionViewModel();
@@ -98,8 +99,21 @@ namespace BattleSweeper.ViewModels
             }
             else
             {
-                IBattleships pl1 = new BattleshipsTemplate();
+                BattleshipsTemplate pl1 = new BattleshipsTemplate();
                 IBattleships pl2 = new BattleshipsTemplate();
+                pl1.constructBoard(new());
+
+                pl1.setTile(new(3, 3), new(0, false, false, false, true, false));
+                pl1.setTile(new(3, 4), new(0, false, false, false, false, false));
+                pl1.setTile(new(3, 5), new(0, true, true, false, false, false));
+                pl1.setTile(new(3, 6), new(0, false, false, false, false, true));
+
+                pl1.setTile(new(4, 8), new(0, false, false, true, true, false));
+                pl1.setTile(new(5, 8), new(0, true, false, true, false, false));
+                pl1.setTile(new(6, 8), new(0, false, false, true, false, false));
+                pl1.setTile(new(7, 8), new(0, false, false, true, false, true));
+
+                pl2.constructBoard(new());
                 BattleShipsViewModel battleshipgame = new BattleShipsViewModel(pl1, pl2);
                 GameView = battleshipgame;
             }
@@ -111,7 +125,7 @@ namespace BattleSweeper.ViewModels
             //create 10x10 grid, with 10 bombs.
             IMineSweeper mine_sweeper_model = MineSweeperFactory.construct<MineSweeper>(gridSize, 10);
             //create the view model, with a 60 second timer.
-            MineSweeperViewModel mineSweeperVM = new(mine_sweeper_model, 60);
+            MineSweeperViewModel mineSweeperVM = new(mine_sweeper_model, 30);
             mineSweeperVM.GameOver += gameover;
             return mineSweeperVM;
         }

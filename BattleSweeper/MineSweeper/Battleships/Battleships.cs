@@ -10,13 +10,16 @@ namespace Games.Battleships
 {
 
     
-    public class Battleships:IBattleships
+    public class Battleships : IBattleships
     {
         public EventHandler<int>? ShipSunk;
         public EventHandler<bool>? GameOver;
         public List<int> remainingPieces { get; set; } = new List<int>(new int[] { 4, 3, 2, 2, 2 });
         public Grid<BattleshipTile> Tiles { get; protected set; }
         public List<int> shipLengths { get; set; } = new List<int>();
+
+        public Action<Point>? TileChanged { get; }
+
         int n = 0;
         bool hit = false;
         /// <summary>
@@ -107,7 +110,7 @@ namespace Games.Battleships
                 {
                     Tiles[coord.X, coord.Y + i].ship = n;
                     if (i == 0)
-                        Tiles[coord.X, coord.Y + i].atEnd = true;
+                        Tiles[coord.X, coord.Y + i].atStart = true;
                     if (i == shipLengths[n] - 1)
                         Tiles[coord.X, coord.Y + i].atEnd = true;
                 }
@@ -119,7 +122,7 @@ namespace Games.Battleships
                 {
                     Tiles[coord.X, coord.Y + i].ship = n;
                     if (i == 0)
-                        Tiles[coord.X, coord.Y + i].atEnd = true;
+                        Tiles[coord.X, coord.Y + i].atStart = true;
                     if (i == shipLengths[n] - 1)
                         Tiles[coord.X, coord.Y + i].atEnd = true;
                 }

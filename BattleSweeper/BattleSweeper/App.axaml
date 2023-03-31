@@ -1,12 +1,18 @@
-<Application xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="using:BattleSweeper"
-             x:Class="BattleSweeper.App">
+<Application
+    x:Class="BattleSweeper.App"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BattleSweeper">
     <Application.DataTemplates>
-        <local:ViewLocator/>
+        <local:ViewLocator />
     </Application.DataTemplates>
 
     <Application.Styles>
-        <FluentTheme Mode="Dark"/>
+        <FluentTheme Mode="Dark" />
+
+        <Style Selector="Image.Pixel">
+            <Setter Property="RenderOptions.BitmapInterpolationMode" Value="Default" />
+        </Style>
+
     </Application.Styles>
 </Application>

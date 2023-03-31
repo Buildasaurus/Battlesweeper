@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
+using Avalonia.Media;
 
 namespace BattleSweeper.ViewModels
 {
@@ -17,6 +18,16 @@ namespace BattleSweeper.ViewModels
         {
             this.tile = tile;
         }
+
+        public bool isHit { get => tile.hasBeenShot; }
+
+        public bool isBombHit { get => tile.hasBeenShot && tile.hasBomb; }
+
+        public bool isMiddle { get => tile.ship != -1 && !tile.atEnd && !tile.atStart; }
+
+        public bool isEnd { get => tile.ship != -1 && (tile.atEnd || tile.atStart); }
+
+        public RotateTransform shipTransform { get => new((tile.horizontal ? -90 : 0) + (tile.atEnd ? 180 : 0)); }
 
         public BSTileVM Copy() => new BSTileVM(tile);
 
@@ -30,6 +41,8 @@ namespace BattleSweeper.ViewModels
             this.bs_player_1 = bs_player_1;
             this.bs_player_2 = bs_player_2;
         }
+
+        public BSTileVM Tile { get => bs1_tile_vm[0, 0]; }
 
         public bool Player1Playing { get; }
         public bool Player2Playing { get; }

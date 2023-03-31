@@ -15,10 +15,12 @@ namespace Games.Battleships
         public Grid<BattleshipTile> Tiles { get; set; }
         public List<int> shipLengths { get; set; } = new List<int>();
 
+        public Action<Point>? TileChanged { get; }
 
         public void setTile(Point coord, BattleshipTile Tile)
         {
             Tiles[coord] = Tile.Copy();
+            TileChanged?.Invoke(coord);
         }
         public MoveResult shoot(Point coord)
         {
@@ -40,7 +42,7 @@ namespace Games.Battleships
         }
         public void constructBoard(List<Point> bombPositions)
         {
-            Tiles = new Grid<BattleshipTile>(new System.Drawing.Size(10, 10));
+            Tiles = new Grid<BattleshipTile>(new System.Drawing.Size(10, 10), new(-1, false, false, false, false, false));
             shipLengths = remainingPieces.GetRange(0, remainingPieces.Count);
 
             foreach (Point bomb in bombPositions)
@@ -52,8 +54,7 @@ namespace Games.Battleships
 
 
         }
-    };
-}
+    }}
 
 
 
