@@ -147,11 +147,14 @@
         <Grid
             Grid.Row="1"
             Grid.ColumnSpan="2"
-            ColumnDefinitions="20*,*,20*">
+            ColumnDefinitions="*,130,*">
             <Viewbox Grid.Column="0" Stretch="Uniform">
                 <Grid x:Name="Player1Grid" Margin="0" />
             </Viewbox>
-            <Button Grid.Column="1" Command="{Binding confirmPlayerChange}">
+            <Button
+                Grid.Column="1"
+                Command="{Binding confirmPlayerChange}"
+                IsVisible="{Binding PlayerChanging}">
                 Change Player
             </Button>
             <Viewbox Grid.Column="2" Stretch="Uniform">

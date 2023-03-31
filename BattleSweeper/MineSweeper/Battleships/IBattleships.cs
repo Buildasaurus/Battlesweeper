@@ -50,7 +50,7 @@ namespace Games.Battleships
     }
     public interface IBattleships
     {
-        public Action<Point>? TileChanged { get; }
+        public Action<Point>? TileChanged { get; set; }
         /// <summary>
         /// Allows for game to retrive grid
         /// </summary>

@@ -12,6 +12,8 @@ using Avalonia.Media;
 using Point = System.Drawing.Point;
 using Avalonia.VisualTree;
 using ReactiveUI;
+using Avalonia.Metadata;
+using System.Reactive;
 
 namespace BattleSweeper.ViewModels
 {
@@ -21,13 +23,15 @@ namespace BattleSweeper.ViewModels
         Player1,
         Player2,
     }
-    public class BSTileVM : ICopyable<BSTileVM>
+    public class BSTileVM : ReactiveObject, ICopyable<BSTileVM>
     {
         public BSTileVM(BattleshipTile tile, BattleShipsViewModel viewmodel, Player player)
         {
             this.tile = tile;
             vm = viewmodel;
             this.player = player;
+
+            vm.AllTilesChanged += tileChanged;
         }
 
         public bool isHit { get => tile.hasBeenShot && tile.ship != -1; }
@@ -39,9 +43,17 @@ namespace BattleSweeper.ViewModels
 
         public bool isEnd { get => tile.ship != -1 && (tile.atEnd || tile.atStart) && vm.ActivePlayer == player; }
 
-        public bool hideShip { get => vm.ActivePlayer != player; }
-
         public RotateTransform shipTransform { get => new((tile.horizontal ? -90 : 0) + (tile.atEnd ? 180 : 0)); }
+
+        public void tileChanged()
+        {
+            this.RaisePropertyChanged(nameof(isHit));
+            this.RaisePropertyChanged(nameof(isMissed));
+            this.RaisePropertyChanged(nameof(isBombHit));
+            this.RaisePropertyChanged(nameof(isMiddle));
+            this.RaisePropertyChanged(nameof(isEnd));
+            this.RaisePropertyChanged(nameof(shipTransform));
+        }
 
         public BSTileVM Copy() => new BSTileVM(tile, vm, player);
 
@@ -57,8 +69,14 @@ namespace BattleSweeper.ViewModels
             this.bs_player_1 = bs_player_1;
             this.bs_player_2 = bs_player_2;
 
+            this.bs_player_1.TileChanged += (coord) => bs1_tile_vm[coord].tileChanged();
+            this.bs_player_2.TileChanged += (coord) => bs2_tile_vm[coord].tileChanged();
+
             ActivePlayer = Player.Player2;
+            changePlayer();
         }
+
+        public Action? AllTilesChanged { get; set; }
 
         public BSTileVM Tile { get => bs1_tile_vm[0, 0]; }
 
@@ -92,10 +110,10 @@ namespace BattleSweeper.ViewModels
             bs_player_1.shoot(coord);
         }
 
-
         public void changePlayer()
         {
             PlayerChanging = true;
+
 
             if (ActivePlayer == Player.Player1)
                 m_next_player = Player.Player2;
@@ -104,6 +122,7 @@ namespace BattleSweeper.ViewModels
 
             ActivePlayer = Player.None;
 
+            AllTilesChanged?.Invoke();
         }
 
         public void confirmPlayerChange()
@@ -111,6 +130,8 @@ namespace BattleSweeper.ViewModels
             PlayerChanging = false;
 
             ActivePlayer = m_next_player;
+
+            AllTilesChanged?.Invoke();
         }
 
         protected bool m_player_changing = false;

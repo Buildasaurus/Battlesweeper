@@ -18,7 +18,7 @@ namespace Games.Battleships
         public Grid<BattleshipTile> Tiles { get; protected set; }
         public List<int> shipLengths { get; set; } = new List<int>();
 
-        public Action<Point>? TileChanged { get; }
+        public Action<Point>? TileChanged { get; set; }
 
         int n = 0;
         bool hit = false;
