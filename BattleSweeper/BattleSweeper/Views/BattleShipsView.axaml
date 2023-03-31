@@ -32,7 +32,11 @@
                 <Image
                     Classes="Pixel"
                     IsVisible="{Binding isHit}"
-                    Source="/Assets/BattleShipsHit.png" />
+                    Source="/Assets/ShipHit.png" />
+                <Image
+                    Classes="Pixel"
+                    IsVisible="{Binding isMissed}"
+                    Source="/Assets/ShipMissed.png" />
                 <Image
                     Classes="Pixel"
                     IsVisible="{Binding isBombHit}"
@@ -44,7 +48,7 @@
 
     <Grid
         Background="LightBlue"
-        ColumnDefinitions="*, *"
+        ColumnDefinitions="*,*"
         RowDefinitions="1*,8*">
         <Label>hello</Label>
         <Border
@@ -140,19 +144,20 @@
             </StackPanel>
 
         </StackPanel>
-
-        <Viewbox
+        <Grid
             Grid.Row="1"
-            Grid.Column="0"
-            Stretch="Uniform">
-            <Grid x:Name="Player1Grid" Margin="0" />
-        </Viewbox>
-        <Viewbox
-            Grid.Row="1"
-            Grid.Column="1"
-            Stretch="Uniform">
-            <Grid x:Name="Player2Grid" Margin="0" />
-        </Viewbox>
+            Grid.ColumnSpan="2"
+            ColumnDefinitions="20*,*,20*">
+            <Viewbox Grid.Column="0" Stretch="Uniform">
+                <Grid x:Name="Player1Grid" Margin="0" />
+            </Viewbox>
+            <Button Grid.Column="1" Command="{Binding confirmPlayerChange}">
+                Change Player
+            </Button>
+            <Viewbox Grid.Column="2" Stretch="Uniform">
+                <Grid x:Name="Player2Grid" Margin="0" />
+            </Viewbox>
+        </Grid>
     </Grid>
 
 </UserControl>

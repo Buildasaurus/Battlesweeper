@@ -11,6 +11,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Media;
 using Point = System.Drawing.Point;
 using Avalonia.VisualTree;
+using ReactiveUI;
 
 namespace BattleSweeper.ViewModels
 {
@@ -29,7 +30,8 @@ namespace BattleSweeper.ViewModels
             this.player = player;
         }
 
-        public bool isHit { get => tile.hasBeenShot; }
+        public bool isHit { get => tile.hasBeenShot && tile.ship != -1; }
+        public bool isMissed { get => tile.hasBeenShot && !isHit; }
 
         public bool isBombHit { get => tile.hasBeenShot && tile.hasBomb; }
 
@@ -37,9 +39,7 @@ namespace BattleSweeper.ViewModels
 
         public bool isEnd { get => tile.ship != -1 && (tile.atEnd || tile.atStart) && vm.ActivePlayer == player; }
 
-        public bool hideShip {
-            get => vm.ActivePlayer != player;
-        }
+        public bool hideShip { get => vm.ActivePlayer != player; }
 
         public RotateTransform shipTransform { get => new((tile.horizontal ? -90 : 0) + (tile.atEnd ? 180 : 0)); }
 
@@ -62,7 +62,8 @@ namespace BattleSweeper.ViewModels
         protected bool? isVertical = true;
         public BSTileVM Tile { get => bs1_tile_vm[0, 0]; }
 
-        public Player ActivePlayer { get; }
+        public Player ActivePlayer { get => m_active_player; set => this.RaiseAndSetIfChanged(ref m_active_player, value); }
+        public bool PlayerChanging { get => m_player_changing; set => this.RaiseAndSetIfChanged(ref m_player_changing, value); }
 
         public IBattleships bs_player_1;
         public IBattleships bs_player_2;
@@ -117,5 +118,32 @@ namespace BattleSweeper.ViewModels
             }
             
         }
+            bs_player_1.shoot(coord);
+        }
+
+
+        public void changePlayer()
+        {
+            PlayerChanging = true;
+
+            if (ActivePlayer == Player.Player1)
+                m_next_player = Player.Player2;
+            else if (ActivePlayer == Player.Player2)
+                m_next_player = Player.Player1;
+
+            ActivePlayer = Player.None;
+
+        }
+
+        public void confirmPlayerChange()
+        {
+            PlayerChanging = false;
+
+            ActivePlayer = m_next_player;
+        }
+
+        protected bool m_player_changing = false;
+        protected Player m_next_player = Player.None;
+        protected Player m_active_player;
     }
 }
