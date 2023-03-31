@@ -28,7 +28,8 @@ namespace BattleSweeper.ViewModels
             this.player = player;
         }
 
-        public bool isHit { get => tile.hasBeenShot; }
+        public bool isHit { get => tile.hasBeenShot && tile.ship != -1; }
+        public bool isMissed { get => tile.hasBeenShot && !isHit; }
 
         public bool isBombHit { get => tile.hasBeenShot && tile.hasBomb; }
 
@@ -55,6 +56,8 @@ namespace BattleSweeper.ViewModels
         {
             this.bs_player_1 = bs_player_1;
             this.bs_player_2 = bs_player_2;
+
+            ActivePlayer = Player.Player2;
         }
 
         public BSTileVM Tile { get => bs1_tile_vm[0, 0]; }

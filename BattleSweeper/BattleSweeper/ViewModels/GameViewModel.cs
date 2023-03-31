@@ -113,6 +113,8 @@ namespace BattleSweeper.ViewModels
                 pl1.setTile(new(6, 8), new(0, false, false, true, false, false));
                 pl1.setTile(new(7, 8), new(0, false, false, true, false, true));
 
+                pl1.setTile(new(1, 1), new(-1, true, false, false, false, false));
+
                 pl2.constructBoard(new());
                 BattleShipsViewModel battleshipgame = new BattleShipsViewModel(pl1, pl2);
                 GameView = battleshipgame;

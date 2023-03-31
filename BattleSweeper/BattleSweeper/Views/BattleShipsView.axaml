@@ -32,7 +32,11 @@
                 <Image
                     Classes="Pixel"
                     IsVisible="{Binding isHit}"
-                    Source="/Assets/BattleShipsHit.png" />
+                    Source="/Assets/ShipHit.png" />
+                <Image
+                    Classes="Pixel"
+                    IsVisible="{Binding isMissed}"
+                    Source="/Assets/ShipMissed.png" />
                 <Image
                     Classes="Pixel"
                     IsVisible="{Binding isBombHit}"
