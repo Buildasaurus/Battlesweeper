@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using Avalonia.Media;
+using Point = System.Drawing.Point;
 
 namespace BattleSweeper.ViewModels
 {
@@ -52,5 +53,10 @@ namespace BattleSweeper.ViewModels
 
         public Grid<BSTileVM> bs1_tile_vm = new(new(10, 10));
         public Grid<BSTileVM> bs2_tile_vm = new(new(10, 10));
+
+        public void leftClick(Point coord)
+        {
+            bs_player_1.shoot(coord);
+        }
     }
 }
