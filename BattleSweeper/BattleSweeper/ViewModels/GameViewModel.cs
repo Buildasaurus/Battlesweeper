@@ -32,6 +32,7 @@ namespace BattleSweeper.ViewModels
         public ViewModelBase GameView { get => m_game_view; set => this.RaiseAndSetIfChanged(ref m_game_view, value); }
         static Window window = (App.Current.ApplicationLifetime as ClassicDesktopStyleApplicationLifetime).MainWindow;
         public bool shiftPressed = false;
+        public bool RPressed = false;
         int minesweepergame = 1;
         MineSweeperViewModel mine_sweeper_vm;
 
@@ -85,6 +86,20 @@ namespace BattleSweeper.ViewModels
                 }
             }
         }
+
+        void battleshipsKeyEvent(KeyArgs x) //for rotation
+        {
+            if (x.key == Key.R)
+            {
+                if (!RPressed)
+                {
+                    Trace.WriteLine("changing direction");
+                    battleshipgame.changeDirection();
+                }
+                RPressed = !RPressed;
+            }
+        }
+
 
         void battleshipsMouseEvent(MouseArgs x)
         {
