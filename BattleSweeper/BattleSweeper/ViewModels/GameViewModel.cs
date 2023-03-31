@@ -24,6 +24,8 @@ using Screen = System.Windows.Forms.Screen;
 using Rect = Avalonia.Rect;
 using Window = Avalonia.Controls.Window;
 using Games.Battleships;
+using Windows.UI.WebUI;
+using Point = System.Drawing.Point;
 
 namespace BattleSweeper.ViewModels
 {
@@ -32,8 +34,11 @@ namespace BattleSweeper.ViewModels
         public ViewModelBase GameView { get => m_game_view; set => this.RaiseAndSetIfChanged(ref m_game_view, value); }
         static Window window = (App.Current.ApplicationLifetime as ClassicDesktopStyleApplicationLifetime).MainWindow;
         public bool shiftPressed = false;
+        public bool RPressed = false;
         int minesweepergame = 1;
         MineSweeperViewModel mine_sweeper_vm;
+        HashSet<Point> pl1Bombs;
+        HashSet<Point> pl2Bombs;
 
         IBattleships pl1;
         IBattleships pl2;
@@ -86,15 +91,33 @@ namespace BattleSweeper.ViewModels
             }
         }
 
+        void battleshipsKeyEvent(KeyArgs x) //for rotation
+        {
+            if (x.key == Key.R)
+            {
+                if (!RPressed)
+                {
+                    Trace.WriteLine("changing direction");
+                    battleshipgame.changeDirection();
+                }
+                RPressed = !RPressed;
+            }
+        }
+
+
         void battleshipsMouseEvent(MouseArgs x)
         {
-            System.Drawing.Point field = coordToField(mine_sweeper_vm.Position, x.MousePosition);
-
-            if (mine_sweeper_vm.grid.inBounds(field))
+            Rect? rect = battleshipgame.ActiveGridBounds;
+            if (rect != null)
             {
-                if (x.button == MouseButton.Left)
+                System.Drawing.Point field = coordToField((Rect)rect, x.MousePosition);
+
+                if (battleshipgame.bs1_tile_vm.inBounds(field))
                 {
-                    //battleshipgame.shoot(field);
+                    if (x.button == MouseButton.Left)
+                    {
+                        battleshipgame.leftClick(field);
+                    }
                 }
             }
         }
@@ -106,6 +129,7 @@ namespace BattleSweeper.ViewModels
             {
                 MineSweeperTransitionViewModel transition = new MineSweeperTransitionViewModel();
                 GameView = transition;
+                pl1Bombs = mine_sweeper_vm.mine_sweeper.CurrentBombs;
 
                 transition.TransitionFinished.Subscribe(x =>
                 {
@@ -116,41 +140,53 @@ namespace BattleSweeper.ViewModels
 
                     minesweepergame++;
                 });
-                
+
+
+
             }
             else
             {
-                
+                pl2Bombs = mine_sweeper_vm.mine_sweeper.CurrentBombs;
+
+                pl1 = new Battleships();
+                pl2 = new Battleships();
+
+                pl1.constructBoard(pl1Bombs.ToList());
+                pl2.constructBoard(pl2Bombs.ToList());
+                battleshipgame = new BattleShipsViewModel(pl1, pl2);
 
                 mine_sweeper_vm.GameOver -= gameover;
                 EventHandler.KeyChanged -= minesweeperKeyChanged;
                 EventHandler.MouseChanged -= minesweeperMouseEvent;
                 EventHandler.MouseChanged += battleshipsMouseEvent;
+                EventHandler.KeyChanged += battleshipsKeyEvent;
+
+                
 
 
 
-                BattleshipsTemplate pl1_t = new BattleshipsTemplate();
-                BattleshipsTemplate pl2_t = new BattleshipsTemplate();
 
-                pl1 = pl1_t;
-                pl2 = pl2_t;
+                //BattleshipsTemplate pl1_t = new BattleshipsTemplate();
+                //BattleshipsTemplate pl2_t = new BattleshipsTemplate();
 
-                pl1_t.constructBoard(new());
+                //pl1 = pl1_t;
+                //pl2 = pl2_t;
 
-                pl1_t.setTile(new(3, 3), new(0, false, false, false, true, false));
-                pl1_t.setTile(new(3, 4), new(0, false, false, false, false, false));
-                pl1_t.setTile(new(3, 5), new(0, true, true, false, false, false));
-                pl1_t.setTile(new(3, 6), new(0, false, false, false, false, true));
+                //pl1_t.constructBoard(new());
 
-                pl1_t.setTile(new(4, 8), new(0, false, false, true, true, false));
-                pl1_t.setTile(new(5, 8), new(0, true, false, true, false, false));
-                pl1_t.setTile(new(6, 8), new(0, false, false, true, false, false));
-                pl1_t.setTile(new(7, 8), new(0, false, false, true, false, true));
+                //pl1_t.setTile(new(3, 3), new(0, false, false, false, true, false));
+                //pl1_t.setTile(new(3, 4), new(0, false, false, false, false, false));
+                //pl1_t.setTile(new(3, 5), new(0, true, true, false, false, false));
+                //pl1_t.setTile(new(3, 6), new(0, false, false, false, false, true));
 
-                pl1_t.setTile(new(1, 1), new(-1, true, false, false, false, false));
+                //pl1_t.setTile(new(4, 8), new(0, false, false, true, true, false));
+                //pl1_t.setTile(new(5, 8), new(0, true, false, true, false, false));
+                //pl1_t.setTile(new(6, 8), new(0, false, false, true, false, false));
+                //pl1_t.setTile(new(7, 8), new(0, false, false, true, false, true));
 
-                pl2.constructBoard(new());
-                BattleShipsViewModel battleshipgame = new BattleShipsViewModel(pl1, pl2);
+                //pl1_t.setTile(new(1, 1), new(-1, true, false, false, false, false));
+
+                //pl2.constructBoard(new());
                 GameView = battleshipgame;
 
             }
