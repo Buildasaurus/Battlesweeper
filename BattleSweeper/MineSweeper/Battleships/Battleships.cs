@@ -131,7 +131,7 @@ namespace Games.Battleships
                         Tiles[coord.X + i, coord.Y].atStart = true;
                     if (i == shipLengths[n] - 1)
                         Tiles[coord.X + i, coord.Y].atEnd = true;
-                    Tiles[coord.X, coord.Y + i].horizontal = true;
+                    Tiles[coord.X + i, coord.Y].horizontal = true;
                     TileChanged?.Invoke(new(coord.X + i, coord.Y));
                 }
             }
