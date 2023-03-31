@@ -59,7 +59,7 @@ namespace BattleSweeper.ViewModels
             ActivePlayer = Player.Player1;
         }
         public bool isPlacingShips = true;
-        protected bool? isVertical = true;
+        protected bool isVertical = true;
         public BSTileVM Tile { get => bs1_tile_vm[0, 0]; }
 
         public Player ActivePlayer { get => m_active_player; set => this.RaiseAndSetIfChanged(ref m_active_player, value); }
@@ -98,11 +98,11 @@ namespace BattleSweeper.ViewModels
             {
                 if (ActivePlayer == Player.Player1)
                 {
-                    bs_player_1.placeShip(coord, true);
+                    bs_player_1.placeShip(coord, isVertical);
                 }
                 if (ActivePlayer == Player.Player2)
                 {
-                    bs_player_2.placeShip(coord, true);
+                    bs_player_2.placeShip(coord, isVertical);
                 }
             }
             else
@@ -117,8 +117,6 @@ namespace BattleSweeper.ViewModels
                 }
             }
             
-        }
-            bs_player_1.shoot(coord);
         }
 
 
