@@ -1,4 +1,5 @@
-﻿using Avalonia.Media;
+﻿using Avalonia.Layout;
+using Avalonia.Media;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,6 +15,7 @@ namespace Games.Battleships
     {
         public EventHandler<int>? ShipSunk;
         public EventHandler<bool>? GameOver;
+        
         public List<int> remainingPieces { get; set; } = new List<int>(new int[] { 4, 3, 2, 2, 2 });
         public Grid<BattleshipTile> Tiles { get; protected set; }
         public List<int> shipLengths { get; set; } = new List<int>();
@@ -64,6 +66,7 @@ namespace Games.Battleships
                         
                     }
                 }
+                TileChanged?.Invoke(coord);
                 return true;
             }
 
@@ -72,9 +75,11 @@ namespace Games.Battleships
                 remainingPieces[Tiles[coord].ship]--;
                 if (remainingPieces[Tiles[coord].ship] == 0)
                     ShipSunk?.Invoke(this, Tiles[coord].ship);
+                TileChanged?.Invoke(coord);
                 hit = true;
                 return true;
             }
+            TileChanged?.Invoke(coord);
             return true;
         }
         
@@ -113,6 +118,7 @@ namespace Games.Battleships
                         Tiles[coord.X, coord.Y + i].atStart = true;
                     if (i == shipLengths[n] - 1)
                         Tiles[coord.X, coord.Y + i].atEnd = true;
+                    TileChanged?.Invoke(new(coord.X, coord.Y + i));
                 }
             }
 
@@ -120,11 +126,13 @@ namespace Games.Battleships
             {
                 for (int i = 0; i < shipLengths[n]; i++)
                 {
-                    Tiles[coord.X, coord.Y + i].ship = n;
+                    Tiles[coord.X + i, coord.Y].ship = n;
                     if (i == 0)
-                        Tiles[coord.X, coord.Y + i].atStart = true;
+                        Tiles[coord.X + i, coord.Y].atStart = true;
                     if (i == shipLengths[n] - 1)
-                        Tiles[coord.X, coord.Y + i].atEnd = true;
+                        Tiles[coord.X + i, coord.Y].atEnd = true;
+                    Tiles[coord.X, coord.Y + i].horizontal = true;
+                    TileChanged?.Invoke(new(coord.X + i, coord.Y));
                 }
             }
             ///Increments index for what ship is next to be placed, and returns success.
@@ -140,13 +148,13 @@ namespace Games.Battleships
                 winCheck = winCheck + shipLengths[i];
                 }
             if (winCheck == 0)
-                GameOver.Invoke(this, true);
+                GameOver?.Invoke(this, true);
 
         }
         public void constructBoard(List<Point> bombPositions) {
            
 
-            Tiles = new Grid<BattleshipTile>(new System.Drawing.Size(10,10));
+            Tiles = new Grid<BattleshipTile>(new System.Drawing.Size(10,10),new BattleshipTile(-1, false, false,false, false, false ));
             shipLengths = remainingPieces.GetRange(0,remainingPieces.Count);
 
             foreach (Point bomb in bombPositions)
