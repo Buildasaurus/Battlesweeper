@@ -107,13 +107,17 @@ namespace BattleSweeper.ViewModels
 
         void battleshipsMouseEvent(MouseArgs x)
         {
-            System.Drawing.Point field = coordToField(mine_sweeper_vm.Position, x.MousePosition);
-
-            if (battleshipgame.bs1_tile_vm.inBounds(field))
+            Rect? rect = battleshipgame.ActiveGridBounds;
+            if (rect != null)
             {
-                if (x.button == MouseButton.Left)
+                System.Drawing.Point field = coordToField((Rect)rect, x.MousePosition);
+
+                if (battleshipgame.bs1_tile_vm.inBounds(field))
                 {
-                    battleshipgame.leftClick(field);
+                    if (x.button == MouseButton.Left)
+                    {
+                        battleshipgame.leftClick(field);
+                    }
                 }
             }
         }
@@ -143,17 +147,22 @@ namespace BattleSweeper.ViewModels
             else
             {
                 pl2Bombs = mine_sweeper_vm.mine_sweeper.CurrentBombs;
-                mine_sweeper_vm.GameOver -= gameover;
-                EventHandler.KeyChanged -= minesweeperKeyChanged;
-                EventHandler.MouseChanged -= minesweeperMouseEvent;
-                EventHandler.MouseChanged += battleshipsMouseEvent;
-                EventHandler.KeyChanged += battleshipsKeyEvent;
 
                 pl1 = new Battleships();
                 pl2 = new Battleships();
 
                 pl1.constructBoard(pl1Bombs.ToList());
                 pl2.constructBoard(pl2Bombs.ToList());
+                battleshipgame = new BattleShipsViewModel(pl1, pl2);
+
+                mine_sweeper_vm.GameOver -= gameover;
+                EventHandler.KeyChanged -= minesweeperKeyChanged;
+                EventHandler.MouseChanged -= minesweeperMouseEvent;
+                EventHandler.MouseChanged += battleshipsMouseEvent;
+                EventHandler.KeyChanged += battleshipsKeyEvent;
+
+                
+
 
 
 
@@ -178,7 +187,6 @@ namespace BattleSweeper.ViewModels
                 //pl1_t.setTile(new(1, 1), new(-1, true, false, false, false, false));
 
                 //pl2.constructBoard(new());
-                BattleShipsViewModel battleshipgame = new BattleShipsViewModel(pl1, pl2);
                 GameView = battleshipgame;
 
             }
