@@ -16,7 +16,7 @@ namespace UnitTests
             {
                 // test empty tile.
                 BattleshipTile bs_tile = new(-1, false, false, false, false, false);
-                BSTileVM tile = new(bs_tile);
+                BSTileVM tile = new(bs_tile, null, Player.None);
 
                 Assert.False(tile.isEnd || tile.isMiddle || tile.isHit || tile.isBombHit);
             }
@@ -25,7 +25,7 @@ namespace UnitTests
                 // test horizontal middle ship tile
 
                 BattleshipTile bs_tile = new(0, false, false, true, false, false);
-                BSTileVM tile = new(bs_tile);
+                BSTileVM tile = new(bs_tile, null, Player.None);
 
                 Assert.True(!tile.isEnd && tile.isMiddle && !tile.isHit && !tile.isBombHit);
                 Assert.True(tile.shipTransform.Angle == -90);
