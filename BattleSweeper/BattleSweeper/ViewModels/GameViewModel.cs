@@ -35,7 +35,7 @@ namespace BattleSweeper.ViewModels
         int minesweepergame = 1;
         MineSweeperViewModel mine_sweeper_vm;
 
-        BattleshipsTemplate pl1;
+        IBattleships pl1;
         IBattleships pl2;
         BattleShipsViewModel battleshipgame;
 
@@ -122,38 +122,37 @@ namespace BattleSweeper.ViewModels
             {
                 
 
-                pl1.constructBoard(new());
-                pl2.constructBoard(new());
-
-                GameView = battleshipgame;
-
                 mine_sweeper_vm.GameOver -= gameover;
                 EventHandler.KeyChanged -= minesweeperKeyChanged;
                 EventHandler.MouseChanged -= minesweeperMouseEvent;
                 EventHandler.MouseChanged += battleshipsMouseEvent;
 
 
-                /*
-                BattleshipsTemplate pl1 = new BattleshipsTemplate();
-                IBattleships pl2 = new BattleshipsTemplate();
-                pl1.constructBoard(new());
 
-                pl1.setTile(new(3, 3), new(0, false, false, false, true, false));
-                pl1.setTile(new(3, 4), new(0, false, false, false, false, false));
-                pl1.setTile(new(3, 5), new(0, true, true, false, false, false));
-                pl1.setTile(new(3, 6), new(0, false, false, false, false, true));
+                BattleshipsTemplate pl1_t = new BattleshipsTemplate();
+                BattleshipsTemplate pl2_t = new BattleshipsTemplate();
 
-                pl1.setTile(new(4, 8), new(0, false, false, true, true, false));
-                pl1.setTile(new(5, 8), new(0, true, false, true, false, false));
-                pl1.setTile(new(6, 8), new(0, false, false, true, false, false));
-                pl1.setTile(new(7, 8), new(0, false, false, true, false, true));
+                pl1 = pl1_t;
+                pl2 = pl2_t;
 
-                pl1.setTile(new(1, 1), new(-1, true, false, false, false, false));
+                pl1_t.constructBoard(new());
+
+                pl1_t.setTile(new(3, 3), new(0, false, false, false, true, false));
+                pl1_t.setTile(new(3, 4), new(0, false, false, false, false, false));
+                pl1_t.setTile(new(3, 5), new(0, true, true, false, false, false));
+                pl1_t.setTile(new(3, 6), new(0, false, false, false, false, true));
+
+                pl1_t.setTile(new(4, 8), new(0, false, false, true, true, false));
+                pl1_t.setTile(new(5, 8), new(0, true, false, true, false, false));
+                pl1_t.setTile(new(6, 8), new(0, false, false, true, false, false));
+                pl1_t.setTile(new(7, 8), new(0, false, false, true, false, true));
+
+                pl1_t.setTile(new(1, 1), new(-1, true, false, false, false, false));
 
                 pl2.constructBoard(new());
                 BattleShipsViewModel battleshipgame = new BattleShipsViewModel(pl1, pl2);
                 GameView = battleshipgame;
-                */
+
             }
         }
 
