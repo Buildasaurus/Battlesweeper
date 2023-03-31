@@ -16,52 +16,63 @@ namespace Tests
         [Fact]
         public void placeShipTest()
         {
-#if false
+
             Battleships game = new Battleships();
-            List<Point> bombPosition = new List<Point>();
+            List<Point> bombPositions = new List<Point>();
             game.constructBoard(bombPositions);
-            game.placeShip(Tiles[1,1],false);
-            game.placeShip(Tiles[1, 2], true);
-            game.placeShip(Tiles[4, 5], false);
-            game.placeShip(Tiles[8, 8], false);
-            game.placeShip(Tiles[3, 7], true);
+            game.placeShip(new(1,1),false);
+            game.placeShip(new(1, 2), true);
+            game.placeShip(new(4, 5), false);
+            game.placeShip(new(8, 8), false);
+            game.placeShip(new(3, 7), true);
 
-            Assert.True(Tiles[1, 1].ship = 0);
-            Assert.True(Tiles[2, 1].ship = 0);
-            Assert.True(Tiles[3, 1].ship = 0);
-            Assert.True(Tiles[4, 1].ship = 0);
-            Assert.True(Tiles[5, 1].ship = -1);
+            Assert.True(game.Tiles[1, 1].ship == 0);
+            Assert.True(game.Tiles[2, 1].ship == 0);
+            Assert.True(game.Tiles[3, 1].ship == 0);
+            Assert.True(game.Tiles[4, 1].ship == 0);
+            Assert.True(game.Tiles[5, 1].ship == -1);
 
-            Assert.True(Tiles[1, 2].ship = 1);
-            Assert.True(Tiles[1, 2].atEnd = true);
-            Assert.True(Tiles[1, 3].ship = 1);
-            Assert.True(Tiles[1, 4].ship = 1);
-            Assert.True(Tiles[1, 5].ship = 1);
-            Assert.True(Tiles[1, 6].ship = 0);
+            Assert.True(game.Tiles[1, 2].ship == 1);
+            Assert.True(game.Tiles[1, 2].atStart == true);
+            Assert.True(game.Tiles[1, 3].ship == 1);
+            Assert.True(game.Tiles[1, 4].ship == 1);
+            Assert.True(game.Tiles[1, 5].ship == -1);
+            Assert.True(game.Tiles[1, 6].ship == -1);
 
-            Assert.True(Tiles[4, 5].ship = 2);
-#endif
+            Assert.True(game.Tiles[4, 5].ship == 2);
+
         }
 
-        /*[Fact]
+        [Fact]
         public void shootTest()
         {
             Battleships game = new Battleships();
             List<Point> bombPosition = new List<Point>();
-            game.constructBoard(bombPositions);
-            bool GameOverInvoked = false;
-            game.GameOver += (s, won) => { Assert.True(won); GameOverInvoked = true; };
+            game.constructBoard(bombPosition);
+            game.placeShip(new(1, 1), true);
+            bool ShipSunkInvoked = false;
+            game.ShipSunk += (s, sunk) => { Assert.True(sunk == 0); ShipSunkInvoked = true; };
+            game.shoot(new(2, 1));
+            game.shoot(new(1, 1));
+            game.shoot(new(1, 2));
+            game.shoot(new(1, 3));
+            game.shoot(new(1, 4));
+            
 
-
-
-
-
-            Assert.True(GameOverInvoked);
+            
+            Assert.True(game.Tiles[1, 2].hasBeenShot == true);
+            Assert.True(game.Tiles[1, 1].hasBeenShot == true);
+            Assert.True(game.Tiles[1, 2].hasBeenShot == true);
+            Assert.True(game.Tiles[1, 3].hasBeenShot == true);
+            Assert.True(game.Tiles[1, 4].hasBeenShot == true);
+            Assert.True(game.Tiles[1, 4].ship == 0);
+            Assert.True(ShipSunkInvoked == true);
+            Assert.True(game.Tiles[2, 1].hasBeenShot == true);
         }
-        
 
 
 
+        /*
         [Fact]
         public void checkWinTest()
         {

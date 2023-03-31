@@ -72,9 +72,11 @@ namespace BattleSweeper.ViewModels
             this.bs_player_1.TileChanged += (coord) => bs1_tile_vm[coord].tileChanged();
             this.bs_player_2.TileChanged += (coord) => bs2_tile_vm[coord].tileChanged();
 
-            ActivePlayer = Player.Player2;
+            ActivePlayer = Player.Player1;
             changePlayer();
         }
+        public bool isPlacingShips = true;
+        protected bool isVertical = true;
 
         public Action? AllTilesChanged { get; set; }
 
@@ -105,9 +107,36 @@ namespace BattleSweeper.ViewModels
         public TransformedBounds Bs1TransformedBounds { get; set; }
         public TransformedBounds Bs2TransformedBounds { get; set; }
 
+        public void changeDirection()
+        {
+            isVertical = !isVertical;
+        }
+
         public void leftClick(Point coord)
         {
-            bs_player_1.shoot(coord);
+            if (isPlacingShips)
+            {
+                if (ActivePlayer == Player.Player1)
+                {
+                    bs_player_1.placeShip(coord, isVertical);
+                }
+                if (ActivePlayer == Player.Player2)
+                {
+                    bs_player_2.placeShip(coord, isVertical);
+                }
+            }
+            else
+            {
+                if (ActivePlayer == Player.Player1)
+                {
+                    bs_player_1.shoot(coord);
+                }
+                if (ActivePlayer == Player.Player2)
+                {
+                    bs_player_2.shoot(coord);
+                }
+            }
+            
         }
 
         public void changePlayer()
