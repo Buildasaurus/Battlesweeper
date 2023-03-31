@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using Avalonia.Media;
+using Point = System.Drawing.Point;
 using Avalonia.VisualTree;
 
 namespace BattleSweeper.ViewModels
@@ -85,5 +86,10 @@ namespace BattleSweeper.ViewModels
 
         public TransformedBounds Bs1TransformedBounds { get; set; }
         public TransformedBounds Bs2TransformedBounds { get; set; }
+
+        public void leftClick(Point coord)
+        {
+            bs_player_1.shoot(coord);
+        }
     }
 }

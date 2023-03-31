@@ -34,48 +34,69 @@ namespace BattleSweeper.ViewModels
         public bool shiftPressed = false;
         int minesweepergame = 1;
         MineSweeperViewModel mine_sweeper_vm;
+
+        BattleshipsTemplate pl1;
+        IBattleships pl2;
+        BattleShipsViewModel battleshipgame;
+
         public GameViewModel()
         {
             EventHandler.start();
             mine_sweeper_vm = constructMineField();
-            EventHandler.KeyChanged += (x =>
-            {
-                if(x.key == Key.LeftShift)
-                {
-                    shiftPressed = !shiftPressed;
-                    Trace.WriteLine(shiftPressed);
-                }
-            });
-            EventHandler.MouseChanged += (x =>
-            {
-                System.Drawing.Point field = coordToField(mine_sweeper_vm.Position, x.MousePosition);
 
-                if (mine_sweeper_vm.grid.inBounds(field))
-                {
-                    if (x.button == MouseButton.Middle)
-                    {
-                        mine_sweeper_vm.rightClickTile(field);
-                    }
-                    if (x.button == MouseButton.Left)
-                    {
-
-                        if ((x.modifier & RawInputModifiers.Shift) == RawInputModifiers.None)
-                        {
-                            mine_sweeper_vm.leftClickTile(field);
-                        }
-                        else
-                        {
-                            mine_sweeper_vm.leftShiftClickTile(field);
-                        }
-                    }
-                }
-            });
-            
-
+            EventHandler.KeyChanged += minesweeperKeyChanged;
+            EventHandler.MouseChanged += minesweeperMouseEvent;
 
             mine_sweeper_vm.start();
 
             GameView = mine_sweeper_vm;
+        }
+
+        void minesweeperKeyChanged(KeyArgs x)
+        {
+            if (x.key == Key.LeftShift)
+            {
+                shiftPressed = !shiftPressed;
+                Trace.WriteLine(shiftPressed);
+            }
+        }
+
+        void minesweeperMouseEvent(MouseArgs x)
+        {
+            System.Drawing.Point field = coordToField(mine_sweeper_vm.Position, x.MousePosition);
+
+            if (mine_sweeper_vm.grid.inBounds(field))
+            {
+                if (x.button == MouseButton.Middle)
+                {
+                    mine_sweeper_vm.rightClickTile(field);
+                }
+                if (x.button == MouseButton.Left)
+                {
+
+                    if ((x.modifier & RawInputModifiers.Shift) == RawInputModifiers.None)
+                    {
+                        mine_sweeper_vm.leftClickTile(field);
+                    }
+                    else
+                    {
+                        mine_sweeper_vm.leftShiftClickTile(field);
+                    }
+                }
+            }
+        }
+
+        void battleshipsMouseEvent(MouseArgs x)
+        {
+            System.Drawing.Point field = coordToField(mine_sweeper_vm.Position, x.MousePosition);
+
+            if (mine_sweeper_vm.grid.inBounds(field))
+            {
+                if (x.button == MouseButton.Left)
+                {
+                    //battleshipgame.shoot(field);
+                }
+            }
         }
 
         public void gameover (object? s, bool foundAllBombs)
@@ -94,11 +115,25 @@ namespace BattleSweeper.ViewModels
                     GameView = mine_sweeper_vm;
 
                     minesweepergame++;
-                });      
+                });
                 
             }
             else
             {
+                
+
+                pl1.constructBoard(new());
+                pl2.constructBoard(new());
+
+                GameView = battleshipgame;
+
+                mine_sweeper_vm.GameOver -= gameover;
+                EventHandler.KeyChanged -= minesweeperKeyChanged;
+                EventHandler.MouseChanged -= minesweeperMouseEvent;
+                EventHandler.MouseChanged += battleshipsMouseEvent;
+
+
+                /*
                 BattleshipsTemplate pl1 = new BattleshipsTemplate();
                 IBattleships pl2 = new BattleshipsTemplate();
                 pl1.constructBoard(new());
@@ -118,6 +153,7 @@ namespace BattleSweeper.ViewModels
                 pl2.constructBoard(new());
                 BattleShipsViewModel battleshipgame = new BattleShipsViewModel(pl1, pl2);
                 GameView = battleshipgame;
+                */
             }
         }
 
