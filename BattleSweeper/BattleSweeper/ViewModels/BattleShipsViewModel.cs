@@ -14,6 +14,7 @@ using Avalonia.VisualTree;
 using ReactiveUI;
 using Avalonia.Metadata;
 using System.Reactive;
+using Games;
 
 namespace BattleSweeper.ViewModels
 {
@@ -73,8 +74,9 @@ namespace BattleSweeper.ViewModels
             this.bs_player_2.TileChanged += (coord) => bs2_tile_vm[coord].tileChanged();
 
             ActivePlayer = Player.Player1;
-            changePlayer();
         }
+
+        int placedShips = 0;
         public bool isPlacingShips = true;
         protected bool isVertical = true;
 
@@ -114,26 +116,49 @@ namespace BattleSweeper.ViewModels
 
         public void leftClick(Point coord)
         {
+            
             if (isPlacingShips)
             {
+                
                 if (ActivePlayer == Player.Player1)
                 {
                     bs_player_1.placeShip(coord, isVertical);
+                    placedShips++;
                 }
                 if (ActivePlayer == Player.Player2)
                 {
                     bs_player_2.placeShip(coord, isVertical);
+                    placedShips++;
+                }
+                if (placedShips == 5 && ActivePlayer == Player.Player2)
+                {
+                    isPlacingShips = false;
+                    changePlayer();
+                }
+                else if (placedShips == 5)
+                {
+                    changePlayer();
+                    placedShips = 0;
                 }
             }
             else
             {
                 if (ActivePlayer == Player.Player1)
                 {
-                    bs_player_1.shoot(coord);
+                    Games.MoveResult move = bs_player_1.shoot(coord);
+                    if (move != MoveResult.Illegal)
+                    {
+                        changePlayer();
+                    }
                 }
                 if (ActivePlayer == Player.Player2)
                 {
                     bs_player_2.shoot(coord);
+                    Games.MoveResult move = bs_player_2.shoot(coord);
+                    if (move != MoveResult.Illegal)
+                    {
+                        changePlayer();
+                    }
                 }
             }
             

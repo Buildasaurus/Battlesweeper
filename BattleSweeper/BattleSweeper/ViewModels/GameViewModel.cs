@@ -103,7 +103,10 @@ namespace BattleSweeper.ViewModels
                 RPressed = !RPressed;
             }
         }
-
+        void battleshipsMovedEvent(MousePosition x)
+        {
+            Trace.WriteLine(x.Position);
+        }
 
         void battleshipsMouseEvent(MouseArgs x)
         {
@@ -160,6 +163,7 @@ namespace BattleSweeper.ViewModels
                 EventHandler.MouseChanged -= minesweeperMouseEvent;
                 EventHandler.MouseChanged += battleshipsMouseEvent;
                 EventHandler.KeyChanged += battleshipsKeyEvent;
+                EventHandler.MouseMoved += battleshipsMovedEvent;
 
                 
 

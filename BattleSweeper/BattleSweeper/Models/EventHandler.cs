@@ -29,6 +29,8 @@ namespace BattleSweeper.Models
         public static Point mousePosition = new Point();
         public static Action<MouseArgs>? MouseChanged;
         public static Action<KeyArgs>? KeyChanged;
+        public static Action<MousePosition>? MouseMoved;
+
 
 
         public static void start()
@@ -42,6 +44,7 @@ namespace BattleSweeper.Models
                 }
                 if (x is RawPointerEventArgs c)
                 {
+                    MouseMoved?.Invoke(new MousePosition(new Point((int)c.Position.X, (int)c.Position.Y)));
                     if (c.InputModifiers != RawInputModifiers.None)
                     {
                         // Get the current mouse position
@@ -54,6 +57,16 @@ namespace BattleSweeper.Models
             });
         }
     }
+
+    public class MousePosition
+    {
+        public Point Position;
+        public MousePosition(Point Position)
+        {
+            this.Position = Position;
+        }
+    }
+
     public class MouseArgs
     {
         public RawInputModifiers modifier;
