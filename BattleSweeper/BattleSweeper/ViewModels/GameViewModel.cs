@@ -99,13 +99,15 @@ namespace BattleSweeper.ViewModels
                 {
                     Trace.WriteLine("changing direction");
                     battleshipgame.changeDirection();
+
                 }
                 RPressed = !RPressed;
             }
         }
         void battleshipsMovedEvent(MousePosition x)
         {
-            Trace.WriteLine(x.Position);
+            if (battleshipgame.ActiveGridBounds != null)
+                battleshipgame.mouseMoved(coordToField((Rect)battleshipgame.ActiveGridBounds, x.Position));
         }
 
         void battleshipsMouseEvent(MouseArgs x)

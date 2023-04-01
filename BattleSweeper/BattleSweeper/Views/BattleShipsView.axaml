@@ -149,7 +149,16 @@
             Grid.ColumnSpan="2"
             ColumnDefinitions="*,130,*">
             <Viewbox Grid.Column="0" Stretch="Uniform">
-                <Grid x:Name="Player1Grid" Margin="0" />
+                <Grid x:Name="Player1Grid" Margin="0">
+                    <Image
+                        Grid.Row="{Binding ArrowY}"
+                        Grid.Column="{Binding ArrowX}"
+                        Classes="Pixel"
+                        IsVisible="{Binding Player1ArrowVisible}"
+                        RenderTransform="{Binding ArrowAngle}"
+                        Source="/Assets/Arrow.png"
+                        ZIndex="1" />
+                </Grid>
             </Viewbox>
             <Button
                 Grid.Column="1"
@@ -158,7 +167,16 @@
                 Change Player
             </Button>
             <Viewbox Grid.Column="2" Stretch="Uniform">
-                <Grid x:Name="Player2Grid" Margin="0" />
+                <Grid x:Name="Player2Grid" Margin="0">
+                    <Image
+                        Grid.Row="{Binding ArrowY}"
+                        Grid.Column="{Binding ArrowX}"
+                        Classes="Pixel"
+                        IsVisible="{Binding Player2ArrowVisible}"
+                        RenderTransform="{Binding ArrowAngle}"
+                        Source="/Assets/Arrow.png"
+                        ZIndex="1" />
+                </Grid>
             </Viewbox>
         </Grid>
     </Grid>

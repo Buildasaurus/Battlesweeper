@@ -44,13 +44,15 @@ namespace BattleSweeper.Models
                 }
                 if (x is RawPointerEventArgs c)
                 {
-                    MouseMoved?.Invoke(new MousePosition(new Point((int)c.Position.X, (int)c.Position.Y)));
+                    // Get the current mouse position
+                    Point cursorPos = new Point();
+                    GetCursorPos(ref cursorPos);
+                    mousePosition = new Point(cursorPos.X, cursorPos.Y);
+
+                    MouseMoved?.Invoke(new MousePosition(mousePosition));
+                    
                     if (c.InputModifiers != RawInputModifiers.None)
                     {
-                        // Get the current mouse position
-                        Point cursorPos = new Point();
-                        GetCursorPos(ref cursorPos);
-                        mousePosition = new Point(cursorPos.X, cursorPos.Y);
                         MouseChanged?.Invoke(new MouseArgs((MouseButton)c.Type, mousePosition, c.InputModifiers));
                     }
                 }

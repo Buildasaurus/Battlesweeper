@@ -87,6 +87,14 @@ namespace BattleSweeper.ViewModels
         public Player ActivePlayer { get => m_active_player; set => this.RaiseAndSetIfChanged(ref m_active_player, value); }
         public bool PlayerChanging { get => m_player_changing; set => this.RaiseAndSetIfChanged(ref m_player_changing, value); }
 
+        public bool Player1ArrowVisible { get => m_active_player == Player.Player1 && bs_player_1.Tiles.inBounds(m_arrow_coords) && isPlacingShips; }
+        public bool Player2ArrowVisible { get => m_active_player == Player.Player2 && bs_player_2.Tiles.inBounds(m_arrow_coords) && isPlacingShips; }
+
+        public double ArrowX => m_arrow_coords.X;
+        public double ArrowY => m_arrow_coords.Y;
+
+        public RotateTransform ArrowAngle => new(isVertical ? 0 : -90);
+
         public IBattleships bs_player_1;
         public IBattleships bs_player_2;
 
@@ -103,8 +111,6 @@ namespace BattleSweeper.ViewModels
 
 					else if (ActivePlayer == Player.Player1)
 						return Bs2TransformedBounds.Clip;
-
-					return null;
 				}
                 else
                 {
@@ -114,9 +120,9 @@ namespace BattleSweeper.ViewModels
 					else if (ActivePlayer == Player.Player2)
 						return Bs2TransformedBounds.Clip;
 
-					return null;
 				}
                 
+				return null;
             }
         }
 
@@ -126,6 +132,7 @@ namespace BattleSweeper.ViewModels
         public void changeDirection()
         {
             isVertical = !isVertical;
+            this.RaisePropertyChanged(nameof(ArrowAngle));
         }
 
         public void leftClick(Point coord)
@@ -136,13 +143,13 @@ namespace BattleSweeper.ViewModels
                 
                 if (ActivePlayer == Player.Player1)
                 {
-                    bs_player_1.placeShip(coord, isVertical);
-                    placedShips++;
+                    if(bs_player_1.placeShip(coord, isVertical) == MoveResult.Success)
+                        placedShips++;
                 }
                 if (ActivePlayer == Player.Player2)
                 {
-                    bs_player_2.placeShip(coord, isVertical);
-                    placedShips++;
+                    if(bs_player_2.placeShip(coord, isVertical) == MoveResult.Success)
+                        placedShips++;
                 }
                 if (placedShips == 5 && ActivePlayer == Player.Player2)
                 {
@@ -154,6 +161,9 @@ namespace BattleSweeper.ViewModels
                     changePlayer();
                     placedShips = 0;
                 }
+
+                this.RaisePropertyChanged(nameof(Player1ArrowVisible));
+                this.RaisePropertyChanged(nameof(Player2ArrowVisible));
             }
             else
             {
@@ -177,6 +187,12 @@ namespace BattleSweeper.ViewModels
             
         }
 
+
+        /// <summary>
+        /// begins a player change.
+        /// takes away shooting capability from the active player, hides both grids ships,
+        /// and reveals a button, that the next player should click, to continue the game.
+        /// </summary>
         public void changePlayer()
         {
             PlayerChanging = true;
@@ -192,6 +208,13 @@ namespace BattleSweeper.ViewModels
             AllTilesChanged?.Invoke();
         }
 
+        /// <summary>
+        /// gets called when the next player has confirmed the player change,
+        /// and is ready to see their version of the grids.
+        /// 
+        /// updates the active player, as well as the visible tiles on the grid.
+        /// 
+        /// </summary>
         public void confirmPlayerChange()
         {
             PlayerChanging = false;
@@ -201,8 +224,28 @@ namespace BattleSweeper.ViewModels
             AllTilesChanged?.Invoke();
         }
 
+        public void mouseMoved(Point grid_coord)
+        {
+            m_arrow_coords = grid_coord;
+
+            switch(ActivePlayer)
+            {
+                case Player.Player1:
+                    this.RaisePropertyChanged(nameof(Player1ArrowVisible));
+                    break;
+                case Player.Player2:
+                    this.RaisePropertyChanged(nameof(Player2ArrowVisible));
+                    break;
+            }
+
+            this.RaisePropertyChanged(nameof(ArrowX));
+            this.RaisePropertyChanged(nameof(ArrowY));
+        }
+
         protected bool m_player_changing = false;
         protected Player m_next_player = Player.None;
         protected Player m_active_player;
+
+        protected Point m_arrow_coords;
     }
 }
