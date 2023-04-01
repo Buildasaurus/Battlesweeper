@@ -11,7 +11,7 @@ namespace Games.Battleships
     {
         public EventHandler<int>? ShipSunk { get; set; }
 		public EventHandler<bool>? GameOver { get; set; }
-		public List<int> remainingPieces { get; set; } = new List<int>(new int[] { 4, 3, 2, 2, 2 });
+		public List<int> remainingPieces { get; set; } = new List<int>() { 4, 3, 2, 2, 2 };
         public Grid<BattleshipTile> Tiles { get; set; }
         public List<int> shipLengths { get; set; } = new List<int>();
 

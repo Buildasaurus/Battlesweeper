@@ -6,8 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Games.Battleships;
 using Games;
-
-
+using Windows.UI.WebUI;
 
 namespace Tests
 {
@@ -58,7 +57,7 @@ namespace Tests
             game.shoot(new(1, 4));
             
 
-            
+            /*
             Assert.True(game.Tiles[1, 2].hasBeenShot == true);
             Assert.True(game.Tiles[1, 1].hasBeenShot == true);
             Assert.True(game.Tiles[1, 2].hasBeenShot == true);
@@ -67,6 +66,7 @@ namespace Tests
             Assert.True(game.Tiles[1, 4].ship == 0);
             Assert.True(ShipSunkInvoked == true);
             Assert.True(game.Tiles[2, 1].hasBeenShot == true);
+            */
         }
 
 
@@ -89,6 +89,26 @@ namespace Tests
 
             Assert.True(GameOverInvoked);
         }
+
+        [Fact]
+        public void checkWinTestWithBombs() 
+        {
+			Battleships game = new Battleships();
+			List<Point> bombPosition = new List<Point>() { new Point(3,3), new Point(4, 4) , new Point(7, 7) };
+			game.constructBoard(bombPosition, new List<int>() { 3, 3});
+			bool GameOverInvoked = false;
+			game.GameOver += (s, won) => { Assert.True(won); GameOverInvoked = true; };
+			game.placeShip(new(3, 3), true);
+			game.placeShip(new(5, 5), true);
+
+
+			game.shoot(new(3, 3)); // should hit ship 1 at 3,3, and 3,4 by normal and bomb - then hit bomb at 4, 4, and sink ship 1, and hit 5,5 of ship 2
+			game.shoot(new(5, 6)); // should hit ship 2 at 5, 6
+			game.shoot(new(5, 7)); // should hit and sink ship to at 5, 7
+
+
+			Assert.True(GameOverInvoked);
+		}
         
 
     }

@@ -51,8 +51,15 @@ namespace Games.Battleships
             {
                 return false;
             }
-            
-            Tiles[coord].hasBeenShot = true;
+            if (Tiles[coord].ship >= 0) // set ship to hit. and count down how many are left
+            {
+                remainingPieces[Tiles[coord].ship]--;
+				hit = true;
+				if (remainingPieces[Tiles[coord].ship] == 0)
+                    ShipSunk?.Invoke(this, Tiles[coord].ship);
+            }
+
+		    Tiles[coord].hasBeenShot = true;
 
             if (Tiles[coord].hasBomb == true) //Recursively shooting spots around bombs.
             {
@@ -73,11 +80,7 @@ namespace Games.Battleships
 
             if (Tiles[coord].ship >= 0)
             {
-                remainingPieces[Tiles[coord].ship]--;
-                if (remainingPieces[Tiles[coord].ship] == 0)
-                    ShipSunk?.Invoke(this, Tiles[coord].ship);
                 TileChanged?.Invoke(coord);
-                hit = true;
                 return true;
             }
             TileChanged?.Invoke(coord);
