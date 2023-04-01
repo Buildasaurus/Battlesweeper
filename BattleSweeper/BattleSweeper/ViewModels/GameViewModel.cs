@@ -27,6 +27,7 @@ using Games.Battleships;
 using Windows.UI.WebUI;
 using Point = System.Drawing.Point;
 using Avalonia.Animation;
+using Avalonia.Threading;
 
 namespace BattleSweeper.ViewModels
 {
@@ -130,79 +131,56 @@ namespace BattleSweeper.ViewModels
 
         public void gameover (object? s, bool foundAllBombs)
         {
-            Trace.WriteLine("game over - found all bombs: " + foundAllBombs);
-            if (minesweepergame == 1) //if first game, start the next one
+            // as some of these methods modify the UI, it must be called on the UIThread.
+            Dispatcher.UIThread.Post(() =>
             {
-                MineSweeperTransitionViewModel transition = new MineSweeperTransitionViewModel();
-                GameView = transition;
-                pl1Bombs = mine_sweeper_vm.mine_sweeper.CurrentBombs;
-
-                transition.TransitionFinished.Subscribe(x =>
+                Trace.WriteLine("game over - found all bombs: " + foundAllBombs);
+                if (minesweepergame == 1) //if first game, start the next one
                 {
+                    MineSweeperTransitionViewModel transition = new MineSweeperTransitionViewModel();
+                    GameView = transition;
+                    pl1Bombs = mine_sweeper_vm.mine_sweeper.CurrentBombs;
+
+                    transition.TransitionFinished.Subscribe(x =>
+                    {
+                        mine_sweeper_vm.GameOver -= gameover;
+                        mine_sweeper_vm = constructMineField();
+                        mine_sweeper_vm.start();
+                        GameView = mine_sweeper_vm;
+
+                        minesweepergame++;
+                    });
+
+
+
+                }
+                else
+                {
+                    List<int> shipLengths = new List<int>() { 4, 3, 2, 2, 2 };
+
+                    pl2Bombs = mine_sweeper_vm.mine_sweeper.CurrentBombs;
+
+                    pl1 = new Battleships();
+                    pl2 = new Battleships();
+
+                    pl1.constructBoard(pl1Bombs.ToList(), shipLengths);
+                    pl2.constructBoard(pl2Bombs.ToList(), shipLengths);
+                    battleshipgame = new BattleShipsViewModel(pl1, pl2);
+
                     mine_sweeper_vm.GameOver -= gameover;
-                    mine_sweeper_vm = constructMineField();
-                    mine_sweeper_vm.start();
-                    GameView = mine_sweeper_vm;
+                    battleshipgame.bs_player_1.GameOver += (s, player) => battleshipsGameover(2);
+                    battleshipgame.bs_player_2.GameOver += (s, player) => battleshipsGameover(1);
 
-                    minesweepergame++;
-                });
+                    EventHandler.KeyChanged -= minesweeperKeyChanged;
+                    EventHandler.MouseChanged -= minesweeperMouseEvent;
+                    EventHandler.MouseChanged += battleshipsMouseEvent;
+                    EventHandler.KeyChanged += battleshipsKeyEvent;
+                    EventHandler.MouseMoved += battleshipsMovedEvent;
+                    
+                    GameView = battleshipgame;
 
-
-
-            }
-            else
-            {
-                List<int> shipLengths = new List<int>() { 4, 3, 2, 2, 2 };
-
-				pl2Bombs = mine_sweeper_vm.mine_sweeper.CurrentBombs;
-
-                pl1 = new Battleships();
-                pl2 = new Battleships();
-
-                pl1.constructBoard(pl1Bombs.ToList(), shipLengths);
-                pl2.constructBoard(pl2Bombs.ToList(), shipLengths);
-                battleshipgame = new BattleShipsViewModel(pl1, pl2);
-
-                mine_sweeper_vm.GameOver -= gameover;
-                battleshipgame.bs_player_1.GameOver += (s, player) => battleshipsGameover(2);
-				battleshipgame.bs_player_2.GameOver += (s, player) => battleshipsGameover(1);
-
-				EventHandler.KeyChanged -= minesweeperKeyChanged;
-                EventHandler.MouseChanged -= minesweeperMouseEvent;
-                EventHandler.MouseChanged += battleshipsMouseEvent;
-                EventHandler.KeyChanged += battleshipsKeyEvent;
-                EventHandler.MouseMoved += battleshipsMovedEvent;
-
-
-                
-
-
-
-
-                //BattleshipsTemplate pl1_t = new BattleshipsTemplate();
-                //BattleshipsTemplate pl2_t = new BattleshipsTemplate();
-
-                //pl1 = pl1_t;
-                //pl2 = pl2_t;
-
-                //pl1_t.constructBoard(new());
-
-                //pl1_t.setTile(new(3, 3), new(0, false, false, false, true, false));
-                //pl1_t.setTile(new(3, 4), new(0, false, false, false, false, false));
-                //pl1_t.setTile(new(3, 5), new(0, true, true, false, false, false));
-                //pl1_t.setTile(new(3, 6), new(0, false, false, false, false, true));
-
-                //pl1_t.setTile(new(4, 8), new(0, false, false, true, true, false));
-                //pl1_t.setTile(new(5, 8), new(0, true, false, true, false, false));
-                //pl1_t.setTile(new(6, 8), new(0, false, false, true, false, false));
-                //pl1_t.setTile(new(7, 8), new(0, false, false, true, false, true));
-
-                //pl1_t.setTile(new(1, 1), new(-1, true, false, false, false, false));
-
-                //pl2.constructBoard(new());
-                GameView = battleshipgame;
-
-            }
+                }
+            });
         }
 
         void battleshipsGameover(int player)
