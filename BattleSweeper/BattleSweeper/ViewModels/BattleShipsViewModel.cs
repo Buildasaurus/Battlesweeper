@@ -96,13 +96,27 @@ namespace BattleSweeper.ViewModels
         public Rect? ActiveGridBounds {
             get
             {
-                if (ActivePlayer == Player.Player1)
-                    return Bs1TransformedBounds.Clip;
+                if (!isPlacingShips)
+                {
+					if (ActivePlayer == Player.Player2)
+						return Bs1TransformedBounds.Clip;
 
-                else if(ActivePlayer == Player.Player2)
-                    return Bs2TransformedBounds.Clip;
+					else if (ActivePlayer == Player.Player1)
+						return Bs2TransformedBounds.Clip;
 
-                return null;
+					return null;
+				}
+                else
+                {
+					if (ActivePlayer == Player.Player1)
+						return Bs1TransformedBounds.Clip;
+
+					else if (ActivePlayer == Player.Player2)
+						return Bs2TransformedBounds.Clip;
+
+					return null;
+				}
+                
             }
         }
 
@@ -145,7 +159,7 @@ namespace BattleSweeper.ViewModels
             {
                 if (ActivePlayer == Player.Player1)
                 {
-                    Games.MoveResult move = bs_player_1.shoot(coord);
+                    Games.MoveResult move = bs_player_2.shoot(coord);
                     if (move != MoveResult.Illegal)
                     {
                         changePlayer();
@@ -153,8 +167,7 @@ namespace BattleSweeper.ViewModels
                 }
                 if (ActivePlayer == Player.Player2)
                 {
-                    bs_player_2.shoot(coord);
-                    Games.MoveResult move = bs_player_2.shoot(coord);
+                    Games.MoveResult move = bs_player_1.shoot(coord);
                     if (move != MoveResult.Illegal)
                     {
                         changePlayer();

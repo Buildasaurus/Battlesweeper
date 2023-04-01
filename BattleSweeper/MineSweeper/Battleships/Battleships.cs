@@ -54,7 +54,7 @@ namespace Games.Battleships
             
             Tiles[coord].hasBeenShot = true;
 
-            if (Tiles[coord].hasBomb == true)
+            if (Tiles[coord].hasBomb == true) //Recursively shooting spots around bombs.
             {
                 for (int dx = -1; dx <= 1; dx++)
                 {
