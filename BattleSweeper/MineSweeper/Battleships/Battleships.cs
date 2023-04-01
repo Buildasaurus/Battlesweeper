@@ -13,10 +13,10 @@ namespace Games.Battleships
     
     public class Battleships : IBattleships
     {
-        public EventHandler<int>? ShipSunk;
-        public EventHandler<bool>? GameOver;
-        
-        public List<int> remainingPieces { get; set; } = new List<int>(new int[] { 4, 3, 2, 2, 2 });
+        public EventHandler<int>? ShipSunk { get; set; }
+		public EventHandler<bool>? GameOver { get; set; }
+
+		public List<int> remainingPieces { get; set; } = new List<int>(new int[] { 4, 3, 2, 2, 2 });
         public Grid<BattleshipTile> Tiles { get; protected set; }
         public List<int> shipLengths { get; set; } = new List<int>();
 
@@ -143,20 +143,28 @@ namespace Games.Battleships
 
         public void checkWin()
         {
+			//check if have won, by checking that there are no ships in shiplenghts.
+			if (remainingPieces.Sum() == 0)
+				GameOver?.Invoke(this, true);
+
+			/*
             int winCheck = 0;
             for (int i = 0; i < shipLengths.Count; i++)
                 {
                 winCheck = winCheck + shipLengths[i];
                 }
-            if (winCheck == 0)
+			if (winCheck == 0)
                 GameOver?.Invoke(this, true);
+            */
 
-        }
-        public void constructBoard(List<Point> bombPositions) {
+		}
+		public void constructBoard(List<Point> bombPositions, List<int> shipLengths) 
+        {
            
 
             Tiles = new Grid<BattleshipTile>(new System.Drawing.Size(10,10),new BattleshipTile(-1, false, false,false, false, false ));
-            shipLengths = remainingPieces.GetRange(0,remainingPieces.Count);
+            this.shipLengths = new List<int>(shipLengths);
+            this.remainingPieces = new List<int>(shipLengths);
 
             foreach (Point bomb in bombPositions)
             {

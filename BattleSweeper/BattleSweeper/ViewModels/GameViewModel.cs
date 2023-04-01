@@ -26,6 +26,7 @@ using Window = Avalonia.Controls.Window;
 using Games.Battleships;
 using Windows.UI.WebUI;
 using Point = System.Drawing.Point;
+using Avalonia.Animation;
 
 namespace BattleSweeper.ViewModels
 {
@@ -151,21 +152,27 @@ namespace BattleSweeper.ViewModels
             }
             else
             {
-                pl2Bombs = mine_sweeper_vm.mine_sweeper.CurrentBombs;
+                List<int> shipLengths = new List<int>() { 4, 3, 2, 2, 2 };
+
+				pl2Bombs = mine_sweeper_vm.mine_sweeper.CurrentBombs;
 
                 pl1 = new Battleships();
                 pl2 = new Battleships();
 
-                pl1.constructBoard(pl1Bombs.ToList());
-                pl2.constructBoard(pl2Bombs.ToList());
+                pl1.constructBoard(pl1Bombs.ToList(), shipLengths);
+                pl2.constructBoard(pl2Bombs.ToList(), shipLengths);
                 battleshipgame = new BattleShipsViewModel(pl1, pl2);
 
                 mine_sweeper_vm.GameOver -= gameover;
-                EventHandler.KeyChanged -= minesweeperKeyChanged;
+                battleshipgame.bs_player_1.GameOver += (s, player) => battleshipsGameover(2);
+				battleshipgame.bs_player_2.GameOver += (s, player) => battleshipsGameover(1);
+
+				EventHandler.KeyChanged -= minesweeperKeyChanged;
                 EventHandler.MouseChanged -= minesweeperMouseEvent;
                 EventHandler.MouseChanged += battleshipsMouseEvent;
                 EventHandler.KeyChanged += battleshipsKeyEvent;
                 EventHandler.MouseMoved += battleshipsMovedEvent;
+
 
                 
 
@@ -198,7 +205,23 @@ namespace BattleSweeper.ViewModels
             }
         }
 
-        private MineSweeperViewModel constructMineField()
+        void battleshipsGameover(int player)
+        {
+			MineSweeperTransitionViewModel transition = new MineSweeperTransitionViewModel();
+			GameView = transition;
+            Trace.WriteLine(player + " won");
+			transition.TransitionFinished.Subscribe(x =>
+			{
+				mine_sweeper_vm.GameOver -= gameover;
+				mine_sweeper_vm = constructMineField();
+				mine_sweeper_vm.start();
+				GameView = mine_sweeper_vm;
+
+				minesweepergame++;
+			});
+		}
+
+		private MineSweeperViewModel constructMineField()
         {
             Size gridSize = new Size(10, 10);
             //create 10x10 grid, with 10 bombs.

@@ -19,7 +19,7 @@ namespace Tests
 
             Battleships game = new Battleships();
             List<Point> bombPositions = new List<Point>();
-            game.constructBoard(bombPositions);
+            game.constructBoard(bombPositions, new List<int>() { 4, 3, 2, 2, 2 });
             game.placeShip(new(1,1),false);
             game.placeShip(new(8, 8), true);
             game.placeShip(new(4, 5), false);
@@ -47,7 +47,7 @@ namespace Tests
         {
             Battleships game = new Battleships();
             List<Point> bombPosition = new List<Point>();
-            game.constructBoard(bombPosition);
+            game.constructBoard(bombPosition, new List<int>() { 1 });
             game.placeShip(new(1, 1), true);
             bool ShipSunkInvoked = false;
             game.ShipSunk += (s, sunk) => { Assert.True(sunk == 0); ShipSunkInvoked = true; };
@@ -77,7 +77,7 @@ namespace Tests
         {
             Battleships game = new Battleships();
             List<Point> bombPosition = new List<Point>();
-            game.constructBoard(bombPosition);
+            game.constructBoard(bombPosition, new List<int>() { 4});
             bool GameOverInvoked = false;
             game.GameOver += (s, won) => { Assert.True(won); GameOverInvoked = true; };
             game.placeShip(new(1, 1), false);

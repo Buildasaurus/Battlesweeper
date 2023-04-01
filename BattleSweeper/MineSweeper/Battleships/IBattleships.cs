@@ -50,7 +50,15 @@ namespace Games.Battleships
     }
     public interface IBattleships
     {
-        public Action<Point>? TileChanged { get; set; }
+		public EventHandler<int>? ShipSunk { get; set; }
+        /// <summary>
+        /// eventhandler that is called when an entire ship is sunk
+        /// </summary>
+		public EventHandler<bool>? GameOver { get; set; }
+        /// <summary>
+        /// eventhanlder that is called when one of the players won the game.
+        /// </summary>
+		public Action<Point>? TileChanged { get; set; }
         /// <summary>
         /// Allows for game to retrive grid
         /// </summary>
@@ -72,7 +80,7 @@ namespace Games.Battleships
         /// Constructs the board based on a size. The board is always quadratic
         /// </summary>
         /// <param name="size"></param>
-        public void constructBoard(List<Point> bombPositions);
+        public void constructBoard(List<Point> bombPositions, List<int> shipLengths);
         /// <summary>
         /// Checks if a player wins, based on the List remainingPieces
         /// </summary>
