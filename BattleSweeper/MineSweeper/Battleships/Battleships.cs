@@ -61,9 +61,10 @@ namespace Games.Battleships
                     for (int dy = -1; dy <= 1; dy++)
                     {
                         Point delta_coord = new(coord.X + dx, coord.Y + dy);
-
+                        if (Tiles.inBounds(delta_coord))
+                        {
                             shootExecution(delta_coord);
-                        
+                        }
                     }
                 }
                 TileChanged?.Invoke(coord);
