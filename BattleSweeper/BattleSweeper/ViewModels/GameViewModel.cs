@@ -156,7 +156,7 @@ namespace BattleSweeper.ViewModels
                 }
                 else
                 {
-                    List<int> shipLengths = new List<int>() { 4, 3, 2, 2, 2 };
+                    List<int> shipLengths = new List<int>() { 5, 4, 3, 3, 2 };
 
                     pl2Bombs = mine_sweeper_vm.mine_sweeper.CurrentBombs;
 
