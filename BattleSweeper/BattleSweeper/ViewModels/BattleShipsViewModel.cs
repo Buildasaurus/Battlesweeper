@@ -15,6 +15,7 @@ using ReactiveUI;
 using Avalonia.Metadata;
 using System.Reactive;
 using Games;
+using System.Collections.ObjectModel;
 
 namespace BattleSweeper.ViewModels
 {
@@ -74,15 +75,39 @@ namespace BattleSweeper.ViewModels
             this.bs_player_2.TileChanged += (coord) => bs2_tile_vm[coord].tileChanged();
 
             ActivePlayer = Player.Player1;
+
+            // TODO: do we have a ship count constant somewhere???
+            ShipHighlights = new();
+
+            for(int i = 0; i < 5; i++)
+                ShipHighlights.Add(new(Color.FromArgb(0, 0, 0, 0)));
+
+            // first ship should be highlighted, as it is the first to be placed.
+            ShipHighlights[0] = PlacingShipHighlight;
         }
 
         int placedShips = 0;
         public bool isPlacingShips = true;
         protected bool isVertical = true;
 
-        public Action? AllTilesChanged { get; set; }
+        /// <summary>
+        /// the background color of the ships in the top border, when they should not be highlighted in any way.
+        /// </summary>
+        public static readonly SolidColorBrush NoShipHighlight = new(Color.FromArgb(0, 0, 0, 0));
+        /// <summary>
+        /// ship highlight color when they are about to be placed
+        /// </summary>
+        public static readonly SolidColorBrush PlacingShipHighlight = new(Color.FromArgb(155, 0, 255, 0));
+        /// <summary>
+        /// ship highlight color when they have been destroyed.
+        /// </summary>
+        public static readonly SolidColorBrush DestroyedShipHighlight = new(Color.FromArgb(155, 255, 0, 0));
 
-        public BSTileVM Tile { get => bs1_tile_vm[0, 0]; }
+        /// <summary>
+        /// gets invoked when all the tiles needs to be updated.
+        /// happens primarily on a player change.
+        /// </summary>
+        public Action? AllTilesChanged { get; set; }
 
         public Player ActivePlayer { get => m_active_player; set => this.RaiseAndSetIfChanged(ref m_active_player, value); }
         public bool PlayerChanging { get => m_player_changing; set => this.RaiseAndSetIfChanged(ref m_player_changing, value); }
@@ -111,6 +136,14 @@ namespace BattleSweeper.ViewModels
         /// changes depending on the isVertical property.
         /// </summary>
         public RotateTransform ArrowAngle => new(isVertical ? 0 : -90);
+
+        /// <summary>
+        /// list of background colors for the ships displayed in the top border.
+        /// 
+        /// ObservableCollection = RaisePropertyChanged is automatically called, when the indexer is used.
+        /// 
+        /// </summary>
+        public ObservableCollection<SolidColorBrush> ShipHighlights { get; set; }
 
         public IBattleships bs_player_1;
         public IBattleships bs_player_2;
@@ -171,7 +204,6 @@ namespace BattleSweeper.ViewModels
             
             if (isPlacingShips)
             {
-                
                 if (ActivePlayer == Player.Player1)
                 {
                     // placed ships should only be incremented if the placeShip call was successful
@@ -194,8 +226,15 @@ namespace BattleSweeper.ViewModels
                     placedShips = 0;
                 }
 
+                for (int i = 0; i < ShipHighlights.Count; i++)
+                    ShipHighlights[i] = NoShipHighlight;
+
+                if(isPlacingShips)
+                    ShipHighlights[placedShips] = PlacingShipHighlight;
+
                 this.RaisePropertyChanged(nameof(Player1ArrowVisible));
                 this.RaisePropertyChanged(nameof(Player2ArrowVisible));
+                this.RaisePropertyChanged(nameof(ShipHighlights));
             }
             else
             {
