@@ -87,12 +87,29 @@ namespace BattleSweeper.ViewModels
         public Player ActivePlayer { get => m_active_player; set => this.RaiseAndSetIfChanged(ref m_active_player, value); }
         public bool PlayerChanging { get => m_player_changing; set => this.RaiseAndSetIfChanged(ref m_player_changing, value); }
 
+        /// <summary>
+        /// controls whether the placing ship arrow should be visible for player 1 (or player 2 [Player2ArrowVisible])
+        /// 
+        /// this should be true, if the mouse is inside the ActiveGrid, and we are placing ships AND it is player 1's turn to place a ship.
+        /// 
+        /// </summary>
         public bool Player1ArrowVisible { get => m_active_player == Player.Player1 && bs_player_1.Tiles.inBounds(m_arrow_coords) && isPlacingShips; }
         public bool Player2ArrowVisible { get => m_active_player == Player.Player2 && bs_player_2.Tiles.inBounds(m_arrow_coords) && isPlacingShips; }
 
+        /// <summary>
+        /// the column that the arrow should be visible in, in the active grid.
+        /// </summary>
         public double ArrowX => m_arrow_coords.X;
+
+        /// <summary>
+        /// the row that the arrow should be visible in, in the active grid.
+        /// </summary>
         public double ArrowY => m_arrow_coords.Y;
 
+        /// <summary>
+        /// rotation of the angle.
+        /// changes depending on the isVertical property.
+        /// </summary>
         public RotateTransform ArrowAngle => new(isVertical ? 0 : -90);
 
         public IBattleships bs_player_1;
@@ -101,6 +118,10 @@ namespace BattleSweeper.ViewModels
         public Grid<BSTileVM> bs1_tile_vm = new(new(10, 10));
         public Grid<BSTileVM> bs2_tile_vm = new(new(10, 10));
 
+        /// <summary>
+        /// returns the transform bounds of the active players battleships grid.
+        /// returns null, if there is no active player.
+        /// </summary>
         public Rect? ActiveGridBounds {
             get
             {
@@ -126,7 +147,17 @@ namespace BattleSweeper.ViewModels
             }
         }
 
+        /// <summary>
+        /// binding to battleshipviews Player1Grid transform bounds
+        /// 
+        /// is used to get the absolute pixel position and size of the grid, relative to the window top left corner.
+        /// 
+        /// </summary>
         public TransformedBounds Bs1TransformedBounds { get; set; }
+
+        /// <summary>
+        /// see Bs1TransformedBounds, but now for Player2Grid.
+        /// </summary>
         public TransformedBounds Bs2TransformedBounds { get; set; }
 
         public void changeDirection()
@@ -143,6 +174,7 @@ namespace BattleSweeper.ViewModels
                 
                 if (ActivePlayer == Player.Player1)
                 {
+                    // placed ships should only be incremented if the placeShip call was successful
                     if(bs_player_1.placeShip(coord, isVertical) == MoveResult.Success)
                         placedShips++;
                 }
@@ -184,7 +216,6 @@ namespace BattleSweeper.ViewModels
                     }
                 }
             }
-            
         }
 
 
@@ -224,6 +255,15 @@ namespace BattleSweeper.ViewModels
             AllTilesChanged?.Invoke();
         }
 
+        /// <summary>
+        /// fires every time the mouse has hovered above the main window.
+        /// the coordinate is a pont coordinate, that specifies the tile that the mouse is currently hovering over.
+        /// the tile is relative to ActiveGrid.
+        /// 
+        /// updates the arrow position and visibility.
+        /// 
+        /// </summary>
+        /// <param name="grid_coord"></param>
         public void mouseMoved(Point grid_coord)
         {
             m_arrow_coords = grid_coord;
