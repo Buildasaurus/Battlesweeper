@@ -146,17 +146,6 @@ namespace Games.Battleships
 			//check if have won, by checking that there are no ships in shiplenghts.
 			if (remainingPieces.Sum() == 0)
 				GameOver?.Invoke(this, true);
-
-			/*
-            int winCheck = 0;
-            for (int i = 0; i < shipLengths.Count; i++)
-                {
-                winCheck = winCheck + shipLengths[i];
-                }
-			if (winCheck == 0)
-                GameOver?.Invoke(this, true);
-            */
-
 		}
 		public void constructBoard(List<Point> bombPositions, List<int> shipLengths) 
         {
