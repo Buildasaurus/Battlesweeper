@@ -137,10 +137,9 @@ namespace BattleSweeper.ViewModels
 
             ActivePlayer = Player.Player1;
 
-            // TODO: do we have a ship count constant somewhere???
             ShipHighlights = new();
 
-            for(int i = 0; i < 5; i++)
+            for(int i = 0; i < bs_player_1.shipLengths.Count; i++)
                 ShipHighlights.Add(new(Color.FromArgb(0, 0, 0, 0)));
 
             // first ship should be highlighted, as it is the first to be placed.
@@ -301,42 +300,32 @@ namespace BattleSweeper.ViewModels
                 this.RaisePropertyChanged(nameof(Player2ArrowVisible));
                 this.RaisePropertyChanged(nameof(ShipHighlights));
             }
-            else
+            else //if shooting
             {
-                List<int>? remaining_pieces = null; 
                 
-                if (ActivePlayer == Player.Player1)
+                if (ActivePlayer == Player.Player1) //player 1 is shooting at player 2
                 {
                     Games.MoveResult move = bs_player_2.shoot(coord);
                     if (move == MoveResult.Failure)
                     {
                         changePlayer();
-                    }
+					}
+				}
 
-                    remaining_pieces = bs_player_1.remainingPieces;
-                }
-
-                if (ActivePlayer == Player.Player2)
-                {
+				if (ActivePlayer == Player.Player2) //player 2 is shooting at player 1
+				{
                     Games.MoveResult move = bs_player_1.shoot(coord);
                     if (move == MoveResult.Failure)
 					{
                         changePlayer();
-                    }
-
-                    remaining_pieces = bs_player_2.remainingPieces;
-                }
+					}
+				}
 
 
-                for(int i = 0; i < (remaining_pieces?.Count ?? 0); i++)
-                {
-                    if (remaining_pieces[i] == 0)
-                        ShipHighlights[i] = DestroyedShipHighlight;
-                    else
-                        ShipHighlights[i] = NoShipHighlight;
-                }
-            }
-        }
+				highlightShips(ActivePlayer);
+
+			}
+		}
 
 
         /// <summary>
@@ -358,6 +347,44 @@ namespace BattleSweeper.ViewModels
 
             AllTilesChanged?.Invoke();
         }
+        /// <summary>
+        /// Highlights the ships that the given player shot and sunk.
+        /// Eg. if player 1 is given, then all the dead ships of player 2 is highlighted.
+        /// 
+        /// if player given is none, then doesn't change highlighten -> outcommented code will set all to no highlight.
+        /// </summary>
+        /// <param name="player"></param>
+        public void highlightShips(Player player)
+        {
+			if (player == Player.Player1)
+			{
+				for (int i = 0; i < bs_player_2.remainingPieces.Count; i++)
+				{
+					if (bs_player_2.remainingPieces[i] == 0)
+						ShipHighlights[i] = DestroyedShipHighlight;
+					else
+						ShipHighlights[i] = NoShipHighlight;
+				}
+			}
+			else if (player == Player.Player2)
+			{
+				for (int i = 0; i < bs_player_1.remainingPieces.Count; i++)
+				{
+					if (bs_player_1.remainingPieces[i] == 0)
+						ShipHighlights[i] = DestroyedShipHighlight;
+					else
+						ShipHighlights[i] = NoShipHighlight;
+				}
+			}
+            /* code for having no highlights between player, if deemed necessary.
+            else
+            {
+				for (int i = 0; i < bs_player_1.remainingPieces.Count; i++)
+				{
+						ShipHighlights[i] = NoShipHighlight;
+				}
+			}*/
+		}
 
         /// <summary>
         /// gets called when the next player has confirmed the player change,
@@ -368,7 +395,13 @@ namespace BattleSweeper.ViewModels
         /// </summary>
         public void confirmPlayerChange()
         {
-            PlayerChanging = false;
+            // highlight next players sunken ships.
+            if (!isPlacingShips)
+            {
+				highlightShips(m_next_player);
+			}
+
+			PlayerChanging = false;
 
             ActivePlayer = m_next_player;
 
