@@ -143,6 +143,8 @@
             </Viewbox>
             <Button
                 Grid.Column="1"
+                Height="50"
+                HorizontalAlignment="Stretch"
                 Command="{Binding confirmPlayerChange}"
                 IsVisible="{Binding PlayerChanging}">
                 Change Player
