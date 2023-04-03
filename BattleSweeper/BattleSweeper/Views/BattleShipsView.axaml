@@ -21,14 +21,61 @@
                 <Image Classes="Pixel" Source="/Assets/Water.png" />
                 <Image
                     Classes="Pixel"
-                    IsVisible="{Binding isMiddle}"
                     RenderTransform="{Binding shipTransform}"
-                    Source="/Assets/midShip.png" />
+                    Source="/Assets/midShip.png">
+                    <Image.IsVisible>
+                        <MultiBinding Converter="{x:Static BoolConverters.And}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="isMiddle" />
+                                <Binding Path="showShips" />
+                                <Binding Path="!isDestroyed" />
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Image.IsVisible>
+                </Image>
+
                 <Image
                     Classes="Pixel"
-                    IsVisible="{Binding isEnd}"
                     RenderTransform="{Binding shipTransform}"
-                    Source="/Assets/ShipEnd.png" />
+                    Source="/Assets/ShipEnd.png">
+                    <Image.IsVisible>
+                        <MultiBinding Converter="{x:Static BoolConverters.And}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="isEnd" />
+                                <Binding Path="showShips" />
+                                <Binding Path="!isDestroyed" />
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Image.IsVisible>
+                </Image>
+
+                <Image
+                    Classes="Pixel"
+                    RenderTransform="{Binding shipTransform}"
+                    Source="/Assets/BrokenMidship.png">
+                    <Image.IsVisible>
+                        <MultiBinding Converter="{x:Static BoolConverters.And}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="isMiddle" />
+                                <Binding Path="isDestroyed" />
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Image.IsVisible>
+                </Image>
+                <Image
+                    Classes="Pixel"
+                    IsVisible="{Binding isEndDestroyed}"
+                    RenderTransform="{Binding shipTransform}"
+                    Source="/Assets/BrokenShipend.png">
+                    <Image.IsVisible>
+                        <MultiBinding Converter="{x:Static BoolConverters.And}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="isEnd" />
+                                <Binding Path="isDestroyed" />
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Image.IsVisible>
+                </Image>
                 <Image
                     Classes="Pixel"
                     IsVisible="{Binding isHit}"

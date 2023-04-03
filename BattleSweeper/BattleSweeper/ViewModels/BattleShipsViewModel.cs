@@ -33,6 +33,25 @@ namespace BattleSweeper.ViewModels
             vm = viewmodel;
             this.player = player;
 
+            IBattleships? bs = null;
+
+            switch (player)
+            {
+                case Player.Player1:
+                    bs = vm.bs_player_1;
+                    break;
+                case Player.Player2:
+                    bs = vm.bs_player_2;
+                    break;
+            }
+
+            if(bs != null)
+                bs.ShipSunk += (s, ship) =>
+                {
+                    if (tile.ship == ship)
+                        this.RaisePropertyChanged(nameof(isDestroyed));
+                };
+
             vm.AllTilesChanged += tileChanged;
         }
 
@@ -41,9 +60,47 @@ namespace BattleSweeper.ViewModels
 
         public bool isBombHit { get => tile.hasBeenShot && tile.hasBomb; }
 
-        public bool isMiddle { get => tile.ship != -1 && !tile.atEnd && !tile.atStart && vm.ActivePlayer == player; }
+        public bool isMiddle { get =>
+                //tile must be a ship
+                tile.ship != -1
+                // the ship must be in the middle
+                && !tile.atEnd
+                && !tile.atStart;
+        }
 
-        public bool isEnd { get => tile.ship != -1 && (tile.atEnd || tile.atStart) && vm.ActivePlayer == player; }
+        public bool showShips => vm.ActivePlayer == player;
+
+        public bool isEnd { get =>
+                // must be ship
+                tile.ship != -1
+                // must not be a middle piece
+                && (tile.atEnd || tile.atStart);
+                }
+        public bool isDestroyed { get  
+            {
+                // must be a ship
+                if (tile.ship == -1)
+                    return false;
+
+                // retrieve the relevant battleship model, depending on the tiles player
+
+                IBattleships? bs = null;
+
+                switch(player)
+                {
+                    case Player.Player1:
+                        bs = vm.bs_player_1;
+                        break;
+                    case Player.Player2:
+                        bs = vm.bs_player_2;
+                        break;
+                }
+
+                // check if there exist any remaining pieces of the current ship.
+                return (bs?.remainingPieces[tile.ship] ?? 0) == 0;
+            }
+        }
+        public bool isBrokenEnd { get => tile.ship != -1 && (tile.atEnd || tile.atStart) && vm.ActivePlayer == player; }
 
         public RotateTransform shipTransform { get => new((tile.horizontal ? -90 : 0) + (tile.atEnd ? 0 : 180)); }
 
@@ -55,6 +112,8 @@ namespace BattleSweeper.ViewModels
             this.RaisePropertyChanged(nameof(isMiddle));
             this.RaisePropertyChanged(nameof(isEnd));
             this.RaisePropertyChanged(nameof(shipTransform));
+            this.RaisePropertyChanged(nameof(isDestroyed));
+            this.RaisePropertyChanged(nameof(showShips));
         }
 
         public BSTileVM Copy() => new BSTileVM(tile, vm, player);
@@ -238,6 +297,8 @@ namespace BattleSweeper.ViewModels
             }
             else
             {
+                List<int>? remaining_pieces = null; 
+                
                 if (ActivePlayer == Player.Player1)
                 {
                     Games.MoveResult move = bs_player_2.shoot(coord);
@@ -245,7 +306,10 @@ namespace BattleSweeper.ViewModels
                     {
                         changePlayer();
                     }
+
+                    remaining_pieces = bs_player_1.remainingPieces;
                 }
+
                 if (ActivePlayer == Player.Player2)
                 {
                     Games.MoveResult move = bs_player_1.shoot(coord);
@@ -253,6 +317,17 @@ namespace BattleSweeper.ViewModels
                     {
                         changePlayer();
                     }
+
+                    remaining_pieces = bs_player_2.remainingPieces;
+                }
+
+
+                for(int i = 0; i < (remaining_pieces?.Count ?? 0); i++)
+                {
+                    if (remaining_pieces[i] == 0)
+                        ShipHighlights[i] = DestroyedShipHighlight;
+                    else
+                        ShipHighlights[i] = NoShipHighlight;
                 }
             }
         }
