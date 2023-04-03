@@ -68,7 +68,7 @@ namespace BattleSweeper.ViewModels
             }
         }
 
-        void minesweeperMouseEvent(MouseArgs x)
+        void minesweeperMouseEvent(MouseArgs x) // mine sweeper game logic.
         {
             System.Drawing.Point field = coordToField(mine_sweeper_vm.Position, x.MousePosition);
 
@@ -78,9 +78,8 @@ namespace BattleSweeper.ViewModels
                 {
                     mine_sweeper_vm.rightClickTile(field);
                 }
-                if (x.button == MouseButton.Left)
+                else if (x.button == MouseButton.Left)
                 {
-
                     if ((x.modifier & RawInputModifiers.Shift) == RawInputModifiers.None)
                     {
                         mine_sweeper_vm.leftClickTile(field);
@@ -112,7 +111,7 @@ namespace BattleSweeper.ViewModels
                 battleshipgame.mouseMoved(coordToField((Rect)battleshipgame.ActiveGridBounds, x.Position));
         }
 
-        void battleshipsMouseEvent(MouseArgs x)
+        void battleshipsMouseEvent(MouseArgs x) //battleships game logic
         {
             Rect? rect = battleshipgame.ActiveGridBounds;
             if (rect != null)
@@ -129,7 +128,7 @@ namespace BattleSweeper.ViewModels
             }
         }
 
-        public void gameover (object? s, bool foundAllBombs)
+        public void gameover (object? s, bool foundAllBombs) //method when minesweeper game has ended.
         {
             // as some of these methods modify the UI, it must be called on the UIThread.
             Dispatcher.UIThread.Post(() =>

@@ -16,6 +16,8 @@ using Avalonia.Metadata;
 using System.Reactive;
 using Games;
 using System.Collections.ObjectModel;
+using System.Xml.Serialization;
+
 
 namespace BattleSweeper.ViewModels
 {
@@ -199,9 +201,14 @@ namespace BattleSweeper.ViewModels
             this.RaisePropertyChanged(nameof(ArrowAngle));
         }
 
-        public void leftClick(Point coord)
+        private int mod(int a, int b)//modulus function, because % is not modulus in c#, and c# doesn't have modulus???
         {
-            
+            int remainder = a % b;
+			return remainder < 0 ? remainder + b : remainder;
+		}
+
+		public void leftClick(Point coord)
+        {
             if (isPlacingShips)
             {
                 if (ActivePlayer == Player.Player1)
@@ -226,10 +233,9 @@ namespace BattleSweeper.ViewModels
                     placedShips = 0;
                 }
 
-                for (int i = 0; i < ShipHighlights.Count; i++)
-                    ShipHighlights[i] = NoShipHighlight;
-
-                if(isPlacingShips)
+				// set previous ship to nohighlight - modulus not really necessary: if statement would do for case placedShips = 0
+				ShipHighlights[mod((placedShips-1),ShipHighlights.Count)] = NoShipHighlight; 
+				if (isPlacingShips)
                     ShipHighlights[placedShips] = PlacingShipHighlight;
 
                 this.RaisePropertyChanged(nameof(Player1ArrowVisible));
@@ -241,7 +247,7 @@ namespace BattleSweeper.ViewModels
                 if (ActivePlayer == Player.Player1)
                 {
                     Games.MoveResult move = bs_player_2.shoot(coord);
-                    if (move != MoveResult.Illegal)
+                    if (move == MoveResult.Failure)
                     {
                         changePlayer();
                     }
@@ -249,8 +255,8 @@ namespace BattleSweeper.ViewModels
                 if (ActivePlayer == Player.Player2)
                 {
                     Games.MoveResult move = bs_player_1.shoot(coord);
-                    if (move != MoveResult.Illegal)
-                    {
+                    if (move == MoveResult.Failure)
+					{
                         changePlayer();
                     }
                 }
