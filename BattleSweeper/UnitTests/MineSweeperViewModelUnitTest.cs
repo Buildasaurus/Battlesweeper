@@ -15,6 +15,7 @@ namespace Tests
         [Fact]
         void winGame()
         {
+            // play a complete game of minesweeper, through the viewmodel, and check if the player is able to win.
             IMineSweeper mine_sweeper_model = MineSweeperFactory.construct<MineSweeper>(new(10, 10), 10, 13);
 
             MineSweeperViewModel mine_sweeper_vm = new(mine_sweeper_model, int.MaxValue);
@@ -86,6 +87,7 @@ namespace Tests
         [Fact]
         void loseGame()
         {
+            // play a complete game of minesweeper, through the viewmodel, and check if you are able to lose.
             IMineSweeper mine_sweeper_model = MineSweeperFactory.construct<MineSweeper>(new(10, 10), 10, 13);
 
             MineSweeperViewModel mine_sweeper_vm = new(mine_sweeper_model, int.MaxValue);
@@ -107,8 +109,10 @@ namespace Tests
         [Fact]
         void timeoutGame()
         {
+            // do not play a complete game of minesweeper, and instead simply wait until the timeout is hit.
             IMineSweeper mine_sweeper_model = MineSweeperFactory.construct<MineSweeper>(new(10, 10), 10, 13);
 
+            // timeout is 1 second.
             MineSweeperViewModel mine_sweeper_vm = new(mine_sweeper_model, 1);
 
             bool completed_game = false;
@@ -121,6 +125,7 @@ namespace Tests
 
             mine_sweeper_vm.start();
 
+            // wait for more than 1 second.
             Thread.Sleep(3000);
 
             Assert.True(completed_game);

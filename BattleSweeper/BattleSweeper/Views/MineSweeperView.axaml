@@ -8,13 +8,16 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+
     <Grid Background="LightBlue" RowDefinitions="1*,8*">
+        <!--  Header containing timer  -->
         <Border
             Padding="10,2"
             Background="Blue"
             BorderBrush="LightBlue"
             BorderThickness="2"
             BoxShadow="0 1 20 5 LightBlue">
+            <!--  Timer section  -->
             <StackPanel
                 HorizontalAlignment="Right"
                 Background="Black"
@@ -23,7 +26,9 @@
                 <Image Source="{Binding LSTimeDigit}" />
             </StackPanel>
         </Border>
+        <!--  viewbox with uniform stretch, insures 1:1 aspect ratio  -->
         <Viewbox Grid.Row="1" Stretch="Uniform">
+            <!--  grid elements are generated in codebehind  -->
             <Grid x:Name="MineSweeperGrid" Margin="0" />
         </Viewbox>
     </Grid>

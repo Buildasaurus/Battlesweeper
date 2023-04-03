@@ -21,20 +21,32 @@ using System.Xml.Serialization;
 
 namespace BattleSweeper.ViewModels
 {
+    /// <summary>
+    /// enum used to represent the possible active players, in the battleship game.
+    /// </summary>
     public enum Player
     {
+        // none is used when transitioning between players.
         None,
         Player1,
         Player2,
     }
+    /// <summary>
+    /// class responsible for managing the view of a single battle ship tile.
+    /// </summary>
     public class BSTileVM : ReactiveObject, ICopyable<BSTileVM>
     {
+        /// <summary>
+        /// takes a tile, the current BattleShipsViewModel (is needed for ActivePlayer and other things),
+        /// as well as which player the tile is tied to.
+        /// </summary>
         public BSTileVM(BattleshipTile tile, BattleShipsViewModel viewmodel, Player player)
         {
             this.tile = tile;
             vm = viewmodel;
             this.player = player;
 
+            // the battlehships instance is selected based on the player.
             IBattleships? bs = null;
 
             switch (player)
@@ -50,18 +62,32 @@ namespace BattleSweeper.ViewModels
             if(bs != null)
                 bs.ShipSunk += (s, ship) =>
                 {
+                    // notify avalonia about the isDestroyed property having changed, when the ShipSunk event is fired.
                     if (tile.ship == ship)
                         this.RaisePropertyChanged(nameof(isDestroyed));
                 };
 
+            // general event that is fired from the viewmodel, when all the tiles should update.
             vm.AllTilesChanged += tileChanged;
         }
 
+        /// <summary>
+        /// specifies whether the current tile has been hit by the opposing player.
+        /// can only be true if the tile is a ship.
+        /// </summary>
         public bool isHit { get => tile.hasBeenShot && tile.ship != -1; }
+        /// <summary>
+        /// specifies whether the current tile has been shot at, and does not contain a ship.
+        /// </summary>
         public bool isMissed { get => tile.hasBeenShot && !isHit; }
-
+        /// <summary>
+        /// if the tile has a bomb, and has been hit, this will be true.
+        /// </summary>
         public bool isBombHit { get => tile.hasBeenShot && tile.hasBomb; }
 
+        /// <summary>
+        /// true if the current tile holds a middle ship piece.
+        /// </summary>
         public bool isMiddle { get =>
                 //tile must be a ship
                 tile.ship != -1
@@ -69,15 +95,25 @@ namespace BattleSweeper.ViewModels
                 && !tile.atEnd
                 && !tile.atStart;
         }
-
-        public bool showShips => (vm.ShowShips || vm.isPlacingShips) && vm.ActivePlayer == player;
-
+        /// <summary>
+        /// true if the current tile holds an end ship piece.
+        /// </summary>
         public bool isEnd { get =>
                 // must be ship
                 tile.ship != -1
                 // must not be a middle piece
                 && (tile.atEnd || tile.atStart);
-                }
+        }
+
+        /// <summary>
+        /// true if the ships (not destroyed) should be shown, to the currently active player.
+        /// </summary>
+        public bool showShips => (vm.ShowShips || vm.isPlacingShips) && vm.ActivePlayer == player;
+
+        /// <summary>
+        /// true if the tiles ship id, has 0 remaining pieces.
+        /// should result in a seperate destroyed ship sprite, being displayed to both players.
+        /// </summary>
         public bool isDestroyed { get  
             {
                 // must be a ship
@@ -102,12 +138,19 @@ namespace BattleSweeper.ViewModels
                 return (bs?.remainingPieces[tile.ship] ?? 0) == 0;
             }
         }
-        public bool isBrokenEnd { get => tile.ship != -1 && (tile.atEnd || tile.atStart) && vm.ActivePlayer == player; }
-
+        /// <summary>
+        /// the rotation transform of the ship sprites, changed depending on if the tile is at the beginning or end of the ship,
+        /// and whether the ship was placed vertically or horizontally.
+        /// </summary>
         public RotateTransform shipTransform { get => new((tile.horizontal ? -90 : 0) + (tile.atEnd ? 0 : 180)); }
 
+        /// <summary>
+        /// should be called when the tile has changed,
+        /// and the exact property that has changed is not known.
+        /// </summary>
         public void tileChanged()
         {
+            // raise the property changed event, on all of the properties in the class.
             this.RaisePropertyChanged(nameof(isHit));
             this.RaisePropertyChanged(nameof(isMissed));
             this.RaisePropertyChanged(nameof(isBombHit));
@@ -127,6 +170,11 @@ namespace BattleSweeper.ViewModels
 
     public class BattleShipsViewModel : ViewModelBase
     {
+        /// <summary>
+        /// constructs a BattleShipsViewModel which will display and let two users play the passed two instances of the IBattleships interface.
+        /// </summary>
+        /// <param name="bs_player_1"></param>
+        /// <param name="bs_player_2"></param>
         public BattleShipsViewModel(IBattleships bs_player_1, IBattleships bs_player_2)
         {
             this.bs_player_1 = bs_player_1;
@@ -177,7 +225,13 @@ namespace BattleSweeper.ViewModels
         /// </summary>
         public Action? AllTilesChanged { get; set; }
 
+        /// <summary>
+        /// the currently active player, meaning which player is currently being shot at.
+        /// </summary>
         public Player ActivePlayer { get => m_active_player; set => this.RaiseAndSetIfChanged(ref m_active_player, value); }
+        /// <summary>
+        /// true when no player is in control, and awaiting for player change confirmation.
+        /// </summary>
         public bool PlayerChanging { get => m_player_changing; set => this.RaiseAndSetIfChanged(ref m_player_changing, value); }
 
         /// <summary>
@@ -224,6 +278,9 @@ namespace BattleSweeper.ViewModels
         public IBattleships bs_player_1;
         public IBattleships bs_player_2;
 
+        /// <summary>
+        /// grid of tile viewmodels for the two players.
+        /// </summary>
         public Grid<BSTileVM> bs1_tile_vm = new(new(10, 10));
         public Grid<BSTileVM> bs2_tile_vm = new(new(10, 10));
 
@@ -268,7 +325,12 @@ namespace BattleSweeper.ViewModels
         /// see Bs1TransformedBounds, but now for Player2Grid.
         /// </summary>
         public TransformedBounds Bs2TransformedBounds { get; set; }
-        public SolidColorBrush Player1Highlight {
+        /// <summary>
+        /// highlight color for the two players grid borders.
+        /// should be green, when their grid is getting shot at, and transparent in all other situations.
+        /// </summary>
+        public SolidColorBrush Player1Highlight
+        {
             get => (ActivePlayer == Player.Player2 && !isPlacingShips) ? GridHighlight : GridNoHighlight;
         }
         public SolidColorBrush Player2Highlight
@@ -465,9 +527,11 @@ namespace BattleSweeper.ViewModels
         }
 
         protected bool m_player_changing = false;
+        // store the player, ActivePlayer should change two, after a player change confirmation.
         protected Player m_next_player = Player.None;
         protected Player m_active_player;
 
+        // backing field for ArrowX and ArrowY
         protected Point m_arrow_coords;
         // backing field for ShowShipts
         protected bool m_show_ships = true;

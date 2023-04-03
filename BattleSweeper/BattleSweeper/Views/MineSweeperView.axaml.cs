@@ -25,6 +25,9 @@ namespace BattleSweeper.Views
         {
             if (DataContext is MineSweeperViewModel vm)
             {
+                // when the datacontext is updated to the MineSweeperViewModel,
+                // fill the avalonia grid control with a bunch of images,
+                // which are bound to a bunch of viewmodels, that are also generated in this section.
                 Grid grid = this.FindControl<Grid>("MineSweeperGrid");
 
                 var bounds_binding = new Binding
