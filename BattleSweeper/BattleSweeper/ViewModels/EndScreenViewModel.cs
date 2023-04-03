@@ -14,7 +14,6 @@ namespace BattleSweeper.ViewModels
 		{
 			NewGame = ReactiveCommand.Create(() => { });
 			Text = textmessage;
-			Button = "Start over";
 		}
 		public string Text { get; set; }
 		public string Button { get; set; }

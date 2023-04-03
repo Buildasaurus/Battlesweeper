@@ -97,105 +97,114 @@
         Background="LightBlue"
         ColumnDefinitions="*,*"
         RowDefinitions="1*,8*">
-        <Label>hello</Label>
         <Border
             Grid.ColumnSpan="2"
             Padding="10,2"
             Background="Blue"
             BorderBrush="LightBlue"
             BorderThickness="2"
-            BoxShadow="0 1 20 5 LightBlue" />
-        <StackPanel
-            Margin="10"
-            Orientation="Horizontal"
-            Spacing="10">
-            <StackPanel
-                Grid.Row="0"
-                Grid.Column="0"
-                Background="{Binding ShipHighlights[0]}"
-                Orientation="Horizontal">
-                <Image
-                    Width="{StaticResource width}"
-                    RenderTransform="rotate(90deg)"
-                    Source="/Assets/ShipEnd.png" />
-                <Image
-                    Width="{StaticResource width}"
-                    RenderTransform="rotate(90deg)"
-                    Source="/Assets/midShip.png" />
-                <Image
-                    Width="{StaticResource width}"
-                    RenderTransform="rotate(90deg)"
-                    Source="/Assets/midShip.png" />
-                <Image
-                    Width="{StaticResource width}"
-                    RenderTransform="rotate(270deg)"
-                    Source="/Assets/ShipEnd.png" />
-            </StackPanel>
+            BoxShadow="0 1 20 5 LightBlue">
+            <DockPanel HorizontalAlignment="Stretch">
+                <StackPanel
+                    Margin="10"
+                    HorizontalAlignment="Stretch"
+                    Orientation="Horizontal"
+                    Spacing="10">
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Background="{Binding ShipHighlights[0]}"
+                        Orientation="Horizontal">
+                        <Image
+                            Width="{StaticResource width}"
+                            RenderTransform="rotate(90deg)"
+                            Source="/Assets/ShipEnd.png" />
+                        <Image
+                            Width="{StaticResource width}"
+                            RenderTransform="rotate(90deg)"
+                            Source="/Assets/midShip.png" />
+                        <Image
+                            Width="{StaticResource width}"
+                            RenderTransform="rotate(90deg)"
+                            Source="/Assets/midShip.png" />
+                        <Image
+                            Width="{StaticResource width}"
+                            RenderTransform="rotate(270deg)"
+                            Source="/Assets/ShipEnd.png" />
+                    </StackPanel>
 
-            <StackPanel
-                Grid.Row="0"
-                Grid.Column="0"
-                Background="{Binding ShipHighlights[1]}"
-                Orientation="Horizontal">
-                <Image
-                    Width="{StaticResource width}"
-                    RenderTransform="rotate(90deg)"
-                    Source="/Assets/ShipEnd.png" />
-                <Image
-                    Width="{StaticResource width}"
-                    RenderTransform="rotate(90deg)"
-                    Source="/Assets/midShip.png" />
-                <Image
-                    Width="{StaticResource width}"
-                    RenderTransform="rotate(270deg)"
-                    Source="/Assets/ShipEnd.png" />
-            </StackPanel>
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Background="{Binding ShipHighlights[1]}"
+                        Orientation="Horizontal">
+                        <Image
+                            Width="{StaticResource width}"
+                            RenderTransform="rotate(90deg)"
+                            Source="/Assets/ShipEnd.png" />
+                        <Image
+                            Width="{StaticResource width}"
+                            RenderTransform="rotate(90deg)"
+                            Source="/Assets/midShip.png" />
+                        <Image
+                            Width="{StaticResource width}"
+                            RenderTransform="rotate(270deg)"
+                            Source="/Assets/ShipEnd.png" />
+                    </StackPanel>
 
-            <StackPanel
-                Grid.Row="0"
-                Grid.Column="0"
-                Background="{Binding ShipHighlights[2]}"
-                Orientation="Horizontal">
-                <Image
-                    Width="{StaticResource width}"
-                    RenderTransform="rotate(90deg)"
-                    Source="/Assets/ShipEnd.png" />
-                <Image
-                    Width="{StaticResource width}"
-                    RenderTransform="rotate(270deg)"
-                    Source="/Assets/ShipEnd.png" />
-            </StackPanel>
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Background="{Binding ShipHighlights[2]}"
+                        Orientation="Horizontal">
+                        <Image
+                            Width="{StaticResource width}"
+                            RenderTransform="rotate(90deg)"
+                            Source="/Assets/ShipEnd.png" />
+                        <Image
+                            Width="{StaticResource width}"
+                            RenderTransform="rotate(270deg)"
+                            Source="/Assets/ShipEnd.png" />
+                    </StackPanel>
 
-            <StackPanel
-                Grid.Row="0"
-                Grid.Column="0"
-                Background="{Binding ShipHighlights[3]}"
-                Orientation="Horizontal">
-                <Image
-                    Width="{StaticResource width}"
-                    RenderTransform="rotate(90deg)"
-                    Source="/Assets/ShipEnd.png" />
-                <Image
-                    Width="{StaticResource width}"
-                    RenderTransform="rotate(270deg)"
-                    Source="/Assets/ShipEnd.png" />
-            </StackPanel>
-            <StackPanel
-                Grid.Row="0"
-                Grid.Column="0"
-                Background="{Binding ShipHighlights[4]}"
-                Orientation="Horizontal">
-                <Image
-                    Width="{StaticResource width}"
-                    RenderTransform="rotate(90deg)"
-                    Source="/Assets/ShipEnd.png" />
-                <Image
-                    Width="{StaticResource width}"
-                    RenderTransform="rotate(270deg)"
-                    Source="/Assets/ShipEnd.png" />
-            </StackPanel>
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Background="{Binding ShipHighlights[3]}"
+                        Orientation="Horizontal">
+                        <Image
+                            Width="{StaticResource width}"
+                            RenderTransform="rotate(90deg)"
+                            Source="/Assets/ShipEnd.png" />
+                        <Image
+                            Width="{StaticResource width}"
+                            RenderTransform="rotate(270deg)"
+                            Source="/Assets/ShipEnd.png" />
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Background="{Binding ShipHighlights[4]}"
+                        Orientation="Horizontal">
+                        <Image
+                            Width="{StaticResource width}"
+                            RenderTransform="rotate(90deg)"
+                            Source="/Assets/ShipEnd.png" />
+                        <Image
+                            Width="{StaticResource width}"
+                            RenderTransform="rotate(270deg)"
+                            Source="/Assets/ShipEnd.png" />
+                    </StackPanel>
 
-        </StackPanel>
+                </StackPanel>
+                <ToggleSwitch
+                    HorizontalAlignment="Right"
+                    DockPanel.Dock="Right"
+                    IsChecked="{Binding ShowShips}">
+                    Show Ships
+                </ToggleSwitch>
+            </DockPanel>
+        </Border>
         <Grid
             Grid.Row="1"
             Grid.ColumnSpan="2"
@@ -211,6 +220,7 @@
                         Source="/Assets/Arrow.png"
                         ZIndex="1" />
                 </Grid>
+                <!--  TODO: the grid that is currently being shot at, should be highlighted  -->
             </Viewbox>
             <Button
                 Grid.Column="1"

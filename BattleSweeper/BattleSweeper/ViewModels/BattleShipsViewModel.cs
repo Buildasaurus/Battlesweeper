@@ -70,7 +70,7 @@ namespace BattleSweeper.ViewModels
                 && !tile.atStart;
         }
 
-        public bool showShips => vm.ActivePlayer == player;
+        public bool showShips => (vm.ShowShips || vm.isPlacingShips) && vm.ActivePlayer == player;
 
         public bool isEnd { get =>
                 // must be ship
@@ -171,6 +171,14 @@ namespace BattleSweeper.ViewModels
 
         public Player ActivePlayer { get => m_active_player; set => this.RaiseAndSetIfChanged(ref m_active_player, value); }
         public bool PlayerChanging { get => m_player_changing; set => this.RaiseAndSetIfChanged(ref m_player_changing, value); }
+
+        /// <summary>
+        /// 
+        /// specifies whether the active players placed ships are shown on their side of their board,
+        /// whilst they are shooting at the other board.
+        /// 
+        /// </summary>
+        public bool ShowShips { get => m_show_ships; set { this.RaiseAndSetIfChanged(ref m_show_ships, value); AllTilesChanged?.Invoke(); } }
 
         /// <summary>
         /// controls whether the placing ship arrow should be visible for player 1 (or player 2 [Player2ArrowVisible])
@@ -440,5 +448,7 @@ namespace BattleSweeper.ViewModels
         protected Player m_active_player;
 
         protected Point m_arrow_coords;
+        // backing field for ShowShipts
+        protected bool m_show_ships = true;
     }
 }
