@@ -13,7 +13,10 @@
 
     <UserControl.Resources>
         <sys:Double x:Key="width">30</sys:Double>
-    </UserControl.Resources>
+		<Image x:Key="mid" Source="/Assets/midShip.png" />
+		<Image x:Key="end" Source="/Assets/ShipEnd.png" />
+
+	</UserControl.Resources>
 
     <UserControl.DataTemplates>
         <DataTemplate DataType="vm:BSTileVM">
