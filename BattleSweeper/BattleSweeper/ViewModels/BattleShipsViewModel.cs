@@ -127,6 +127,11 @@ namespace BattleSweeper.ViewModels
 
     public class BattleShipsViewModel : ViewModelBase
     {
+        /// <summary>
+        /// constructs a BattleShipsViewModel which will display and let two users play the passed two instances of the IBattleships interface.
+        /// </summary>
+        /// <param name="bs_player_1"></param>
+        /// <param name="bs_player_2"></param>
         public BattleShipsViewModel(IBattleships bs_player_1, IBattleships bs_player_2)
         {
             this.bs_player_1 = bs_player_1;
@@ -177,7 +182,13 @@ namespace BattleSweeper.ViewModels
         /// </summary>
         public Action? AllTilesChanged { get; set; }
 
+        /// <summary>
+        /// the currently active player, meaning which player is currently being shot at.
+        /// </summary>
         public Player ActivePlayer { get => m_active_player; set => this.RaiseAndSetIfChanged(ref m_active_player, value); }
+        /// <summary>
+        /// true when no player is in control, and awaiting for player change confirmation.
+        /// </summary>
         public bool PlayerChanging { get => m_player_changing; set => this.RaiseAndSetIfChanged(ref m_player_changing, value); }
 
         /// <summary>
@@ -224,6 +235,9 @@ namespace BattleSweeper.ViewModels
         public IBattleships bs_player_1;
         public IBattleships bs_player_2;
 
+        /// <summary>
+        /// grid of tile viewmodels for the two players.
+        /// </summary>
         public Grid<BSTileVM> bs1_tile_vm = new(new(10, 10));
         public Grid<BSTileVM> bs2_tile_vm = new(new(10, 10));
 
@@ -268,7 +282,12 @@ namespace BattleSweeper.ViewModels
         /// see Bs1TransformedBounds, but now for Player2Grid.
         /// </summary>
         public TransformedBounds Bs2TransformedBounds { get; set; }
-        public SolidColorBrush Player1Highlight {
+        /// <summary>
+        /// highlight color for the two players grid borders.
+        /// should be green, when their grid is getting shot at, and transparent in all other situations.
+        /// </summary>
+        public SolidColorBrush Player1Highlight
+        {
             get => (ActivePlayer == Player.Player2 && !isPlacingShips) ? GridHighlight : GridNoHighlight;
         }
         public SolidColorBrush Player2Highlight
@@ -465,9 +484,11 @@ namespace BattleSweeper.ViewModels
         }
 
         protected bool m_player_changing = false;
+        // store the player, ActivePlayer should change two, after a player change confirmation.
         protected Player m_next_player = Player.None;
         protected Player m_active_player;
 
+        // backing field for ArrowX and ArrowY
         protected Point m_arrow_coords;
         // backing field for ShowShipts
         protected bool m_show_ships = true;

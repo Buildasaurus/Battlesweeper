@@ -8,19 +8,42 @@ using System.Threading.Tasks;
 
 namespace Games.MineSweeper
 {
-
+    /// <summary>
+    /// controls a single mine sweeper game.
+    /// GameOver is invoked, when the game is lost.
+    /// 
+    /// a new feature has been added to this version:
+    /// bombs can now be diffused, which in this game, means they will be no longer be added
+    /// to the battleships grid.
+    /// 
+    /// </summary>
     public class MineSweeper : IMineSweeper
     {
+        /// <summary>
+        /// the current mine sweeper grid.
+        /// </summary>
         public Grid<MSTile>? Tiles => m_grid;
-
+        /// <summary>
+        /// the starting bomb positions.
+        /// </summary>
         public HashSet<Point> InitialBombs => m_initial_bombs;
+        /// <summary>
+        /// the bomb positions that have not yet been diffused.
+        /// </summary>
 
         public HashSet<Point> CurrentBombs => m_current_bombs;
+        /// <summary>
+        /// is invoked every time a tile is changed in the game.
+        /// the tile position is passed as well in the event.
+        /// </summary>
+        public Action<Point>? TileChanged { get; set; }
 
-        public Action<Point>? TileChanged { get => m_TileChanged; set => m_TileChanged = value; }
-
+        /// <summary>
+        /// attempts to diffuse the tile at the given tile coordinate.
+        /// </summary>
         public MoveResult diffuseTile(Point coord)
         {
+            // the tile must not be revealed, and must contain a bomb before it can be diffused.
             if (Tiles[coord].is_revealed)
                 return MoveResult.Illegal;
 
@@ -30,6 +53,7 @@ namespace Games.MineSweeper
             {
                 Tiles[coord].is_revealed = true;
                 Tiles[coord].is_diffused = true;
+
                 m_current_bombs.Remove(coord);
                 result = MoveResult.Success;
             }
@@ -45,8 +69,13 @@ namespace Games.MineSweeper
             return result;
         }
 
+        /// <summary>
+        /// attempts to flag the tile at the given position.
+        /// flagged tiles can not be tested.
+        /// </summary>
         public MoveResult flagTile(Point coord)
         {
+            // cannot flag tile, which has been revealed.
             if (Tiles[coord].is_revealed)
                 return MoveResult.Failure;
 
@@ -57,8 +86,17 @@ namespace Games.MineSweeper
             return MoveResult.Success;
         }
         
+        /// <summary>
+        /// attempt to test / reveal the tile at the given coord.
+        /// if any tiles next to the current tile, in a 1 tile raius, contains a bomb count of 0,
+        /// they should be revealed as well.
+        /// 
+        /// </summary>
+        /// <param name="coord"></param>
+        /// <returns></returns>
         public MoveResult testTile(Point coord)
         {
+            // stop condition: If the tile has already been revealed or it has been falgged, do nothing.
             if (Tiles![coord].is_revealed || Tiles![coord].is_flagged)
                 return MoveResult.Illegal;
 
@@ -67,12 +105,13 @@ namespace Games.MineSweeper
             // make sure to notify a potential viewmodel, about a tile change.
             TileChanged?.Invoke(coord);
 
+            // if the tile is a bomb, or has a bomb count greater than 0, stop the revealing process.
             if (Tiles[coord].bomb_count > 0)
                 return MoveResult.Success;
             else if (Tiles[coord].bomb_count == IMineSweeper.BOMB)
                 return MoveResult.Failure;
 
-            // recursive call
+            // recursive testTile call in a 3 x 3 square around the current tile.
 
             for (int dx = -1; dx <= 1; dx++)
             {
@@ -80,6 +119,8 @@ namespace Games.MineSweeper
                 {
                     Point delta_coord = new(coord.X + dx, coord.Y + dy);
 
+                    // make sure the testTile is not called on the samme coords,
+                    // and the delta coords is not out of bounds for the tile grid..
                     if (!(dx == 0 && dy == 0) && Tiles.inBounds(delta_coord))
                         testTile(delta_coord);
                 }
@@ -87,7 +128,10 @@ namespace Games.MineSweeper
 
             return MoveResult.Success;
         }
-
+        /// <summary>
+        /// Generates a MineSweeper instance, with the specified grid size, and bomb count.
+        /// if no seed is passed, a random seed is used for placing the bombs.
+        /// </summary>
         public void generate(Size size, int bombs, int? seed = null)
         {
             // setup random number generator.
@@ -111,6 +155,7 @@ namespace Games.MineSweeper
                 int rindx_x = rng.Next(m_grid.Size.Width);
                 int rindx_y = rng.Next(m_grid.Size.Height);
 
+                // only place bomb, if there has not been placed a bomb already.
                 if(m_grid[rindx_x, rindx_y].bomb_count != -1)
                 {
                     m_initial_bombs.Add(new Point(rindx_x, rindx_y));
@@ -151,6 +196,5 @@ namespace Games.MineSweeper
         protected Grid<MSTile> m_grid;
         protected HashSet<Point> m_initial_bombs = new();
         protected HashSet<Point> m_current_bombs = new();
-        private Action<Point>? m_TileChanged;
     }
 }

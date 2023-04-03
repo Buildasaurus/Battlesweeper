@@ -122,6 +122,9 @@ namespace BattleSweeper.ViewModels
         /// </summary>
         public IMineSweeper mine_sweeper;
 
+        /// <summary>
+        /// sprite for the most significant digit, in the timer.
+        /// </summary>
         public Bitmap MSTimeDigit
         {
             get
@@ -134,14 +137,22 @@ namespace BattleSweeper.ViewModels
                 return m_digit_sprites[indx];
             }
         }
-
+        
+        /// <summary>
+        /// sprite for the least significant digit in the counter.
+        /// </summary>
         public Bitmap LSTimeDigit
         {
             get => m_digit_sprites[TimeLeft % 10];
         }
 
+        /// <summary>
+        /// rect containing the absolute bounds of the minesweeper avalonia grid,
+        /// relative to the window top left corner.
+        /// </summary>
         public Rect Position { get => Bounds.Clip; }
 
+        // binding to the underlying avalonia grid transformed bounds.
         public TransformedBounds Bounds { get; set; } = new();
 
         /// <summary>
@@ -155,6 +166,10 @@ namespace BattleSweeper.ViewModels
                 this.RaiseAndSetIfChanged(ref m_time_left, Math.Max(value, 0));
                 this.RaisePropertyChanged(nameof(MSTimeDigit));
                 this.RaisePropertyChanged(nameof(LSTimeDigit));
+
+                // if the time hit 0, the game has been lost.
+                if (m_time_left == 0)
+                    GameOver?.Invoke(this, false);
             }
         }
 
@@ -241,6 +256,9 @@ namespace BattleSweeper.ViewModels
 
         protected static Dictionary<int, Bitmap> m_digit_sprites = new();
 
+        /// <summary>
+        /// load the sprites for the clock.
+        /// </summary>
         protected static void loadDigitSprites()
         {
             var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
