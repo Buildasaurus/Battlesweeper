@@ -162,6 +162,14 @@ namespace BattleSweeper.ViewModels
         /// ship highlight color when they have been destroyed.
         /// </summary>
         public static readonly SolidColorBrush DestroyedShipHighlight = new(Color.FromArgb(155, 255, 0, 0));
+        /// <summary>
+        /// border color for when the grid should not be highlighted.
+        /// </summary>
+        public static readonly SolidColorBrush GridNoHighlight = new(Color.FromArgb(0, 0, 0, 0));
+        /// <summary>
+        /// border color for when the grid should be highlighted.
+        /// </summary>
+        public static readonly SolidColorBrush GridHighlight = PlacingShipHighlight;
 
         /// <summary>
         /// gets invoked when all the tiles needs to be updated.
@@ -260,6 +268,13 @@ namespace BattleSweeper.ViewModels
         /// see Bs1TransformedBounds, but now for Player2Grid.
         /// </summary>
         public TransformedBounds Bs2TransformedBounds { get; set; }
+        public SolidColorBrush Player1Highlight {
+            get => (ActivePlayer == Player.Player2 && !isPlacingShips) ? GridHighlight : GridNoHighlight;
+        }
+        public SolidColorBrush Player2Highlight
+        {
+            get => (ActivePlayer == Player.Player1 && !isPlacingShips) ? GridHighlight : GridNoHighlight;
+        }
 
         public void changeDirection()
         {
@@ -354,6 +369,9 @@ namespace BattleSweeper.ViewModels
             ActivePlayer = Player.None;
 
             AllTilesChanged?.Invoke();
+
+            this.RaisePropertyChanged(nameof(Player1Highlight));
+            this.RaisePropertyChanged(nameof(Player2Highlight));
         }
         /// <summary>
         /// Highlights the ships that the given player shot and sunk.
@@ -414,6 +432,9 @@ namespace BattleSweeper.ViewModels
             ActivePlayer = m_next_player;
 
             AllTilesChanged?.Invoke();
+
+            this.RaisePropertyChanged(nameof(Player1Highlight));
+            this.RaisePropertyChanged(nameof(Player2Highlight));
         }
 
         /// <summary>

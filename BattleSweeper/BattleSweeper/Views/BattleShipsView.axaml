@@ -13,10 +13,10 @@
 
     <UserControl.Resources>
         <sys:Double x:Key="width">30</sys:Double>
-		<Image x:Key="mid" Source="/Assets/midShip.png" />
-		<Image x:Key="end" Source="/Assets/ShipEnd.png" />
+        <Image x:Key="mid" Source="/Assets/midShip.png" />
+        <Image x:Key="end" Source="/Assets/ShipEnd.png" />
 
-	</UserControl.Resources>
+    </UserControl.Resources>
 
     <UserControl.DataTemplates>
         <DataTemplate DataType="vm:BSTileVM">
@@ -109,97 +109,11 @@
             BoxShadow="0 1 20 5 LightBlue">
             <DockPanel HorizontalAlignment="Stretch">
                 <StackPanel
+                    x:Name="shipDisplay"
                     Margin="10"
                     HorizontalAlignment="Stretch"
                     Orientation="Horizontal"
-                    Spacing="10">
-                    <StackPanel
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Background="{Binding ShipHighlights[0]}"
-                        Orientation="Horizontal">
-                        <Image
-                            Width="{StaticResource width}"
-                            RenderTransform="rotate(90deg)"
-                            Source="/Assets/ShipEnd.png" />
-                        <Image
-                            Width="{StaticResource width}"
-                            RenderTransform="rotate(90deg)"
-                            Source="/Assets/midShip.png" />
-                        <Image
-                            Width="{StaticResource width}"
-                            RenderTransform="rotate(90deg)"
-                            Source="/Assets/midShip.png" />
-                        <Image
-                            Width="{StaticResource width}"
-                            RenderTransform="rotate(270deg)"
-                            Source="/Assets/ShipEnd.png" />
-                    </StackPanel>
-
-                    <StackPanel
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Background="{Binding ShipHighlights[1]}"
-                        Orientation="Horizontal">
-                        <Image
-                            Width="{StaticResource width}"
-                            RenderTransform="rotate(90deg)"
-                            Source="/Assets/ShipEnd.png" />
-                        <Image
-                            Width="{StaticResource width}"
-                            RenderTransform="rotate(90deg)"
-                            Source="/Assets/midShip.png" />
-                        <Image
-                            Width="{StaticResource width}"
-                            RenderTransform="rotate(270deg)"
-                            Source="/Assets/ShipEnd.png" />
-                    </StackPanel>
-
-                    <StackPanel
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Background="{Binding ShipHighlights[2]}"
-                        Orientation="Horizontal">
-                        <Image
-                            Width="{StaticResource width}"
-                            RenderTransform="rotate(90deg)"
-                            Source="/Assets/ShipEnd.png" />
-                        <Image
-                            Width="{StaticResource width}"
-                            RenderTransform="rotate(270deg)"
-                            Source="/Assets/ShipEnd.png" />
-                    </StackPanel>
-
-                    <StackPanel
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Background="{Binding ShipHighlights[3]}"
-                        Orientation="Horizontal">
-                        <Image
-                            Width="{StaticResource width}"
-                            RenderTransform="rotate(90deg)"
-                            Source="/Assets/ShipEnd.png" />
-                        <Image
-                            Width="{StaticResource width}"
-                            RenderTransform="rotate(270deg)"
-                            Source="/Assets/ShipEnd.png" />
-                    </StackPanel>
-                    <StackPanel
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Background="{Binding ShipHighlights[4]}"
-                        Orientation="Horizontal">
-                        <Image
-                            Width="{StaticResource width}"
-                            RenderTransform="rotate(90deg)"
-                            Source="/Assets/ShipEnd.png" />
-                        <Image
-                            Width="{StaticResource width}"
-                            RenderTransform="rotate(270deg)"
-                            Source="/Assets/ShipEnd.png" />
-                    </StackPanel>
-
-                </StackPanel>
+                    Spacing="10" />
                 <ToggleSwitch
                     HorizontalAlignment="Right"
                     DockPanel.Dock="Right"
@@ -213,16 +127,18 @@
             Grid.ColumnSpan="2"
             ColumnDefinitions="*,130,*">
             <Viewbox Grid.Column="0" Stretch="Uniform">
-                <Grid x:Name="Player1Grid" Margin="0">
-                    <Image
-                        Grid.Row="{Binding ArrowY}"
-                        Grid.Column="{Binding ArrowX}"
-                        Classes="Pixel"
-                        IsVisible="{Binding Player1ArrowVisible}"
-                        RenderTransform="{Binding ArrowAngle}"
-                        Source="/Assets/Arrow.png"
-                        ZIndex="1" />
-                </Grid>
+                <Border BorderBrush="{Binding Player1Highlight}" BorderThickness="3">
+                    <Grid x:Name="Player1Grid" Margin="0">
+                        <Image
+                            Grid.Row="{Binding ArrowY}"
+                            Grid.Column="{Binding ArrowX}"
+                            Classes="Pixel"
+                            IsVisible="{Binding Player1ArrowVisible}"
+                            RenderTransform="{Binding ArrowAngle}"
+                            Source="/Assets/Arrow.png"
+                            ZIndex="1" />
+                    </Grid>
+                </Border>
                 <!--  TODO: the grid that is currently being shot at, should be highlighted  -->
             </Viewbox>
             <Button
@@ -232,16 +148,20 @@
                 Change Player
             </Button>
             <Viewbox Grid.Column="2" Stretch="Uniform">
-                <Grid x:Name="Player2Grid" Margin="0">
-                    <Image
-                        Grid.Row="{Binding ArrowY}"
-                        Grid.Column="{Binding ArrowX}"
-                        Classes="Pixel"
-                        IsVisible="{Binding Player2ArrowVisible}"
-                        RenderTransform="{Binding ArrowAngle}"
-                        Source="/Assets/Arrow.png"
-                        ZIndex="1" />
-                </Grid>
+                <Border BorderBrush="{Binding Player2Highlight}" BorderThickness="3">
+
+
+                    <Grid x:Name="Player2Grid" Margin="0">
+                        <Image
+                            Grid.Row="{Binding ArrowY}"
+                            Grid.Column="{Binding ArrowX}"
+                            Classes="Pixel"
+                            IsVisible="{Binding Player2ArrowVisible}"
+                            RenderTransform="{Binding ArrowAngle}"
+                            Source="/Assets/Arrow.png"
+                            ZIndex="1" />
+                    </Grid>
+                </Border>
             </Viewbox>
         </Grid>
     </Grid>
