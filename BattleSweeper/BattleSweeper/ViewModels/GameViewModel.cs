@@ -156,7 +156,7 @@ namespace BattleSweeper.ViewModels
                 }
                 else
                 {
-                    List<int> shipLengths = new List<int>() { 4, 3, 2, 2, 2 };
+                    List<int> shipLengths = new List<int>() { 5, 4, 3, 3, 2 };
 
                     pl2Bombs = mine_sweeper_vm.mine_sweeper.CurrentBombs;
 
@@ -185,17 +185,10 @@ namespace BattleSweeper.ViewModels
 
         void battleshipsGameover(int player)
         {
-			MineSweeperTransitionViewModel transition = new MineSweeperTransitionViewModel();
-			GameView = transition;
-            Trace.WriteLine(player + " won");
-			transition.TransitionFinished.Subscribe(x =>
+			EndScreenViewModel endscreen = new EndScreenViewModel("Player " + player + " won!");
+			GameView = endscreen;
+			endscreen.NewGame.Subscribe(x =>
 			{
-				mine_sweeper_vm.GameOver -= gameover;
-				mine_sweeper_vm = constructMineField();
-				mine_sweeper_vm.start();
-				GameView = mine_sweeper_vm;
-
-				minesweepergame++;
 			});
 		}
 
@@ -210,7 +203,7 @@ namespace BattleSweeper.ViewModels
             return mineSweeperVM;
         }
 
-        public System.Drawing.Point coordToField(Rect gridCoord, System.Drawing.Point mousePos)
+        public System.Drawing.Point coordToField(Rect gridCoord, Point mousePos)
         {
             double scale = (Screen.PrimaryScreen.Bounds.Width / SystemParameters.PrimaryScreenWidth); 
             double windowX = window.Position.X;
