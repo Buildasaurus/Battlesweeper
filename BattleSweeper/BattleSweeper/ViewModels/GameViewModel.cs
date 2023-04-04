@@ -184,11 +184,24 @@ namespace BattleSweeper.ViewModels
 
         void battleshipsGameover(int player)
         {
-			EndScreenViewModel endscreen = new EndScreenViewModel("Player " + player + " won!");
-			GameView = endscreen;
-			endscreen.NewGame.Subscribe(x =>
-			{
-			});
+			battleshipgame.bs_player_1.GameOver -= (s, player) => battleshipsGameover(2);
+			battleshipgame.bs_player_2.GameOver -= (s, player) => battleshipsGameover(1);
+
+			EventHandler.MouseChanged -= battleshipsMouseEvent;
+			EventHandler.KeyChanged -= battleshipsKeyEvent;
+			EventHandler.MouseMoved -= battleshipsMovedEvent;
+			Task a = new Task(async () =>
+            {
+				await Task.Delay(1000);
+				EndScreenViewModel endscreen = new EndScreenViewModel("Player " + player + " won!");
+                GameView = endscreen;
+                endscreen.NewGame.Subscribe(x =>
+                {
+                });
+            });
+            a.Start();
+
+			
 		}
 
 		private MineSweeperViewModel constructMineField()
