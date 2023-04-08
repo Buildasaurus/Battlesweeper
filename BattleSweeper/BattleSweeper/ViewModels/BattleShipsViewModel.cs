@@ -83,7 +83,7 @@ namespace BattleSweeper.ViewModels
         /// <summary>
         /// if the tile has a bomb, and has been hit, this will be true.
         /// </summary>
-        public bool isBombHit { get => tile.hasBeenShot && tile.hasBomb; }
+        public bool isBomb { get => tile.hasBomb && !vm.isPlacingShips; }
 
         /// <summary>
         /// true if the current tile holds a middle ship piece.
@@ -153,7 +153,7 @@ namespace BattleSweeper.ViewModels
             // raise the property changed event, on all of the properties in the class.
             this.RaisePropertyChanged(nameof(isHit));
             this.RaisePropertyChanged(nameof(isMissed));
-            this.RaisePropertyChanged(nameof(isBombHit));
+            this.RaisePropertyChanged(nameof(isBomb));
             this.RaisePropertyChanged(nameof(isMiddle));
             this.RaisePropertyChanged(nameof(isEnd));
             this.RaisePropertyChanged(nameof(shipTransform));

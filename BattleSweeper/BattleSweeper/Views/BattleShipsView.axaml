@@ -89,7 +89,7 @@
                     Source="/Assets/ShipMissed.png" />
                 <Image
                     Classes="Pixel"
-                    IsVisible="{Binding isBombHit}"
+                    IsVisible="{Binding isBomb}"
                     Source="/Assets/Bomb.png" />
 
             </Grid>
