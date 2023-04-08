@@ -136,7 +136,7 @@ namespace BattleSweeper.ViewModels
                 Trace.WriteLine("game over - found all bombs: " + foundAllBombs);
                 if (minesweepergame == 1) //if first game, start the next one
                 {
-                    MineSweeperTransitionViewModel transition = new MineSweeperTransitionViewModel();
+                    MineSweeperTransitionViewModel transition = new MineSweeperTransitionViewModel(mine_sweeper_vm.mine_sweeper.InitialBombs.Count - mine_sweeper_vm.mine_sweeper.CurrentBombs.Count, mine_sweeper_vm.mine_sweeper.InitialBombs.Count);
                     GameView = transition;
                     pl1Bombs = mine_sweeper_vm.mine_sweeper.CurrentBombs;
 
@@ -149,9 +149,6 @@ namespace BattleSweeper.ViewModels
 
                         minesweepergame++;
                     });
-
-
-
                 }
                 else
                 {
@@ -164,6 +161,7 @@ namespace BattleSweeper.ViewModels
 
                     pl1.constructBoard(pl1Bombs.ToList(), shipLengths);
                     pl2.constructBoard(pl2Bombs.ToList(), shipLengths);
+
                     battleshipgame = new BattleShipsViewModel(pl1, pl2);
 
                     mine_sweeper_vm.GameOver -= gameover;
@@ -172,11 +170,21 @@ namespace BattleSweeper.ViewModels
 
                     EventHandler.KeyChanged -= minesweeperKeyChanged;
                     EventHandler.MouseChanged -= minesweeperMouseEvent;
-                    EventHandler.MouseChanged += battleshipsMouseEvent;
-                    EventHandler.KeyChanged += battleshipsKeyEvent;
-                    EventHandler.MouseMoved += battleshipsMovedEvent;
-                    
-                    GameView = battleshipgame;
+
+                    // show transition screen.
+
+                    MineSweeperTransitionViewModel transition = new MineSweeperTransitionViewModel(mine_sweeper_vm.mine_sweeper.InitialBombs.Count - mine_sweeper_vm.mine_sweeper.CurrentBombs.Count, mine_sweeper_vm.mine_sweeper.InitialBombs.Count);
+                    GameView = transition;
+
+                    transition.TransitionFinished.Subscribe(x =>
+                    {
+                        EventHandler.MouseChanged += battleshipsMouseEvent;
+                        EventHandler.KeyChanged += battleshipsKeyEvent;
+                        EventHandler.MouseMoved += battleshipsMovedEvent;
+                        
+                        GameView = battleshipgame;
+                    });
+
 
                 }
             });

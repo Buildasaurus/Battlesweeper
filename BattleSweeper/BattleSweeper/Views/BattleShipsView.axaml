@@ -112,8 +112,16 @@
                     x:Name="shipDisplay"
                     Margin="10"
                     HorizontalAlignment="Stretch"
+                    DockPanel.Dock="Left"
                     Orientation="Horizontal"
                     Spacing="10" />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="30"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    Text="{Binding ActionDescription}" />
                 <ToggleSwitch
                     HorizontalAlignment="Right"
                     DockPanel.Dock="Right"

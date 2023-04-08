@@ -199,6 +199,36 @@ namespace BattleSweeper.ViewModels
         protected bool isVertical = true;
 
         /// <summary>
+        ///  short text describing what is currently happening in the battleships game.
+        /// </summary>
+        public string ActionDescription { get
+            {
+                if (ActivePlayer == Player.None)
+                    return "Waiting for player change...";
+
+                string description = "";
+
+                switch(ActivePlayer)
+                {
+                    case Player.Player1:
+                        description = "Player 1";
+                        break;
+                    case Player.Player2:
+                        description = "Player 2";
+                        break;
+                        
+                }
+
+                if (isPlacingShips)
+                    description += " is placing ships.";
+                else
+                    description += " is shooting";
+
+                return description;
+            }
+        }
+
+        /// <summary>
         /// the background color of the ships in the top border, when they should not be highlighted in any way.
         /// </summary>
         public static readonly SolidColorBrush NoShipHighlight = new(Color.FromArgb(0, 0, 0, 0));
@@ -434,6 +464,7 @@ namespace BattleSweeper.ViewModels
 
             this.RaisePropertyChanged(nameof(Player1Highlight));
             this.RaisePropertyChanged(nameof(Player2Highlight));
+            this.RaisePropertyChanged(nameof(ActionDescription));
         }
         /// <summary>
         /// Highlights the ships that the given player shot and sunk.
@@ -497,6 +528,7 @@ namespace BattleSweeper.ViewModels
 
             this.RaisePropertyChanged(nameof(Player1Highlight));
             this.RaisePropertyChanged(nameof(Player2Highlight));
+            this.RaisePropertyChanged(nameof(ActionDescription));
         }
 
         /// <summary>

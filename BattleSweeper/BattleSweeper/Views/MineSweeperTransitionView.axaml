@@ -12,15 +12,14 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="60"
-            Foreground="White">
-            Mine Sweeper Completed!
-        </TextBlock>
+            Foreground="White"
+            Text="{Binding transitionText}" />
         <Button
             Grid.Row="1"
             Padding="50"
             Command="{Binding TransitionFinished}"
             FontSize="50">
-            Continue to next game
+            Continue
         </Button>
     </Grid>
 </UserControl>
