@@ -68,7 +68,7 @@ namespace Tests
             mine_sweeper_vm.rightClickTile(new Point(8, 3));
             mine_sweeper_vm.rightClickTile(new Point(8, 6));
 
-            // diffuse the bombs
+            // defuse the bombs
             mine_sweeper_vm.leftShiftClickTile(new Point(0, 9));
             mine_sweeper_vm.leftShiftClickTile(new Point(0, 1));
             mine_sweeper_vm.leftShiftClickTile(new Point(0, 3));

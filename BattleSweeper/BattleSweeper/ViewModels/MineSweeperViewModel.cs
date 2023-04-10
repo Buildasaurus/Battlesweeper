@@ -42,7 +42,7 @@ namespace BattleSweeper.ViewModels
             if (assets != null)
             {
                 // The states are mapped to the suffix of the file name (MineSweeper[STATE].png)
-                string[] sprites = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "Bomb", "Empty", "Tile", "Flag", "Diffused" };
+                string[] sprites = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "Bomb", "Empty", "Tile", "Flag", "Defused" };
 
                 foreach (string sprite in sprites)
                 {
@@ -74,8 +74,8 @@ namespace BattleSweeper.ViewModels
             {
                 // retrieve sprite based on current state.
                 
-                if (Tile.is_diffused)
-                    return Sprites["Diffused"];
+                if (Tile.is_defused)
+                    return Sprites["Defused"];
 
                 if (Tile.is_flagged)
                     return Sprites["Flag"];
@@ -108,7 +108,7 @@ namespace BattleSweeper.ViewModels
         /// <summary>
         /// called when the user has finished the game.
         /// 
-        /// gives true if all bombs were diffused, otherwise false.
+        /// gives true if all bombs were defused, otherwise false.
         /// 
         /// </summary>
         public EventHandler<bool>? GameOver;
@@ -223,16 +223,16 @@ namespace BattleSweeper.ViewModels
         }
 
         /// <summary>
-        /// attempts to diffuse a tile at the given position.
+        /// attempts to defuse a tile at the given position.
         /// 
-        /// if the diffuse failed, the timer is decremented by a set size.
-        /// GameOver is optionally called, if all the bombs have been diffused
+        /// if the defuse failed, the timer is decremented by a set size.
+        /// GameOver is optionally called, if all the bombs have been defused
         /// 
         /// </summary>
         /// <param name="tile"></param>
         public void leftShiftClickTile(Point tile)
         {
-            var result = mine_sweeper.diffuseTile(tile);
+            var result = mine_sweeper.defuseTile(tile);
 
             switch(result)
             {

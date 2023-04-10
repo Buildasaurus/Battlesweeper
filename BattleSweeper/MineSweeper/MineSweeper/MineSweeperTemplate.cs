@@ -25,7 +25,7 @@ namespace Games.MineSweeper
         /// sets the MineSweeperTile.is_revealed to true, at coord.
         /// </summary>
         /// <param name="coord"> MoveResult.Success</param>
-        public MoveResult diffuseTile(Point coord)
+        public MoveResult defuseTile(Point coord)
         {
             Tiles![coord].is_revealed = true;
             TileChanged?.Invoke(coord);

@@ -96,5 +96,21 @@ namespace Tests
             // check if the 1D index also works
             Assert.True(grid[15]!.id == 32);
         }
+
+        [Fact]
+        public void Bounds()
+        {
+            Grid<Foo?> grid = new(new(10, 10));
+
+            // these should be in bounds
+
+            Assert.True(grid.inBounds(new(0, 0)));
+            Assert.True(grid.inBounds(new(5, 5)));
+
+            // these should be out of bounds
+
+            Assert.False(grid.inBounds(new(0, 11)));
+            Assert.False(grid.inBounds(new(-5, 2)));
+        }
     }
 }

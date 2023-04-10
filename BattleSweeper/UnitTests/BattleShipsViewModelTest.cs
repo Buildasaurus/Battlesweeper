@@ -25,7 +25,7 @@ namespace Tests
                 BattleshipTile bs_tile = new(-1, false, false, false, false, false);
                 BSTileVM tile = new(bs_tile, vm, Player.Player1);
 
-                Assert.False(tile.isEnd || tile.isMiddle || tile.isHit || tile.isDestroyed || tile.isBombHit);
+                Assert.False(tile.isEnd || tile.isMiddle || tile.isHit || tile.isDestroyed || tile.isBomb);
             }
 
             {
@@ -34,7 +34,7 @@ namespace Tests
                 BattleshipTile bs_tile = new(0, false, false, true, false, false);
                 BSTileVM tile = new(bs_tile, vm, Player.Player1);
 
-                Assert.True(!tile.isEnd && tile.isMiddle && !tile.isHit && !tile.isDestroyed && !tile.isBombHit && tile.showShips);
+                Assert.True(!tile.isEnd && tile.isMiddle && !tile.isHit && !tile.isDestroyed && !tile.isBomb && tile.showShips);
                 Assert.True(tile.shipTransform.Angle == 90);
             }
 
@@ -44,7 +44,7 @@ namespace Tests
                 BattleshipTile bs_tile = new(0, true, false, false, true, false);
                 BSTileVM tile = new(bs_tile, vm, Player.Player1);
 
-                Assert.True(tile.isEnd && !tile.isMiddle && tile.isHit && tile.isDestroyed && !tile.isBombHit && tile.showShips);
+                Assert.True(tile.isEnd && !tile.isMiddle && tile.isHit && tile.isDestroyed && !tile.isBomb && tile.showShips);
             }
 
             {

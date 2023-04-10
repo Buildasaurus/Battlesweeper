@@ -34,17 +34,17 @@ namespace Games.MineSweeper
         /// </summary>
         public bool is_flagged = false;
         /// <summary>
-        /// specifies whether the tile is currently diffused.
+        /// specifies whether the tile is currently defused.
         /// can only be true, if bomb_count == IMineSweeper.BOMB
         /// </summary>
-        public bool is_diffused = false;
+        public bool is_defused = false;
 
         public MSTile Copy()
         {
             MSTile tile = new(bomb_count);
             tile.is_revealed = is_revealed;
             tile.is_flagged = is_flagged;
-            tile.is_diffused = is_diffused;
+            tile.is_defused = is_defused;
             
             return tile;
         }
@@ -78,7 +78,7 @@ namespace Games.MineSweeper
         /// </summary>
         public HashSet<Point> InitialBombs { get; }
         /// <summary>
-        /// list of the current bombs, that have not yet be diffused.
+        /// list of the current bombs, that have not yet be defused.
         /// </summary>
         public HashSet<Point> CurrentBombs { get; }
 
@@ -98,9 +98,9 @@ namespace Games.MineSweeper
         /// </summary>
         public MoveResult flagTile(Point coord);
         /// <summary>
-        /// attempts to diffuse a bomt at the specified coord.
+        /// attempts to defuse a bomt at the specified coord.
         /// </summary>
-        public MoveResult diffuseTile(Point coord);
+        public MoveResult defuseTile(Point coord);
 
         public Action<Point>? TileChanged { get; set; }
     }

@@ -13,7 +13,7 @@ namespace Games.MineSweeper
     /// GameOver is invoked, when the game is lost.
     /// 
     /// a new feature has been added to this version:
-    /// bombs can now be diffused, which in this game, means they will be no longer be added
+    /// bombs can now be defused, which in this game, means they will be no longer be added
     /// to the battleships grid.
     /// 
     /// </summary>
@@ -28,7 +28,7 @@ namespace Games.MineSweeper
         /// </summary>
         public HashSet<Point> InitialBombs => m_initial_bombs;
         /// <summary>
-        /// the bomb positions that have not yet been diffused.
+        /// the bomb positions that have not yet been defused.
         /// </summary>
 
         public HashSet<Point> CurrentBombs => m_current_bombs;
@@ -39,11 +39,11 @@ namespace Games.MineSweeper
         public Action<Point>? TileChanged { get; set; }
 
         /// <summary>
-        /// attempts to diffuse the tile at the given tile coordinate.
+        /// attempts to defuse the tile at the given tile coordinate.
         /// </summary>
-        public MoveResult diffuseTile(Point coord)
+        public MoveResult defuseTile(Point coord)
         {
-            // the tile must not be revealed, and must contain a bomb before it can be diffused.
+            // the tile must not be revealed, and must contain a bomb before it can be defused.
             if (Tiles[coord].is_revealed)
                 return MoveResult.Illegal;
 
@@ -52,7 +52,7 @@ namespace Games.MineSweeper
             if (Tiles[coord].bomb_count == IMineSweeper.BOMB)
             {
                 Tiles[coord].is_revealed = true;
-                Tiles[coord].is_diffused = true;
+                Tiles[coord].is_defused = true;
 
                 m_current_bombs.Remove(coord);
                 result = MoveResult.Success;

@@ -47,24 +47,30 @@ namespace Games
             set => m_data[indx] = value;
         }
 
+        /// <summary>
+        /// access the element stored in the 2D matrix, at the position (x, y)
+        /// </summary>
         public T this[int x, int y]
         {
             get
             {
-                if (x > Size.Width || y > Size.Height)
+                if (!inBounds(new(x, y)))
                     throw new IndexOutOfRangeException();
 
                 return this[x + y * Size.Width];
             }
             set
             {
-                if (x > Size.Width || y > Size.Height)
+                if (!inBounds(new(x, y)))
                     throw new IndexOutOfRangeException();
 
                 this[x + y * Size.Width] = value;
             }
         }
 
+        /// <summary>
+        /// access the element stored in the 2D matrix, at the position (coord.X, coord.Y)
+        /// </summary>
         public T this[Point coord]
         {
             get => this[coord.X, coord.Y];
@@ -74,10 +80,8 @@ namespace Games
         /// <summary>
         /// check whether the passed coordinate is a valid point, inside the grid.
         /// </summary>
-        public bool inBounds(Point coord)
-        {
-            return coord.X >= 0 && coord.X < Size.Width && coord.Y >= 0 && coord.Y < Size.Height;
-        }
+        public bool inBounds(Point coord) =>
+            coord.X >= 0 && coord.X < Size.Width && coord.Y >= 0 && coord.Y < Size.Height;
 
         public List<T>.Enumerator GetEnumerator()
         {

@@ -1,5 +1,5 @@
 ﻿
-UMLClassDiagram.UMLClass msvm = new(typeof(BattleSweeper.ViewModels.MSTileVM));
+UMLClassDiagram.UMLClass msvm = new(typeof(Games.MineSweeper.MineSweeper));
 
 msvm.XMLToCB();
 
