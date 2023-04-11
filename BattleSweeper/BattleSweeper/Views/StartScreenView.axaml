@@ -4,6 +4,29 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="BattleSweeper.Views.StartScreenView">
-	<Grid RowDefinitions="">
+	<Grid RowDefinitions="*,*,*,*,*" ColumnDefinitions="3*,*,3*" Background="Blue" >
+		<Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" FontSize="20" HorizontalAlignment="Center">Battle Sweeper</Label>
+		<Label Grid.Row="0" Grid.Column="0"  VerticalAlignment="Bottom" HorizontalAlignment="Center">Minesweeper:</Label>
+		<TextBlock Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center">
+
+* Left click: reveal a tile
+* Rigth click: Flag a tile
+* Shift + Left click: Defuse a tile, 
+if there is not a bomb, you lose 10 seconds
+* Game is over when all bombs are defused, time is up og a bomb explodes
+
+		</TextBlock>
+		<Button Height="40"
+				Width="160"
+				Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Command="{Binding TransitionFinished}">Start Minesweeper</Button>
+		<Label Grid.Row="0" Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Center">Battleships:</Label>
+		<TextBlock Grid.Row="1" Grid.Column="2"  HorizontalAlignment="Center" VerticalAlignment="Center">
+
+			Left click: Place ship and shoot a tile
+R: Rotate ship before placing
+Bombs: Explode and hit surrounding tiles when shot
+
+		</TextBlock>
+		
 	</Grid>
 </UserControl>

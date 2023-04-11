@@ -48,6 +48,21 @@ namespace BattleSweeper.ViewModels
 
         public GameViewModel()
         {
+            startScreen();
+        }
+
+        void startScreen()
+        {
+            StartScreenViewModel startScreen = new StartScreenViewModel();
+            GameView = startScreen;
+
+            startScreen.TransitionFinished.Subscribe(x =>
+            {
+                minesweeper();
+            });
+        }
+        void minesweeper()
+        {
             EventHandler.start();
             mine_sweeper_vm = constructMineField();
 
@@ -58,7 +73,6 @@ namespace BattleSweeper.ViewModels
 
             GameView = mine_sweeper_vm;
         }
-
         void minesweeperKeyChanged(KeyArgs x)
         {
             if (x.key == Key.LeftShift)
