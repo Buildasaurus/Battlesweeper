@@ -7,7 +7,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid Background="Blue" RowDefinitions="1*,1*">
+    <Grid Background="LightBlue" RowDefinitions="1*,1*">
         <TextBlock
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
@@ -23,7 +23,7 @@
             Command="{Binding NewGame}"
             FontSize="50"
             Foreground="White">
-            Restart
+            New Game
         </Button>
     </Grid>
 </UserControl>
