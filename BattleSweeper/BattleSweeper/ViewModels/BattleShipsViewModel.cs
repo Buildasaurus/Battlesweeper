@@ -83,7 +83,7 @@ namespace BattleSweeper.ViewModels
         /// <summary>
         /// if the tile has a bomb, and has been hit, this will be true.
         /// </summary>
-        public bool isBombHit { get => tile.hasBeenShot && tile.hasBomb; }
+        public bool isBomb { get => tile.hasBomb && !vm.isPlacingShips; }
 
         /// <summary>
         /// true if the current tile holds a middle ship piece.
@@ -153,7 +153,7 @@ namespace BattleSweeper.ViewModels
             // raise the property changed event, on all of the properties in the class.
             this.RaisePropertyChanged(nameof(isHit));
             this.RaisePropertyChanged(nameof(isMissed));
-            this.RaisePropertyChanged(nameof(isBombHit));
+            this.RaisePropertyChanged(nameof(isBomb));
             this.RaisePropertyChanged(nameof(isMiddle));
             this.RaisePropertyChanged(nameof(isEnd));
             this.RaisePropertyChanged(nameof(shipTransform));
@@ -197,6 +197,36 @@ namespace BattleSweeper.ViewModels
         int placedShips = 0;
         public bool isPlacingShips = true;
         protected bool isVertical = true;
+
+        /// <summary>
+        ///  short text describing what is currently happening in the battleships game.
+        /// </summary>
+        public string ActionDescription { get
+            {
+                if (ActivePlayer == Player.None)
+                    return "Waiting for player change...";
+
+                string description = "";
+
+                switch(ActivePlayer)
+                {
+                    case Player.Player1:
+                        description = "Player 1";
+                        break;
+                    case Player.Player2:
+                        description = "Player 2";
+                        break;
+                        
+                }
+
+                if (isPlacingShips)
+                    description += " is placing ships.";
+                else
+                    description += " is shooting";
+
+                return description;
+            }
+        }
 
         /// <summary>
         /// the background color of the ships in the top border, when they should not be highlighted in any way.
@@ -331,11 +361,23 @@ namespace BattleSweeper.ViewModels
         /// </summary>
         public SolidColorBrush Player1Highlight
         {
-            get => (ActivePlayer == Player.Player2 && !isPlacingShips) ? GridHighlight : GridNoHighlight;
+            get
+            {
+                if (isPlacingShips)
+                    return ActivePlayer == Player.Player1 ? GridHighlight : GridNoHighlight;
+                else
+                    return ActivePlayer == Player.Player2 ? GridHighlight : GridNoHighlight;
+            }
         }
         public SolidColorBrush Player2Highlight
         {
-            get => (ActivePlayer == Player.Player1 && !isPlacingShips) ? GridHighlight : GridNoHighlight;
+            get
+            {
+                if (isPlacingShips)
+                    return ActivePlayer == Player.Player2 ? GridHighlight : GridNoHighlight;
+                else
+                    return ActivePlayer == Player.Player1 ? GridHighlight : GridNoHighlight;
+            }
         }
 
         public void changeDirection()
@@ -434,6 +476,7 @@ namespace BattleSweeper.ViewModels
 
             this.RaisePropertyChanged(nameof(Player1Highlight));
             this.RaisePropertyChanged(nameof(Player2Highlight));
+            this.RaisePropertyChanged(nameof(ActionDescription));
         }
         /// <summary>
         /// Highlights the ships that the given player shot and sunk.
@@ -497,6 +540,7 @@ namespace BattleSweeper.ViewModels
 
             this.RaisePropertyChanged(nameof(Player1Highlight));
             this.RaisePropertyChanged(nameof(Player2Highlight));
+            this.RaisePropertyChanged(nameof(ActionDescription));
         }
 
         /// <summary>

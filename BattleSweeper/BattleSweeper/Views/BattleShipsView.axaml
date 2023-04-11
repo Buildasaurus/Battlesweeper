@@ -15,7 +15,6 @@
         <sys:Double x:Key="width">30</sys:Double>
         <Image x:Key="mid" Source="/Assets/midShip.png" />
         <Image x:Key="end" Source="/Assets/ShipEnd.png" />
-
     </UserControl.Resources>
 
     <UserControl.DataTemplates>
@@ -89,7 +88,7 @@
                     Source="/Assets/ShipMissed.png" />
                 <Image
                     Classes="Pixel"
-                    IsVisible="{Binding isBombHit}"
+                    IsVisible="{Binding isBomb}"
                     Source="/Assets/Bomb.png" />
 
             </Grid>
@@ -112,8 +111,16 @@
                     x:Name="shipDisplay"
                     Margin="10"
                     HorizontalAlignment="Stretch"
+                    DockPanel.Dock="Left"
                     Orientation="Horizontal"
                     Spacing="10" />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="30"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    Text="{Binding ActionDescription}" />
                 <ToggleSwitch
                     HorizontalAlignment="Right"
                     DockPanel.Dock="Right"
