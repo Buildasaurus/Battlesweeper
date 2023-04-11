@@ -361,11 +361,23 @@ namespace BattleSweeper.ViewModels
         /// </summary>
         public SolidColorBrush Player1Highlight
         {
-            get => (ActivePlayer == Player.Player2 && !isPlacingShips) ? GridHighlight : GridNoHighlight;
+            get
+            {
+                if (isPlacingShips)
+                    return ActivePlayer == Player.Player1 ? GridHighlight : GridNoHighlight;
+                else
+                    return ActivePlayer == Player.Player2 ? GridHighlight : GridNoHighlight;
+            }
         }
         public SolidColorBrush Player2Highlight
         {
-            get => (ActivePlayer == Player.Player1 && !isPlacingShips) ? GridHighlight : GridNoHighlight;
+            get
+            {
+                if (isPlacingShips)
+                    return ActivePlayer == Player.Player2 ? GridHighlight : GridNoHighlight;
+                else
+                    return ActivePlayer == Player.Player1 ? GridHighlight : GridNoHighlight;
+            }
         }
 
         public void changeDirection()
