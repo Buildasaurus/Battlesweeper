@@ -28,6 +28,7 @@ using Windows.UI.WebUI;
 using Point = System.Drawing.Point;
 using Avalonia.Animation;
 using Avalonia.Threading;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace BattleSweeper.ViewModels
 {
@@ -241,13 +242,15 @@ namespace BattleSweeper.ViewModels
 
         public System.Drawing.Point coordToField(Rect gridCoord, Point mousePos)
         {
-            double scale = (Screen.PrimaryScreen.Bounds.Width / SystemParameters.PrimaryScreenWidth); 
-            double windowX = window.Position.X;
+            double scale = (Screen.PrimaryScreen.Bounds.Width / SystemParameters.PrimaryScreenWidth);
+            //getting the position of the entire window
+            double windowX = window.Position.X; 
             double windowY = window.Position.Y + 30;
             double x;
             double y;
 
-            //calc x and y coordinat relative to topleft
+            
+            //calc x and y coordinat relative to topleft grid coordinat.
             x = mousePos.X / scale - gridCoord.TopLeft.X - windowX / scale;
 			y = mousePos.Y / scale - gridCoord.TopLeft.Y - windowY / scale;
             /*
@@ -255,7 +258,7 @@ namespace BattleSweeper.ViewModels
             */
 
             //calculate corresponding tile
-            double tilewidth = gridCoord.Width/10;
+            double tilewidth = gridCoord.Width / 10;
             double tileHeight = gridCoord.Height / 10;
 
             int xtile = (int)Math.Floor(x / tilewidth);
