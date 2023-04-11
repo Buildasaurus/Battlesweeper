@@ -1,20 +1,20 @@
-<UserControl 
-	x:Class="BattleSweeper.Views.EndScreenView"
-	xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             >
-	<Grid Background="Blue" RowDefinitions="1*,1*">
-		<TextBlock
+<UserControl
+    x:Class="BattleSweeper.Views.EndScreenView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid Background="Blue" RowDefinitions="1*,1*">
+        <TextBlock
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="60"
             Foreground="White"
-            Text="{Binding Text}">
-		</TextBlock>
-		<Button
+            Text="{Binding Text}" />
+        <Button
             Grid.Row="1"
             Padding="50"
             HorizontalAlignment="Center"
@@ -22,9 +22,8 @@
             Background="Gray"
             Command="{Binding NewGame}"
             FontSize="50"
-            Foreground="White"
-			Content="{Binding Button}">
-			
-		</Button>
-	</Grid>
+            Foreground="White">
+            Restart
+        </Button>
+    </Grid>
 </UserControl>

@@ -205,6 +205,8 @@ namespace BattleSweeper.ViewModels
                 GameView = endscreen;
                 endscreen.NewGame.Subscribe(x =>
                 {
+                    if (App.Current!.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                        ((MainWindowViewModel?)desktop.MainWindow.DataContext).View = new GameViewModel();
                 });
             });
             a.Start();
