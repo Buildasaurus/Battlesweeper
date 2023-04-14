@@ -22,10 +22,7 @@ namespace BattleSweeper.Models
     {
         [DllImport("user32.dll")]
         static extern bool GetCursorPos(ref Point lpPoint);
-
-        private static Thread mouseThread;
-        private static bool isRunning = true;
-        private static bool shiftPressed = false;
+        
         public static Point mousePosition = new Point();
         public static Action<MouseArgs>? MouseChanged;
         public static Action<KeyArgs>? KeyChanged;
