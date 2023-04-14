@@ -28,7 +28,6 @@ using Windows.UI.WebUI;
 using Point = System.Drawing.Point;
 using Avalonia.Animation;
 using Avalonia.Threading;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace BattleSweeper.ViewModels
 {
