@@ -21,23 +21,25 @@ namespace Tests
             game.constructBoard(bombPositions, new List<int>() { 4, 3, 2, 2, 2 });
             game.placeShip(new(1,1),false);
             game.placeShip(new(8, 8), true);
-            game.placeShip(new(4, 5), false);
-            game.placeShip(new(5, 1), false);
+            game.placeShip(new(1, 2), true);
+            game.placeShip(new(5, 2), false);
             game.placeShip(new(3, 7), true);
 
-            /*Assert.True(game.Tiles[1, 1].ship == 0);
+            //Tests whether a ship is too long
+            Assert.True(game.Tiles[1, 1].ship == 0);
             Assert.True(game.Tiles[2, 1].ship == 0);
             Assert.True(game.Tiles[3, 1].ship == 0);
             Assert.True(game.Tiles[4, 1].ship == 0);
             Assert.True(game.Tiles[5, 1].ship == -1);
+
+            //Checks if at start works
             Assert.True(game.Tiles[1, 2].ship == 1);
             Assert.True(game.Tiles[1, 2].atStart == true);
             Assert.True(game.Tiles[1, 3].ship == 1);
             Assert.True(game.Tiles[1, 4].ship == 1);
             Assert.True(game.Tiles[1, 5].ship == -1);
-            Assert.True(game.Tiles[1, 6].ship == -1);
-            Assert.True(game.Tiles[4, 5].ship == 2);
-            */
+            
+            //Checks if sihps are placed when there is not room
             Assert.True(game.Tiles[8, 8].ship == -1);
         }
 
@@ -57,16 +59,16 @@ namespace Tests
             game.shoot(new(1, 4));
             
 
-            /*
+            
             Assert.True(game.Tiles[1, 2].hasBeenShot == true);
             Assert.True(game.Tiles[1, 1].hasBeenShot == true);
             Assert.True(game.Tiles[1, 2].hasBeenShot == true);
             Assert.True(game.Tiles[1, 3].hasBeenShot == true);
             Assert.True(game.Tiles[1, 4].hasBeenShot == true);
-            Assert.True(game.Tiles[1, 4].ship == 0);
+            Assert.True(game.Tiles[1, 4].ship == -1);
             Assert.True(ShipSunkInvoked == true);
             Assert.True(game.Tiles[2, 1].hasBeenShot == true);
-            */
+            
         }
 
 
