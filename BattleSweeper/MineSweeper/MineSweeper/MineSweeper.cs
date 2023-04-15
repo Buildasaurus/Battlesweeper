@@ -119,10 +119,9 @@ namespace Games.MineSweeper
                 {
                     Point delta_coord = new(coord.X + dx, coord.Y + dy);
 
-                    // make sure the testTile is not called on the samme coords,
-                    // and the delta coords is not out of bounds for the tile grid..
-                    if (!(dx == 0 && dy == 0) && Tiles.inBounds(delta_coord))
-                        testTile(delta_coord);
+                    // make sure the testTile is not out of bounds for the tile grid.
+                    if (Tiles.inBounds(delta_coord))
+                        testTile(delta_coord); // recursive call
                 }
             }
 
@@ -156,10 +155,10 @@ namespace Games.MineSweeper
                 int rindx_y = rng.Next(m_grid.Size.Height);
 
                 // only place bomb, if there has not been placed a bomb already.
-                if(m_grid[rindx_x, rindx_y].bomb_count != -1)
+                if(m_grid[rindx_x, rindx_y].bomb_count != IMineSweeper.BOMB)
                 {
                     m_initial_bombs.Add(new Point(rindx_x, rindx_y));
-                    m_grid[rindx_x, rindx_y].bomb_count = -1;
+                    m_grid[rindx_x, rindx_y].bomb_count = IMineSweeper.BOMB;
                     bombs_left--;
                 }
             }
@@ -173,7 +172,7 @@ namespace Games.MineSweeper
                 for(int y = 0; y < m_grid.Size.Height; y++)
                 {
                     // skip if the current tile is a bomb.
-                    if (m_grid[x, y].bomb_count == -1)
+                    if (m_grid[x, y].bomb_count == IMineSweeper.BOMB)
                         continue;
 
                     // check all tiles in a 3x3 square, around (x, y)
@@ -182,7 +181,7 @@ namespace Games.MineSweeper
                     {
                         for (int dy = y - 1; dy <= y + 1; dy++)
                         {
-                            if(m_grid.inBounds(new Point(dx, dy)) && m_grid[dx, dy].bomb_count == -1)
+                            if(m_grid.inBounds(new Point(dx, dy)) && m_grid[dx, dy].bomb_count == IMineSweeper.BOMB)
                             {
                                 m_grid[x, y].bomb_count++;
                             }
