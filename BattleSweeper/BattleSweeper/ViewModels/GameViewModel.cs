@@ -48,6 +48,21 @@ namespace BattleSweeper.ViewModels
 
         public GameViewModel()
         {
+            startScreen();
+        }
+
+        void startScreen()
+        {
+            StartScreenViewModel startScreen = new StartScreenViewModel();
+            GameView = startScreen;
+
+            startScreen.TransitionFinished.Subscribe(x =>
+            {
+                minesweeper();
+            });
+        }
+        void minesweeper()
+        {
             EventHandler.start();
             mine_sweeper_vm = constructMineField();
 
@@ -58,7 +73,6 @@ namespace BattleSweeper.ViewModels
 
             GameView = mine_sweeper_vm;
         }
-
         void minesweeperKeyChanged(KeyArgs x)
         {
             if (x.key == Key.LeftShift)
@@ -205,6 +219,8 @@ namespace BattleSweeper.ViewModels
                 GameView = endscreen;
                 endscreen.NewGame.Subscribe(x =>
                 {
+                    if (App.Current!.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                        ((MainWindowViewModel?)desktop.MainWindow.DataContext).View = new GameViewModel();
                 });
             });
             a.Start();
@@ -225,13 +241,15 @@ namespace BattleSweeper.ViewModels
 
         public System.Drawing.Point coordToField(Rect gridCoord, Point mousePos)
         {
-            double scale = (Screen.PrimaryScreen.Bounds.Width / SystemParameters.PrimaryScreenWidth); 
-            double windowX = window.Position.X;
+            double scale = (Screen.PrimaryScreen.Bounds.Width / SystemParameters.PrimaryScreenWidth);
+            //getting the position of the entire window
+            double windowX = window.Position.X; 
             double windowY = window.Position.Y + 30;
             double x;
             double y;
 
-            //calc x and y coordinat relative to topleft
+            
+            //calc x and y coordinat relative to topleft grid coordinat.
             x = mousePos.X / scale - gridCoord.TopLeft.X - windowX / scale;
 			y = mousePos.Y / scale - gridCoord.TopLeft.Y - windowY / scale;
             /*
@@ -239,7 +257,7 @@ namespace BattleSweeper.ViewModels
             */
 
             //calculate corresponding tile
-            double tilewidth = gridCoord.Width/10;
+            double tilewidth = gridCoord.Width / 10;
             double tileHeight = gridCoord.Height / 10;
 
             int xtile = (int)Math.Floor(x / tilewidth);
