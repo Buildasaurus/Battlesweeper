@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace Games
 {
     /// <summary>
-    /// 
+    ///
     /// Dataclass representing a static 2D grid.
-    /// 
+    ///
     /// </summary>
     /// <typeparam name="T">
     /// datatype to contain in the grid.
@@ -20,10 +20,10 @@ namespace Games
     public class Grid<T> where T : class?, ICopyable<T>
     {
         /// <summary>
-        /// 
+        ///
         /// construct a Grid with the passed size
         /// optionally, fill all values with a default value.
-        /// 
+        ///
         /// </summary>
         /// <param name="size"></param>
         /// <param name="val"> value to fill grid with. If null, fill with default value of T </param>
